@@ -15,5 +15,8 @@ module.exports = (app) => {
   //POST /api/clients/add
   router.post("/add", [authJWT.verifyToken], clientController.create);
 
+  //GET /api/clients/find/:id
+  router.get("/find/:id", [authJWT.verifyToken], clientController.find);
+
   app.use("/api/clients", router);
 };

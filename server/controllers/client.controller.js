@@ -32,6 +32,21 @@ class ClientController {
         });
       });
   };
+  /*
+   * POST /api/clients/find
+   * Find Client Action
+   */
+  find = (request, response) => {
+    const id = request.params.id;
+
+    Client.findByPk(id)
+      .then((client) => response.send(client))
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new ClientController();
