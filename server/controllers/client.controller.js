@@ -47,6 +47,29 @@ class ClientController {
         });
       });
   };
+  /*
+   * POST /api/clients/edit
+   * Edit Client Action
+   */
+  update = (request, response) => {
+    const id = request.params.id;
+    //Update client and save in DB
+    Client.update(request.body, {
+      where: {
+        id,
+      },
+    })
+      .then((nums) =>
+        response.send({
+          message: `${nums} client(s) mis à jour`,
+        })
+      )
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new ClientController();

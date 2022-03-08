@@ -18,5 +18,8 @@ module.exports = (app) => {
   //GET /api/clients/find/:id
   router.get("/find/:id", [authJWT.verifyToken], clientController.find);
 
+  //PUT /api/clients/edit/:id
+  router.put("/edit/:id", [authJWT.verifyToken], clientController.update);
+
   app.use("/api/clients", router);
 };
