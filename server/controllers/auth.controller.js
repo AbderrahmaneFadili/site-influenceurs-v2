@@ -1,7 +1,7 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const Manager = require("../models/Manager")(db.sequelize, db.Sequelize);
-const Operation = db.Sequelize.Operation;
+const Manager = require("../models/manager")(db.sequelize, db.Sequelize);
+const Operation = db.Sequelize.Op;
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -10,7 +10,7 @@ class AuthController {
    * POST : /api/auth/signup
    * Sign up Action
    */
-  signup(request, response) {
+  signup = (request, response) => {
     //Create/Register the manager
     Manager.create({
       fullName: request.body.fullName,
@@ -20,8 +20,13 @@ class AuthController {
       .then((manager) => {
         if (manager) {
           response.send({
-            manager: "le manager est enregistré avec succès",
-            ...manager,
+            message: "le manager est enregistré avec succès",
+            manager: {
+              fullName: manager.fullName,
+              email: manager.email,
+              createdAt: manager.createdAt,
+              updatedAt: manager.updatedAt,
+            },
           });
         }
       })
@@ -30,7 +35,7 @@ class AuthController {
           message: error.message || "Le Manager ne peut pas s'inscrire",
         });
       });
-  }
+  };
 }
 
 module.exports = new AuthController();

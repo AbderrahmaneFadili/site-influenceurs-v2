@@ -11,7 +11,7 @@ module.exports = {
       link: {
         type: Sequelize.STRING,
       },
-      compaignId: {
+      campaignId: {
         type: Sequelize.INTEGER,
         references: {
           // Campaign Photo belongs to Campaign

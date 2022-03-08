@@ -13,7 +13,6 @@ module.exports = (sequelize, DataTypes) => {
       //Interest belongs to many influencer
       this.belongsTo(models.Influencer, {
         through: "language_influencer",
-        as: "Interests",
         foreignKey: "interestId",
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
@@ -21,8 +20,7 @@ module.exports = (sequelize, DataTypes) => {
 
       //Interest belongs to many Compaign
       this.belongsTo(models.Influencer, {
-        through: "compaign_interest",
-        as: "Interests",
+        through: "campaign_interest",
         foreignKey: "interestId",
         onDelete: "SET NULL",
         onUpdate: "CASCADE",

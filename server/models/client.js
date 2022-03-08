@@ -9,9 +9,9 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-
       //Client has many compain
-      this.hasMany(models.Compain, {
+      this.hasMany(models.Campaign, {
+        foreignKey: "clientId",
         as: "clients",
         onDelete: "SET NULL",
         onUpdate: "CASCADE",

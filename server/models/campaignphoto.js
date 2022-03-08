@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       // define association here
       this.belongsTo(models.Campaign, {
-        foreignKey: "compaignId",
+        foreignKey: "campaignId",
         as: "campaign",
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
