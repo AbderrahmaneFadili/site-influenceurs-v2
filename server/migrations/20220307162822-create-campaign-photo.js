@@ -14,8 +14,8 @@ module.exports = {
       compaignId: {
         type: Sequelize.INTEGER,
         references: {
-          // Campaign belongsTo CampaignPhoto
-          model: "CampaignPhotos",
+          // Campaign Photo belongs to Campaign
+          model: "Campaigns",
           key: "id",
         },
         onDelete: "SET NULL",
