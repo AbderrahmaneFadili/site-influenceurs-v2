@@ -36,6 +36,55 @@ class AuthController {
         });
       });
   };
+  /*
+   * POST : /api/auth/signin
+   * Sign in Action
+   */
+  signin = (request, response) => {
+    //Find User by Email
+    Manager.findOne({
+      where: {
+        email: request.body.email,
+      },
+    })
+      .then((manager) => {
+        if (!manager) {
+          response.status(404).send({
+            message: "Utilisateur non trouvé!",
+          });
+          return;
+        }
+        //compare the two passwords
+        const passwordIsValid = bcrypt.compareSync(
+          request.body.password,
+          manager.password
+        );
+
+        if (!passwordIsValid) {
+          //return Invalid Password message
+          response.status(404).send({
+            accessToken: null,
+            message: "Mot de passe incorrect",
+          });
+        } else {
+          let token = jwt.sign({ id: manager.id }, config.secret, {
+            expiresIn: 86400, // 24 hours,
+          });
+
+          //return the manager
+          response.status(200).send({
+            fullName: manager.fullName,
+            email: manager.email,
+            accessToken: token,
+          });
+        }
+      })
+      .catch((err) => {
+        response.status(500).send({
+          message: err.message,
+        });
+      });
+  };
 }
 
 module.exports = new AuthController();

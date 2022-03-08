@@ -19,6 +19,9 @@ module.exports = (app) => {
     authController.signup
   );
 
+  //POST : api/auth/signin
+  router.post("/signin", authController.signin);
+
   //use the router
   app.use("/api/auth", router);
 };
