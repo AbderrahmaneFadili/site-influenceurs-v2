@@ -29,6 +29,8 @@ require("./routes").authRoute(app);
 require("./routes").managerRoute(app);
 //Set up client routes
 require("./routes").clientRoutes(app);
+//Set up campaign routes
+require("./routes").campaignRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

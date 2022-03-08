@@ -15,7 +15,7 @@ const getPagingData = (data, page, limit, items) => {
   return { totalItems, [items]: data.rows, totalPages, currentPage };
 };
 
-//pagination Helper
+//pagination wHelper
 const paginationHelper = {
   getPagingData,
   getPagination,

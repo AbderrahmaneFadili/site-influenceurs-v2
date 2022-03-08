@@ -83,7 +83,7 @@ class ClientController {
       .then((num) => {
         response.send({
           message:
-            num > 0 ? "Le client est supprimé" : "le client n'est pas supprimé",
+            num > 0 ? "un client est supprimé" : "le client n'est pas supprimé",
         });
       })
       .catch((error) => {
