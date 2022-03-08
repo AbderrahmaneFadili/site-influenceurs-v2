@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const Client = require("../models/client")(db.sequelize, db.Sequelize);
 const Operation = db.Sequelize.Op;
+const { getPagination, getPagingData } = require("../helpers/paginationHelper");
 
 class ClientController {
   /*
@@ -12,7 +13,7 @@ class ClientController {
     //  Save Model in DB
     Client.create(request.body)
       .then((client) => {
-        response.send({
+        response.status(200).send({
           message: "Un client ajouté",
           client: {
             id: client.id,
@@ -26,9 +27,9 @@ class ClientController {
           },
         });
       })
-      .then((error) => {
+      .catch((error) => {
         response.status(500).send({
-          message: error.message,
+          message: error.message || "erreur lors de l'ajout du client",
         });
       });
   };
@@ -64,6 +65,50 @@ class ClientController {
           message: `${nums} client(s) mis à jour`,
         })
       )
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+  /*
+   * POST /api/clients/delete
+   * Delete Client Action
+   */
+  delete = (request, response) => {
+    const id = request.params.id;
+    Client.destroy({
+      where: { id },
+    })
+      .then((num) => {
+        response.send({
+          message:
+            num > 0 ? "Le client est supprimé" : "le client n'est pas supprimé",
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+
+  /*
+   * GET /api/clients/all
+   * Get all Clients Action
+   */
+  all = (request, response) => {
+    //get the query params
+    const { page, size } = request.query;
+    const { limit, offset } = getPagination(page, size);
+    Client.findAndCountAll({
+      limit,
+      offset,
+    })
+      .then((data) => {
+        const result = getPagingData(data, page, limit, "clients");
+        response.send(result);
+      })
       .catch((error) => {
         response.status(500).send({
           message: error.message,

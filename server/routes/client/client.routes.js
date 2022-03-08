@@ -21,5 +21,11 @@ module.exports = (app) => {
   //PUT /api/clients/edit/:id
   router.put("/edit/:id", [authJWT.verifyToken], clientController.update);
 
+  //DELETE /api/clients/edit/:id
+  router.delete("/delete/:id", [authJWT.verifyToken], clientController.delete);
+
+  //GET /api/clients/all
+  router.get("/all", [authJWT.verifyToken], clientController.all);
+
   app.use("/api/clients", router);
 };
