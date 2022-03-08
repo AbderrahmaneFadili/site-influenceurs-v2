@@ -22,6 +22,9 @@ module.exports = (app) => {
   //POST : api/auth/signin
   router.post("/signin", authController.signin);
 
+  //POST : api/auth/signout
+  router.post("/signout", [authJWT.verifyToken], authController.signout);
+
   //use the router
   app.use("/api/auth", router);
 };

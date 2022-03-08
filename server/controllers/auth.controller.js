@@ -85,6 +85,24 @@ class AuthController {
         });
       });
   };
+  /*
+   * POST : /api/auth/signout
+   * Sign out Action
+   */
+  signout = (request, response) => {
+    const token = request.headers["x-access-token"];
+    jwt.sign(token, "", { expiresIn: 1 }, (logout, err) => {
+      if (logout) {
+        response.send({
+          message: "Vous avez été déconnecté",
+        });
+      } else {
+        response.status(500).send({
+          message: "Une erreur de sign out",
+        });
+      }
+    });
+  };
 }
 
 module.exports = new AuthController();
