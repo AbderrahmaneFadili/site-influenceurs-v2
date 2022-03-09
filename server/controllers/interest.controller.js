@@ -3,6 +3,7 @@ const config = require("../config/auth.config");
 const Interest = require("../models/interest")(db.sequelize, db.Sequelize);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
+const { response } = require("express");
 
 class InterestController {
   /*
@@ -51,6 +52,27 @@ class InterestController {
   find = (request, response) => {
     Interest.findByPk(request.params.id)
       .then((interest) => response.send(interest))
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+  /*
+   * Update interest
+   */
+  delete = (request, response) => {
+    Interest.destroy({
+      where: {
+        id: request.params.id,
+      },
+    })
+      .then((num) => {
+        response.send({
+          message:
+            num > 0 ? "l'intérêt est supprimé" : "l'intérêt n'est pas supprimé",
+        });
+      })
       .catch((error) => {
         response.status(500).send({
           message: error.message,

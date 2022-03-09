@@ -9,5 +9,11 @@ module.exports = (app) => {
   router.put("/edit/:id", [authJWT.verifyToken], interestController.update);
   //GET /api/interests/find
   router.get("/find/:id", [authJWT.verifyToken], interestController.find);
+  //DELETE /api/interests/delete
+  router.delete(
+    "/delete/:id",
+    [authJWT.verifyToken],
+    interestController.delete
+  );
   app.use("/api/interests", router);
 };
