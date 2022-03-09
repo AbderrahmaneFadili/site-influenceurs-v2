@@ -15,5 +15,7 @@ module.exports = (app) => {
     [authJWT.verifyToken],
     interestController.delete
   );
+  //GET /api/interests/all
+  router.get("/all", [authJWT.verifyToken], interestController.all);
   app.use("/api/interests", router);
 };

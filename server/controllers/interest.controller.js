@@ -79,6 +79,27 @@ class InterestController {
         });
       });
   };
+  /*
+   * All Interests
+   */
+  all = (request, response) => {
+    //get the query params
+    const { page, size } = request.query;
+    const { limit, offset } = getPagination(page, size);
+    Interest.findAndCountAll({
+      limit,
+      offset,
+    })
+      .then((data) => {
+        const result = getPagingData(data, page, limit, "interests");
+        response.send(result);
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new InterestController();
