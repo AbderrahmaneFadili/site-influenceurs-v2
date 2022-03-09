@@ -37,5 +37,7 @@ module.exports = (app) => {
     [authJWT.verifyToken],
     campaignPhotosController.deleteAll
   );
+  //GET /api/campaignPhotos/all
+  router.get("/all", [authJWT.verifyToken], campaignPhotosController.all);
   app.use("/api/campaignPhotos", router);
 };

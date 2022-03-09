@@ -102,6 +102,28 @@ class CampaignPhotosController {
         });
       });
   };
+  /*
+   * GET get all
+   */
+  all = (request, response) => {
+    //get the query params
+    const { page, size } = request.query;
+    const { limit, offset } = getPagination(page, size);
+
+    CampaignPhoto.findAndCountAll({
+      limit,
+      offset,
+    })
+      .then((data) => {
+        const result = getPagingData(data, page, limit, "campaignPhotos");
+        response.send(result);
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new CampaignPhotosController();
