@@ -76,6 +76,26 @@ class CampaignController {
         });
       });
   };
+  /*
+   * PUT : /api/campaigns/edit
+   * Edit Campaign
+   */
+  edit = (request, response) => {
+    const id = request.params.id;
+    Campaign.update(request.body, {
+      where: {
+        id,
+      },
+    })
+      .then((nums) =>
+        response.send({ message: `${nums} campagne(s) mise à jour` })
+      )
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new CampaignController();

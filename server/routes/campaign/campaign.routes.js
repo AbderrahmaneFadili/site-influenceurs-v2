@@ -22,6 +22,8 @@ module.exports = (app) => {
     [authJWT.verifyToken],
     campaignController.delete
   );
+  //PUT /api/campaigns/edit
+  router.put("/edit/:id", [authJWT.verifyToken], campaignController.edit);
 
   app.use("/api/campaigns", router);
 };
