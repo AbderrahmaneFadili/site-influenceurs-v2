@@ -49,7 +49,7 @@ class InterestController {
    * GET find  interest
    */
   find = (request, response) => {
-    Interest.findById(request.params.id)
+    Interest.findByPk(request.params.id)
       .then((interest) => response.send(interest))
       .catch((error) => {
         response.status(500).send({

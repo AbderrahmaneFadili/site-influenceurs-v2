@@ -7,6 +7,7 @@ module.exports = (app) => {
   router.post("/add", [authJWT.verifyToken], interestController.add);
   //PUT /api/interests/edit
   router.put("/edit/:id", [authJWT.verifyToken], interestController.update);
-
+  //GET /api/interests/find
+  router.get("/find/:id", [authJWT.verifyToken], interestController.find);
   app.use("/api/interests", router);
 };
