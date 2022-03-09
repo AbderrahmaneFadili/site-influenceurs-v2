@@ -60,6 +60,48 @@ class CampaignPhotosController {
         });
       });
   };
+  /*
+   * DELETE remove single campaign photo from gallery
+   */
+  delete = (request, response) => {
+    CampaignPhoto.destroy({
+      where: {
+        id: request.params.id,
+      },
+    })
+      .then((nums) => {
+        response.send({
+          message:
+            nums > 0 ? "une photo est supprimé" : "la photo n'est pas supprimé",
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+  /*
+   * DELETE multiple campaign images by campaignId
+   */
+  deleteAll = (request, response) => {
+    CampaignPhoto.destroy({
+      where: {
+        campaignId: request.params.id,
+      },
+    })
+      .then((nums) => {
+        response.send({
+          message:
+            nums > 0 ? `${nums} photo(s) supprimé` : "aucune photo supprimé",
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new CampaignPhotosController();

@@ -23,7 +23,19 @@ module.exports = (app) => {
     [authJWT.verifyToken],
     campaignPhotosController.create
   );
-  //GET /api/campaignPhotos/find/4
+  //GET /api/campaignPhotos/find/
   router.get("/find/:id", [authJWT.verifyToken], campaignPhotosController.find);
+  //DELETE /api/campaignPhotos/delete/
+  router.delete(
+    "/delete/:id",
+    [authJWT.verifyToken],
+    campaignPhotosController.delete
+  );
+  //DELETE /api/campaignPhotos/deleteAll
+  router.delete(
+    "/deleteAll/:id",
+    [authJWT.verifyToken],
+    campaignPhotosController.deleteAll
+  );
   app.use("/api/campaignPhotos", router);
 };
