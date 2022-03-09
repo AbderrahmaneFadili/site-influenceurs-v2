@@ -31,6 +31,8 @@ require("./routes").managerRoute(app);
 require("./routes").clientRoutes(app);
 //Set up campaign routes
 require("./routes").campaignRoutes(app);
+//Set up interest routes
+require("./routes").interestRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

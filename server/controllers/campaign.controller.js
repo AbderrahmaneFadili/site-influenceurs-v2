@@ -3,8 +3,6 @@ const config = require("../config/auth.config");
 const Campaign = require("../models/campaign")(db.sequelize, db.Sequelize);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
-const campaign = require("../models/campaign");
-const { response, request } = require("express");
 
 class CampaignController {
   /*
