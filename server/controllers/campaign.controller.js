@@ -4,7 +4,7 @@ const Campaign = require("../models/campaign")(db.sequelize, db.Sequelize);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
 const campaign = require("../models/campaign");
-const { response } = require("express");
+const { response, request } = require("express");
 
 class CampaignController {
   /*
@@ -90,6 +90,29 @@ class CampaignController {
       .then((nums) =>
         response.send({ message: `${nums} campagne(s) mise à jour` })
       )
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+  /*
+   * GET : /api/campaigns/all
+   * Get all Campaigns with pagination
+   */
+  all = (request, response) => {
+    //get the query params
+    const { page, size } = request.query;
+    const { limit, offset } = getPagination(page, size);
+
+    Campaign.findAndCountAll({
+      limit,
+      offset,
+    })
+      .then((data) => {
+        const result = getPagingData(data, page, limit, "campaigns");
+        response.send(result);
+      })
       .catch((error) => {
         response.status(500).send({
           message: error.message,
