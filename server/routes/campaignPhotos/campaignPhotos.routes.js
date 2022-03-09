@@ -1,6 +1,7 @@
 const { verifySignUp, authJWT } = require("../../middlewares");
 const campaignPhotosController = require("../../controllers/campaignPhotots.controller");
-const router = require("express").Router();
+const express = require("express");
+const router = express.Router();
 const fileuploaded = require("express-fileupload");
 
 module.exports = (app) => {
@@ -22,5 +23,7 @@ module.exports = (app) => {
     [authJWT.verifyToken],
     campaignPhotosController.create
   );
+  //GET /api/campaignPhotos/find/4
+  router.get("/find/:id", [authJWT.verifyToken], campaignPhotosController.find);
   app.use("/api/campaignPhotos", router);
 };

@@ -22,7 +22,7 @@ class CampaignPhotosController {
           } else {
             const campaignPhoto = {
               campaignId: request.body.campaignId,
-              link: `uploads/campaigns/images/${file.name}`,
+              link: `uploads/${file.name}`,
             };
             gallery.push(campaignPhoto);
           }
@@ -44,6 +44,21 @@ class CampaignPhotosController {
         }
       }, 3000);
     }
+  };
+  /*
+   * GET  Campaign Photo Action
+   */
+  find = (request, response) => {
+    const id = request.params.id;
+    CampaignPhoto.findByPk(id)
+      .then((campaignPhoto) => {
+        response.send(campaignPhoto);
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
   };
 }
 
