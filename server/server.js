@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const fileuploaded = require("express-fileupload");
 
 //CORS options
 const corsOptions = {
@@ -33,6 +34,8 @@ require("./routes").clientRoutes(app);
 require("./routes").campaignRoutes(app);
 //Set up interest routes
 require("./routes").interestRoutes(app);
+//Set up campaign photos routes
+require("./routes").campaignPhotosRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

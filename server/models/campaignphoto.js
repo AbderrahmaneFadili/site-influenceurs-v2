@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
   CampaignPhoto.init(
     {
       link: DataTypes.STRING,
-      compaignId: DataTypes.INTEGER,
+      campaignId: DataTypes.INTEGER,
     },
     {
       sequelize,
