@@ -6,6 +6,7 @@ const CampaignPhoto = require("../models/campaignphoto")(
 );
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
+const fs = require("fs");
 
 class CampaignPhotosController {
   /*
@@ -16,13 +17,14 @@ class CampaignPhotosController {
       const gallery = [];
       request.files.images.forEach((file) => {
         //move the file uploaded to uploads/campaigns/images
-        file.mv(`uploads/campaigns/images/${file.name}`, (error) => {
+        const time = new Date().getTime();
+        file.mv(`uploads/campaigns/images/${time}-${file.name}`, (error) => {
           if (error) {
             throw error;
           } else {
             const campaignPhoto = {
               campaignId: request.body.campaignId,
-              link: `uploads/${file.name}`,
+              link: `uploads/campaigns/images/${time}-${file.name}`,
             };
             gallery.push(campaignPhoto);
           }
@@ -66,14 +68,21 @@ class CampaignPhotosController {
   delete = (request, response) => {
     CampaignPhoto.destroy({
       where: {
-        id: request.params.id,
+        id: request.query.id,
       },
     })
-      .then((nums) => {
-        response.send({
-          message:
-            nums > 0 ? "une photo est supprimé" : "la photo n'est pas supprimé",
-        });
+      .then((num) => {
+        if (num > 0) {
+          fs.unlink(request.query.imageUrl, (err) =>
+            err
+              ? response.send({
+                  message: err.message,
+                })
+              : response.send({
+                  message: "photo supprimée",
+                })
+          );
+        }
       })
       .catch((error) => {
         response.status(500).send({

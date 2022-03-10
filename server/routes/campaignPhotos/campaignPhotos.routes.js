@@ -27,7 +27,7 @@ module.exports = (app) => {
   router.get("/find/:id", [authJWT.verifyToken], campaignPhotosController.find);
   //DELETE /api/campaignPhotos/delete/
   router.delete(
-    "/delete/:id",
+    "/delete",
     [authJWT.verifyToken],
     campaignPhotosController.delete
   );

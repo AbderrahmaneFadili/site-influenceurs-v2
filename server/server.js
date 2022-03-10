@@ -17,7 +17,11 @@ app.use(express.json());
 // parse requests of content-type - application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: true }));
 
-app.use("/uploads", express.static("./uploads/campaigns/images"));
+//set up the uploads endpoint
+app.use(
+  "/uploads/campaigns/images",
+  express.static("uploads/campaigns/images")
+);
 
 // simple request
 app.get("/", (req, res) => {
