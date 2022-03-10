@@ -13,8 +13,8 @@ class CampaignPhotosController {
    * POST Add Campaign Photos Action
    */
   create = (request, response) => {
-    if (request.files) {
-      const gallery = [];
+    const gallery = [];
+    if (Array.isArray(request.files.images)) {
       request.files.images.forEach((file) => {
         //move the file uploaded to uploads/campaigns/images
         const time = new Date().getTime();
@@ -30,22 +30,39 @@ class CampaignPhotosController {
           }
         });
       });
-
-      setTimeout(() => {
-        if (gallery.length > 0) {
-          CampaignPhoto.bulkCreate(gallery).then((gl) => {
-            response.send({
-              gallery: gl,
-              message: "les images sont téléchargées",
-            });
-          });
-        } else {
-          response.send({
-            message: "Galerie n'existe pas",
-          });
+    } else {
+      //move the file uploaded to uploads/campaigns/images
+      const time = new Date().getTime();
+      request.files.images.mv(
+        `uploads/campaigns/images/${time}-${request.files.images.name}`,
+        (error) => {
+          if (error) {
+            throw error;
+          } else {
+            const campaignPhoto = {
+              campaignId: request.body.campaignId,
+              link: `uploads/campaigns/images/${time}-${request.files.images.name}`,
+            };
+            gallery.push(campaignPhoto);
+          }
         }
-      }, 3000);
+      );
     }
+
+    setTimeout(() => {
+      if (gallery.length > 0) {
+        CampaignPhoto.bulkCreate(gallery).then((gl) => {
+          response.send({
+            gallery: gl,
+            message: "les images sont téléchargées",
+          });
+        });
+      } else {
+        response.send({
+          message: "les images ne sont pas téléchargées",
+        });
+      }
+    }, 3000);
   };
   /*
    * GET  Campaign Photo Action
@@ -94,15 +111,25 @@ class CampaignPhotosController {
    * DELETE multiple campaign images by campaignId
    */
   deleteAll = (request, response) => {
-    CampaignPhoto.destroy({
+    let isDeleted = false;
+    CampaignPhoto.findAll({
       where: {
         campaignId: request.params.id,
       },
     })
-      .then((nums) => {
-        response.send({
-          message:
-            nums > 0 ? `${nums} photo(s) supprimé` : "aucune photo supprimé",
+      .then((cps) => {
+        cps.forEach((cp) => {
+          CampaignPhoto.destroy({
+            where: {
+              id: cp.id,
+            },
+          }).then((num) => {
+            if (num > 0) {
+              fs.unlink(cp.link, (err) =>
+                err ? (isDeleted = false) : (isDeleted = true)
+              );
+            }
+          });
         });
       })
       .catch((error) => {
@@ -110,6 +137,18 @@ class CampaignPhotosController {
           message: error.message,
         });
       });
+
+    setTimeout(
+      () =>
+        isDeleted
+          ? response.send({
+              message: "La galerie est supprimée",
+            })
+          : response.send({
+              message: "La galerie n'est pas supprimée",
+            }),
+      5000
+    );
   };
   /*
    * GET get all
