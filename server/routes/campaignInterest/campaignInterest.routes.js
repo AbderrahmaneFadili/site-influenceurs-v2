@@ -13,10 +13,6 @@ module.exports = (app) => {
   });
 
   //get all campaign interests by
-  router.get(
-    "/interestsByCampaign/:id",
-    campaignInterestController.findByCampaign
-  );
 
   app.use("/api/campaigninterests", router);
 };

@@ -14,47 +14,25 @@ class CampaignController {
    * Create Campaign
    */
   create = (request, response) => {
-    const interestsList = request.body.interests.split(",");
-    const campaignsInterests = [];
-    Campaign.create({
-      clientId: request.body.clientId,
-      title: request.body.title,
-      startDate: request.body.startDate,
-      endDate: request.body.startDate,
-      presence: request.body.presence,
-      numberInfluencers: request.body.numberInfluencers,
-      description: request.body.description,
-      hashtage: request.body.hashtage,
-      accounts: request.body.accounts,
-    })
+    Campaign.create(request.body)
       .then((campaign) => {
-        //loop through interestList
-        interestsList.forEach((interestId) => {
-          campaignsInterests.push({
-            campaignId: campaign.id,
-            interestId: interestId,
-          });
+        response.status(200).send({
+          id: campaign.id,
+          clientId: campaign.clientId,
+          title: campaign.title,
+          startDate: campaign.startDate,
+          endDate: campaign.endDate,
+          presence: campaign.presence,
+          numberInfluencers: campaign.numberInfluencers,
+          description: campaign.description,
+          hashtage: campaign.hashtage,
         });
       })
-      .catch((err) => {
-        return response.status(500).send({
-          message: err.message,
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
         });
       });
-
-    setTimeout(() => {
-      CampaignInterest.bulkCreate(campaignsInterests)
-        .then((campaignInterests) => {
-          response.status(200).send({
-            message: "une campaign créé",
-          });
-        })
-        .catch((error) =>
-          response.status(500).send({
-            message: error.message,
-          })
-        );
-    }, 2000);
   };
   /*
    * GET : /api/campaigns/find
@@ -63,24 +41,16 @@ class CampaignController {
   find = (request, response) => {
     Campaign.findByPk(request.params.id)
       .then((campaign) => {
-        CampaignInterest.findAll({
-          where: {
-            campaignId: campaign.id,
-          },
-        }).then((interests) => {
-          response.send({
-            id: campaign.id,
-            clientId: campaign.clientId,
-            title: campaign.title,
-            startDate: campaign.startDate,
-            endDate: campaign.endDate,
-            presence: campaign.presence,
-            numberInfluencers: campaign.numberInfluencers,
-            description: campaign.description,
-            hashtage: campaign.hashtage,
-            accounts: campaign.accounts,
-            interests,
-          });
+        response.status(200).send({
+          id: campaign.id,
+          clientId: campaign.clientId,
+          title: campaign.title,
+          startDate: campaign.startDate,
+          endDate: campaign.endDate,
+          presence: campaign.presence,
+          numberInfluencers: campaign.numberInfluencers,
+          description: campaign.description,
+          hashtage: campaign.hashtage,
         });
       })
       .catch((err) => {
@@ -119,20 +89,19 @@ class CampaignController {
    * Edit Campaign
    */
   edit = (request, response) => {
-    const id = request.params.id;
-    Campaign.update(request.body, {
-      where: {
-        id,
-      },
+    Campaign.destroy({
+      where: { id },
     })
-      .then((nums) =>
-        response.send({ message: `${nums} campagne(s) mise à jour` })
-      )
-      .catch((error) => {
-        response.status(500).send({
-          message: error.message,
+      .then((num) => {
+        response.status(200).send({
+          message: `${num} campagne(s) est supprimée`,
         });
-      });
+      })
+      .catch((err) =>
+        response.status(500).send({
+          message: err.message,
+        })
+      );
   };
   /*
    * GET : /api/campaigns/all

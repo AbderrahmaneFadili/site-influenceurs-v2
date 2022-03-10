@@ -12,22 +12,6 @@ class CampaignInterestController {
   /*
    * GET find by campaign
    */
-  findByCampaign = (request, response) => {
-    const campaignId = request.params.id;
-    CampaignInterest.findAll({
-      where: {
-        campaignId,
-      },
-    })
-      .then((campaignInterests) => {
-        response.send(campaignInterests);
-      })
-      .catch((err) => {
-        response.status(500).send({
-          message: err.message,
-        });
-      });
-  };
 }
 
 module.exports = new CampaignInterestController();
