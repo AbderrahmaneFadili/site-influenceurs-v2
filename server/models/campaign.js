@@ -22,14 +22,14 @@ module.exports = (sequelize, DataTypes) => {
         through: "campaign_interest",
         as: "Campaigns",
         foreignKey: "campaignId",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
 
       //Campaign has many photos
       this.hasMany(models.CampaignPhoto, {
         as: "campaignPhotos",
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       });
     }

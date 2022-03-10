@@ -14,7 +14,7 @@ module.exports = {
           model: "Campaigns",
           key: "id",
         },
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
       interestId: {
@@ -23,7 +23,7 @@ module.exports = {
           model: "Interests",
           key: "id",
         },
-        onDelete: "SET NULL",
+        onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
       createdAt: {

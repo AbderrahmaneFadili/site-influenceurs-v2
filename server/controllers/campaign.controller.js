@@ -14,7 +14,8 @@ class CampaignController {
    * Create Campaign
    */
   create = (request, response) => {
-    const interestList = request.body.interests.split(",");
+    const interestsList = request.body.interests.split(",");
+    const campaignsInterests = [];
     Campaign.create({
       clientId: request.body.clientId,
       title: request.body.title,
@@ -28,32 +29,32 @@ class CampaignController {
     })
       .then((campaign) => {
         //loop through interestList
-        interestList.forEach((interestId) => {
-          //Insert Campign interest
-          CampaignInterest.create({
+        interestsList.forEach((interestId) => {
+          campaignsInterests.push({
             campaignId: campaign.id,
-            interestId: parseInt(interestId),
-          }).then(() => {
-            response.send({
-              id: campaign.id,
-              clientId: campaign.clientId,
-              title: campaign.title,
-              startDate: campaign.startDate,
-              endDate: campaign.endDate,
-              presence: campaign.presence,
-              numberInfluencers: campaign.numberInfluencers,
-              description: campaign.description,
-              hashtage: campaign.hashtage,
-              accounts: campaign.accounts,
-            });
+            interestId: interestId,
           });
         });
       })
       .catch((err) => {
-        response.status(500).send({
+        return response.status(500).send({
           message: err.message,
         });
       });
+
+    setTimeout(() => {
+      CampaignInterest.bulkCreate(campaignsInterests)
+        .then((campaignInterests) => {
+          response.status(200).send({
+            message: "une campaign créé",
+          });
+        })
+        .catch((error) =>
+          response.status(500).send({
+            message: error.message,
+          })
+        );
+    }, 2000);
   };
   /*
    * GET : /api/campaigns/find
@@ -62,7 +63,25 @@ class CampaignController {
   find = (request, response) => {
     Campaign.findByPk(request.params.id)
       .then((campaign) => {
-        response.send(campaign);
+        CampaignInterest.findAll({
+          where: {
+            campaignId: campaign.id,
+          },
+        }).then((interests) => {
+          response.send({
+            id: campaign.id,
+            clientId: campaign.clientId,
+            title: campaign.title,
+            startDate: campaign.startDate,
+            endDate: campaign.endDate,
+            presence: campaign.presence,
+            numberInfluencers: campaign.numberInfluencers,
+            description: campaign.description,
+            hashtage: campaign.hashtage,
+            accounts: campaign.accounts,
+            interests,
+          });
+        });
       })
       .catch((err) => {
         response.status(500).send({
