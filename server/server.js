@@ -42,6 +42,8 @@ require("./routes").campaignRoutes(app);
 require("./routes").interestRoutes(app);
 //Set up campaign photos routes
 require("./routes").campaignPhotosRoutes(app);
+//Set up campaign interests routes
+require("./routes").campaignInterestsRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

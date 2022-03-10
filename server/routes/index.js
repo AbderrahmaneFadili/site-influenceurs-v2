@@ -4,6 +4,7 @@ const clientRoutes = require("../routes/client/client.routes");
 const campaignRoutes = require("../routes/campaign/campaign.routes");
 const interestRoutes = require("../routes/interest/interest.routes");
 const campaignPhotosRoutes = require("../routes/campaignPhotos/campaignPhotos.routes");
+const campaignInterestsRoutes = require("../routes/campaignInterest/campaignInterest.routes");
 
 module.exports = {
   authRoute,
@@ -12,4 +13,5 @@ module.exports = {
   campaignRoutes,
   interestRoutes,
   campaignPhotosRoutes,
+  campaignInterestsRoutes,
 };

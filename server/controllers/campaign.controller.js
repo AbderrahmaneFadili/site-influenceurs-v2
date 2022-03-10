@@ -1,6 +1,10 @@
 const db = require("../models");
 const config = require("../config/auth.config");
 const Campaign = require("../models/campaign")(db.sequelize, db.Sequelize);
+const CampaignInterest = require("../models/campaigninterest")(
+  db.sequelize,
+  db.Sequelize
+);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
 
@@ -10,27 +14,44 @@ class CampaignController {
    * Create Campaign
    */
   create = (request, response) => {
-    Campaign.create(request.body)
+    const interestList = request.body.interests.split(",");
+    Campaign.create({
+      clientId: request.body.clientId,
+      title: request.body.title,
+      startDate: request.body.startDate,
+      endDate: request.body.startDate,
+      presence: request.body.presence,
+      numberInfluencers: request.body.numberInfluencers,
+      description: request.body.description,
+      hashtage: request.body.hashtage,
+      accounts: request.body.accounts,
+    })
       .then((campaign) => {
-        response.send({
-          message: "une campagne est créée",
-          campaign: {
-            id: campaign.id,
-            clientId: campaign.clientId,
-            title: campaign.title,
-            startDate: campaign.startDate,
-            endDate: campaign.endDate,
-            presence: campaign.presence,
-            numberInfluencers: campaign.numberInfluence,
-            description: campaign.description,
-            hashtage: campaign.hashtage,
-            accounts: campaign.accounts,
-          },
+        //loop through interestList
+        interestList.forEach((interestId) => {
+          //Insert Campign interest
+          CampaignInterest.create({
+            campaignId: campaign.id,
+            interestId: parseInt(interestId),
+          }).then(() => {
+            response.send({
+              id: campaign.id,
+              clientId: campaign.clientId,
+              title: campaign.title,
+              startDate: campaign.startDate,
+              endDate: campaign.endDate,
+              presence: campaign.presence,
+              numberInfluencers: campaign.numberInfluencers,
+              description: campaign.description,
+              hashtage: campaign.hashtage,
+              accounts: campaign.accounts,
+            });
+          });
         });
       })
-      .catch((error) => {
+      .catch((err) => {
         response.status(500).send({
-          message: error.message,
+          message: err.message,
         });
       });
   };
