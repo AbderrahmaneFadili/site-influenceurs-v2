@@ -52,10 +52,29 @@ class CampaignInterestController {
         response.send({
           message:
             num > 0
-              ? `${num} campagne(s) supprimées`
-              : `aucune campagne supprimée`,
+              ? `une centre d'interet d'une campagne supprimées`
+              : `aucune centre d'interet d'une campagne supprimées`,
         });
       })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+  /*
+   * PUT update campaign interest by campaign interest id
+   */
+  edit = (request, response) => {
+    const id = request.params.id;
+    CampaignInterest.update(request.body, {
+      where: { id },
+    })
+      .then(() =>
+        response.send({
+          message: "centre d'intérêt de la campagne est mis à jour",
+        })
+      )
       .catch((error) => {
         response.status(500).send({
           message: error.message,
