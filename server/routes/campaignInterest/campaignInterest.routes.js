@@ -22,5 +22,12 @@ module.exports = (app) => {
     campaignInterestController.find
   );
 
+  //DELETE /api/campaignInterest/delete/:id
+  router.delete(
+    "/delete/:id",
+    [authJWT.verifyToken],
+    campaignInterestController.delete
+  );
+
   app.use("/api/campaigninterests", router);
 };

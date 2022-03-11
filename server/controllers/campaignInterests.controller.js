@@ -37,6 +37,31 @@ class CampaignInterestController {
         });
       });
   };
+
+  /*
+   * DELETE delete campaign interest by campaign interest id
+   */
+  delete = (request, response) => {
+    const id = request.params.id;
+    CampaignInterest.destroy({
+      where: {
+        id,
+      },
+    })
+      .then((num) => {
+        response.send({
+          message:
+            num > 0
+              ? `${num} campagne(s) supprimées`
+              : `aucune campagne supprimée`,
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new CampaignInterestController();
