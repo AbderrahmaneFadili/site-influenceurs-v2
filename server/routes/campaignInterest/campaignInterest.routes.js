@@ -15,5 +15,12 @@ module.exports = (app) => {
   //POST /api/campaignInterests/add
   router.post("/add", [authJWT.verifyToken], campaignInterestController.create);
 
+  //GET /api/campaignInterest/find/:id
+  router.get(
+    "/find/:id",
+    [authJWT.verifyToken],
+    campaignInterestController.find
+  );
+
   app.use("/api/campaigninterests", router);
 };

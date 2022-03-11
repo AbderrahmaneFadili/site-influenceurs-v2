@@ -26,7 +26,7 @@ class CampaignInterestController {
       );
   };
   /*
-   * GET find campaign
+   * GET find campaign interest by campaign interest id
    */
   find = (request, response) => {
     CampaignInterest.findByPk(request.params.id)
