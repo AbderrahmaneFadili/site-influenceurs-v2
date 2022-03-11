@@ -81,6 +81,28 @@ class CampaignInterestController {
         });
       });
   };
+  /*
+   * GET get all campaigns interests
+   */
+  all = (request, response) => {
+    //get the query params
+    const { page, size } = request.query;
+    const { limit, offset } = getPagination(page, size);
+
+    CampaignInterest.findAndCountAll({
+      limit,
+      offset,
+    })
+      .then((data) => {
+        const result = getPagingData(data, page, limit, "campaignInterests");
+        response.send(result);
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new CampaignInterestController();

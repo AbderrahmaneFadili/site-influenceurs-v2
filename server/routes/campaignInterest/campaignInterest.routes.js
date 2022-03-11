@@ -36,5 +36,8 @@ module.exports = (app) => {
     campaignInterestController.edit
   );
 
+  //GET   /api/campaignInterest/all/
+  router.get("/all", [authJWT.verifyToken], campaignInterestController.all);
+
   app.use("/api/campaigninterests", router);
 };
