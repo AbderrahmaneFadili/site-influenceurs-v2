@@ -1,6 +1,5 @@
 const db = require("../models");
 const config = require("../config/auth.config");
-const Campaign = require("../models/campaign")(db.sequelize, db.Sequelize);
 const CampaignInterest = require("../models/campaigninterest")(
   db.sequelize,
   db.Sequelize
@@ -10,8 +9,34 @@ const { getPagination, getPagingData } = require("../helpers/paginationHelper");
 
 class CampaignInterestController {
   /*
-   * GET find by campaign
+   * POST create campaign
    */
+  create = (request, response) => {
+    const { interestId, campaignId } = request.query;
+
+    CampaignInterest.create({
+      interestId: parseInt(interestId),
+      campaignId: parseInt(campaignId),
+    })
+      .then((campaignInterest) => response.send(campaignInterest))
+      .catch((error) =>
+        response.status(500).send({
+          message: error.message,
+        })
+      );
+  };
+  /*
+   * GET find campaign
+   */
+  find = (request, response) => {
+    CampaignInterest.findByPk(request.params.id)
+      .then((campaignInterest) => response.send(campaignInterest))
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new CampaignInterestController();

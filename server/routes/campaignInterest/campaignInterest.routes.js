@@ -12,7 +12,8 @@ module.exports = (app) => {
     next();
   });
 
-  //get all campaign interests by
+  //POST /api/campaignInterests/add
+  router.post("/add", [authJWT.verifyToken], campaignInterestController.create);
 
   app.use("/api/campaigninterests", router);
 };

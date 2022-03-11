@@ -11,6 +11,7 @@ const verifyToken = (request, response, next) => {
     response.status(500).send({
       message: "Aucun token fourni !",
     });
+    return;
   }
 
   jwt.verify(token, config.secret, (err, decoded) => {

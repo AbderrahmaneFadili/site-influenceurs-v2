@@ -89,12 +89,13 @@ class CampaignController {
    * Edit Campaign
    */
   edit = (request, response) => {
-    Campaign.destroy({
+    const id = request.params.id;
+    Campaign.update(request.body, {
       where: { id },
     })
-      .then((num) => {
+      .then((nums) => {
         response.status(200).send({
-          message: `${num} campagne(s) est supprimée`,
+          message: `${nums} campagne(s) mises à jour`,
         });
       })
       .catch((err) =>
