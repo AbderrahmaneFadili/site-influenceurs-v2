@@ -48,6 +48,8 @@ require("./routes").campaignInterestsRoutes(app);
 require("./routes").influencerRoutes(app);
 //Set up study level routes
 require("./routes").studylevelRoutes(app);
+//Set up language routes
+require("./routes").languageRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

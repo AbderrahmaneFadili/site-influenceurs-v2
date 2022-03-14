@@ -7,6 +7,7 @@ const campaignPhotosRoutes = require("../routes/campaignPhotos/campaignPhotos.ro
 const campaignInterestsRoutes = require("../routes/campaignInterest/campaignInterest.routes");
 const influencerRoutes = require("../routes/influencer/influencer.routes");
 const studylevelRoutes = require("../routes/studylevel/studylevel.routes");
+const languageRoutes = require("../routes/languages/language.routes");
 
 module.exports = {
   authRoute,
@@ -18,4 +19,5 @@ module.exports = {
   campaignInterestsRoutes,
   influencerRoutes,
   studylevelRoutes,
+  languageRoutes,
 };
