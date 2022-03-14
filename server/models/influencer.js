@@ -63,6 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       numberChildren: DataTypes.INTEGER,
       studyLevelId: DataTypes.INTEGER,
       profession: DataTypes.STRING,
+      rememberToken: DataTypes.STRING(500),
     },
     {
       sequelize,

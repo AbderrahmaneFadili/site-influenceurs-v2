@@ -66,6 +66,9 @@ module.exports = {
       profession: {
         type: Sequelize.STRING,
       },
+      rememberToken: {
+        type: Sequelize.STRING(500),
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

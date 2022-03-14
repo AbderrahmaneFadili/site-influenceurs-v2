@@ -1,7 +1,5 @@
-'use strict';
-const {
-  Model
-} = require('sequelize');
+"use strict";
+const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class TemporaryInfluencer extends Model {
     /**
@@ -13,13 +11,17 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  TemporaryInfluencer.init({
-    email: DataTypes.STRING,
-    password: DataTypes.STRING,
-    emailVerification: DataTypes.BOOLEAN
-  }, {
-    sequelize,
-    modelName: 'TemporaryInfluencer',
-  });
+  TemporaryInfluencer.init(
+    {
+      email: DataTypes.STRING,
+      password: DataTypes.STRING,
+      emailVerification: DataTypes.BOOLEAN,
+      rememberToken: DataTypes.STRING(500),
+    },
+    {
+      sequelize,
+      modelName: "TemporaryInfluencer",
+    }
+  );
   return TemporaryInfluencer;
 };
