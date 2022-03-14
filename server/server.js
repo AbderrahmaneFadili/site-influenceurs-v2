@@ -46,6 +46,8 @@ require("./routes").campaignPhotosRoutes(app);
 require("./routes").campaignInterestsRoutes(app);
 //Set up influcer routes
 require("./routes").influencerRoutes(app);
+//Set up study level routes
+require("./routes").studylevelRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

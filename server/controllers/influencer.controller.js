@@ -182,7 +182,25 @@ class InfluencerController {
   };
 
   //complet profile
-  comapletProfile = (response, request) => {};
+  comapletProfile = (request, response) => {
+    const {
+      firstName,
+      lastName,
+      gender,
+      dateOfBirth,
+      username_instagram,
+      username_facebook,
+      username_youtube,
+      country,
+      city,
+      street,
+      zipCode,
+      familySituation,
+      numberChildren,
+      studyLevelId,
+      profession,
+    } = request.body;
+  };
 }
 
 module.exports = new InfluencerController();

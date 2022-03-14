@@ -3,7 +3,6 @@ const config = require("../config/auth.config");
 const Interest = require("../models/interest")(db.sequelize, db.Sequelize);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
-const { response } = require("express");
 
 class InterestController {
   /*
