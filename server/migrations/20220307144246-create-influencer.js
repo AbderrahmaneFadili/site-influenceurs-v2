@@ -26,6 +26,9 @@ module.exports = {
       gender: {
         type: Sequelize.STRING,
       },
+      dateOfBirth: {
+        type: Sequelize.DATE,
+      },
       username_instagram: {
         type: Sequelize.STRING,
       },

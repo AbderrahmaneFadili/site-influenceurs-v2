@@ -10,8 +10,8 @@ const config = require("../config/auth.config");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const axios = require("axios").default;
-const { rapidapiKey } = require("../api/rapidapi-key");
-const { baseURL } = require("../api/api");
+const rapidapiKey = require("../api/rapidapi-key");
+const baseURL = require("../api/api");
 
 class InfluencerController {
   /*
@@ -154,27 +154,31 @@ class InfluencerController {
   };
 
   //validate instagram account
-  validateInstagramAccount = (response, request) => {
-    const username = "";
+  validateInstagramAccount = (request, response) => {
+    //get the body data
+    const { username_instagram } = request.body;
 
     //axios request options
     const options = {
       method: "GET",
-      url: `${baseURL}/${username}/info`,
+      url: `${baseURL}/${username_instagram}/info`,
       headers: {
         "x-rapidapi-host": "instagram85.p.rapidapi.com",
         "x-rapidapi-key": rapidapiKey,
       },
     };
     //make axios requet
-    // axios
-    //   .request(options)
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     console.error(error);
-    //   });
+    axios
+      .request(options)
+      .then(function (res) {
+        //send the  user instagram data from the instgram api
+        response.status(200).send({
+          instagram_user_found: res.data.data,
+        });
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   //complet profile

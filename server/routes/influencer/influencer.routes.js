@@ -19,5 +19,11 @@ module.exports = (app) => {
   //get /api/influencers/emailConfirmation
   router.get("/email-confirmation", influencerController.emailConfirmation);
 
+  //post /api/influencers/
+  router.post(
+    "/validate-instagram-account",
+    influencerController.validateInstagramAccount
+  );
+
   app.use("/api/influencers", router);
 };
