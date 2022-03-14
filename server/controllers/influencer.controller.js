@@ -12,6 +12,7 @@ const nodemailer = require("nodemailer");
 const axios = require("axios").default;
 const rapidapiKey = require("../api/rapidapi-key");
 const baseURL = require("../api/api");
+const influencer = require("../models/influencer");
 
 class InfluencerController {
   /*
@@ -182,7 +183,8 @@ class InfluencerController {
   };
 
   //complet profile
-  comapletProfile = (request, response) => {
+  completProfile = (request, response) => {
+    //get data from the body
     const {
       firstName,
       lastName,
@@ -191,6 +193,7 @@ class InfluencerController {
       username_instagram,
       username_facebook,
       username_youtube,
+      password,
       country,
       city,
       street,
@@ -200,6 +203,43 @@ class InfluencerController {
       studyLevelId,
       profession,
     } = request.body;
+
+    //get token from the query
+    const { token } = request.query;
+
+    Influencer.update(
+      {
+        firstName,
+        lastName,
+        gender,
+        dateOfBirth,
+        username_instagram,
+        username_facebook,
+        username_youtube,
+        password,
+        country,
+        city,
+        street,
+        zipCode,
+        familySituation,
+        numberChildren,
+        studyLevelId,
+        profession,
+      },
+      {
+        where: {
+          rememberToken: token,
+        },
+      }
+    )
+      .then((influencer) => {
+        response.status(200).send(influencer);
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
   };
 }
 

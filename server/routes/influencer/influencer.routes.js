@@ -24,6 +24,8 @@ module.exports = (app) => {
     "/validate-instagram-account",
     influencerController.validateInstagramAccount
   );
+  //post /api/influencers
+  router.post("/complet-profile", influencerController.completProfile);
 
   app.use("/api/influencers", router);
 };
