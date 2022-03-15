@@ -16,7 +16,7 @@ module.exports = (app) => {
   router.post("/add", [authJWT.verifyToken], influencerLangaugeController.add);
   //DELETE
   router.delete(
-    "/delete/:languageId",
+    "/delete",
     [authJWT.verifyToken],
     influencerLangaugeController.delete
   );

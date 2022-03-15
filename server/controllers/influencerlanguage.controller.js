@@ -38,7 +38,8 @@ class InfluencerLanguageController {
   delete = (request, response) => {
     InfluencerLanguage.destroy({
       where: {
-        languageId: request.params.languageId,
+        influencerId: request.query.influencerId,
+        languageId: request.query.languageId,
       },
     })
       .then((num) => {
