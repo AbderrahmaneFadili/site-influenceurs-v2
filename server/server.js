@@ -50,6 +50,8 @@ require("./routes").influencerRoutes(app);
 require("./routes").studylevelRoutes(app);
 //Set up language routes
 require("./routes").languageRoutes(app);
+//Set up  influencer Langauge routes
+require("./routes").influencerLangaugesRoutes(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

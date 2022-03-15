@@ -12,7 +12,6 @@ const nodemailer = require("nodemailer");
 const axios = require("axios").default;
 const rapidapiKey = require("../api/rapidapi-key");
 const baseURL = require("../api/api");
-const influencer = require("../models/influencer");
 
 class InfluencerController {
   /*

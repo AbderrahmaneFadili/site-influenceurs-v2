@@ -8,6 +8,7 @@ const campaignInterestsRoutes = require("../routes/campaignInterest/campaignInte
 const influencerRoutes = require("../routes/influencer/influencer.routes");
 const studylevelRoutes = require("../routes/studylevel/studylevel.routes");
 const languageRoutes = require("../routes/languages/language.routes");
+const influencerLangaugesRoutes = require("../routes/influencerlanguages/influencerlanguages.routes");
 
 module.exports = {
   authRoute,
@@ -20,4 +21,5 @@ module.exports = {
   influencerRoutes,
   studylevelRoutes,
   languageRoutes,
+  influencerLangaugesRoutes,
 };
