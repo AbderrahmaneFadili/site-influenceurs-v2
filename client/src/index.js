@@ -2,5 +2,5 @@ import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
 
-const body = document.body;
-ReactDOM.render(<App />, body);
+const root = document.querySelector("#root");
+ReactDOM.render(<App />, root);
