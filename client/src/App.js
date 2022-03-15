@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import Sidebar from "./components/SideBare";
 import "./App.css";
 
 class App extends Component {
@@ -10,17 +13,11 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="container">
-        <h1>Count : {this.state.count}</h1>
-        <button
-          className="btn btn-success"
-          onClick={() =>
-            this.setState({
-              count: this.state.count + 1,
-            })
-          }
-        ></button>
-      </div>
+      <>
+        <Header />
+        <Sidebar />
+        <Footer />
+      </>
     );
   }
 }
