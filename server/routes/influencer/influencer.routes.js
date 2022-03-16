@@ -14,18 +14,30 @@ module.exports = (app) => {
   });
 
   //POST   /api/influencers/register
-  router.post("/register", influencerController.register);
+  router.post(
+    "/register",
+    [verifySignUp.checkDuplicateEmail],
+    influencerController.register
+  );
 
   //get /api/influencers/emailConfirmation
   router.get("/email-confirmation", influencerController.emailConfirmation);
 
+  //post /api/influencers/signin
+  router.post("/signin", influencerController.signIn);
+
   //post /api/influencers/
   router.post(
     "/validate-instagram-account",
+    [authJWT.verifyToken],
     influencerController.validateInstagramAccount
   );
   //post /api/influencers
-  router.post("/complet-profile", influencerController.completProfile);
+  router.post(
+    "/complet-profile",
+    [authJWT.verifyToken],
+    influencerController.completProfile
+  );
 
   app.use("/api/influencers", router);
 };

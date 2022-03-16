@@ -12,23 +12,27 @@ const nodemailer = require("nodemailer");
 const axios = require("axios").default;
 const rapidapiKey = require("../api/rapidapi-key");
 const baseURL = require("../api/api");
-
+const bcrypt = require("bcryptjs");
 class InfluencerController {
   /*
    * POST Register Action /api/influencers
    */
   register = (request, response) => {
-    //get email from the request body
+    //get the email from the request body
     const email = request.body.email;
     //generate the token using the email and jwt
     const token = jwt.sign({ email }, config.secret, {
       expiresIn: 86400, // 24 hours,
     });
 
+    //get the password from the request body
+    const password = request.body.password;
+
     //Insert the email & token in a temporary influencer table
     TemporaryInfluencer.create({
       email,
       rememberToken: token,
+      password: bcrypt.hashSync(password, 8),
     })
       .then((temporaryInfluencer) => {
         if (temporaryInfluencer) {
@@ -123,14 +127,12 @@ class InfluencerController {
                 email: email,
                 rememberToken: token,
                 emailVerification: true,
+                password: temporaryInfluencer.password,
               })
                 .then((influencer) => {
                   TemporaryInfluencer.destroy({ where: {} }).then(() => {
                     console.log("Temporaray influcencer is deleted");
                     response.redirect("http://localhost:3000");
-                    // response.send({
-                    //   message: "l'e-mail est vérifié",
-                    // });
                   });
                 })
                 .catch((err) => response.send({ message: err.message }));
@@ -149,6 +151,52 @@ class InfluencerController {
       .catch((err) => {
         response.send({
           message: err.message,
+        });
+      });
+  };
+
+  /*
+   * POST sign in
+   */
+  signIn = (request, response) => {
+    //Get the influencer account by email
+    Influencer.findOne({
+      where: {
+        email: request.body.email,
+      },
+    })
+      .then((influencerUser) => {
+        if (!influencerUser) {
+          response.status(404).send({
+            message: "le compte d'influenceur non trouvé!",
+          });
+          return;
+        }
+
+        //compare the two passwords
+        const passwordIsValid = bcrypt.compareSync(
+          request.body.password,
+          influencerUser.password
+        );
+
+        if (!passwordIsValid) {
+          //return Invalid Password message
+          response.status(404).send({
+            accessToken: null,
+            message: "Mot de passe incorrect",
+          });
+        } else {
+          //return the influencer
+          response.status(200).send({
+            email: influencerUser.email,
+            accessToken: influencerUser.rememberToken,
+            isProfileCompleted: false,
+          });
+        }
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
         });
       });
   };
@@ -183,6 +231,9 @@ class InfluencerController {
 
   //complet profile
   completProfile = (request, response) => {
+    //get the token from header
+    let accessToken = request.headers["x-access-token"];
+
     //get data from the body
     const {
       firstName,
@@ -202,9 +253,6 @@ class InfluencerController {
       studyLevelId,
       profession,
     } = request.body;
-
-    //get token from the query
-    const { token } = request.query;
 
     Influencer.update(
       {
@@ -227,12 +275,20 @@ class InfluencerController {
       },
       {
         where: {
-          rememberToken: token,
+          rememberToken: accessToken,
         },
       }
     )
-      .then((influencer) => {
-        response.status(200).send(influencer);
+      .then((num) => {
+        if (num > 0) {
+          response.status(200).send({
+            message: "l'influenceur est crée",
+          });
+        } else {
+          response.status(200).send({
+            message: "l'influenceur n'est pas crée",
+          });
+        }
       })
       .catch((error) => {
         response.status(500).send({
