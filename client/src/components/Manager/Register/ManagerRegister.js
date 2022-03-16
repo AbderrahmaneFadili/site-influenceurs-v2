@@ -1,5 +1,5 @@
 import React from "react";
-
+import { NavLink } from "react-router-dom";
 const ManagerRegister = () => {
   return (
     <>
@@ -72,9 +72,9 @@ const ManagerRegister = () => {
                   {/* /.col */}
                 </div>
               </form>
-              <a href="/" className="text-center">
+              <NavLink to="/" className="text-center">
                 J'ai déjà un compte
-              </a>
+              </NavLink>
             </div>
             {/* /.form-box */}
           </div>

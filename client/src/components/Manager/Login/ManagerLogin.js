@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 
 const ManagerLogin = () => {
   return (
@@ -56,9 +57,9 @@ const ManagerLogin = () => {
                 <a href="forgot-password.html">j'ai oublié mon mot de passe</a>
               </p>
               <p className="mb-0">
-                <a href="/manager/register" className="text-center">
+                <NavLink to="/register" className="text-center">
                   S'inscrire
-                </a>
+                </NavLink>
               </p>
             </div>
             {/* /.login-card-body */}
