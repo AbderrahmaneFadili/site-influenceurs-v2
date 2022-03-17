@@ -41,6 +41,7 @@ class AuthController {
    * Sign in Action
    */
   signin = (request, response) => {
+
     //Find User by Email
     Manager.findOne({
       where: {

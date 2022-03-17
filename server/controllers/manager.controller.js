@@ -10,7 +10,7 @@ class ManagerController {
    */
   me = (request, response) => {
     //find manager by pk
-    Manager.findByPk(request.params.id)
+    Manager.findByPk(request.id)
       .then((manager) => {
         response.send(manager);
       })
