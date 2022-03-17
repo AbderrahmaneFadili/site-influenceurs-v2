@@ -13,16 +13,16 @@ const App = () => {
     <>
       <Switch>
         <Route exact path="/" component={ManagerLogin} />
-        <Route exact path="/register" component={ManagerRegister} />
-        <Route exact path="/manager/dashboard" component={ManagerDashboard} />
-        <Route exact path="/influencer/login" component={InfluencerLogin} />
+        <Route path="/register" component={ManagerRegister} />
+        <Route path="/manager/dashboard" component={ManagerDashboard} />
+        <Route path="/influencer/login" component={InfluencerLogin} />
         <Route
-          exact
+
           path="/influencer/register"
           component={InfluencerRegister}
         />
         <Route
-          exact
+
           path="/influencer/dashboard"
           component={RegisterDashboard}
         />
