@@ -3,7 +3,7 @@ import {
   NavLink
 } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ title }) => {
   return (
     <nav className="main-header navbar navbar-orange navbar-dark navbar-expand border-bottom-0">
       {/* Left navbar links */}
@@ -15,7 +15,7 @@ const Navbar = () => {
         </li>
         <li className="nav-item d-none d-sm-inline-block">
           <NavLink to="/manager/dashboard" className="nav-link">
-            Dashboard Administrateur
+            {title}
           </NavLink>
         </li>
       </ul>

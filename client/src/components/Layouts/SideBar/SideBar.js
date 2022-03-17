@@ -1,7 +1,7 @@
 import React from "react";
 import { NavLink, useRouteMatch } from "react-router-dom";
 
-const SideBar = () => {
+const SideBar = ({ links }) => {
   let { url } = useRouteMatch();
   console.log("side bar url :", url);
   return (
@@ -26,36 +26,30 @@ const SideBar = () => {
        with font-awesome or any other icon font library */}
             <li className="nav-item menu-open">
               <ul className="nav nav-treeview">
-                <li className="nav-item">
-                  <NavLink
-                    exact={true}
-                    to={`${url}/page1`}
-                    activeClassName="active"
-                    className="nav-link"
-                  >
-                    <i className="far fa-circle nav-icon" />
-                    <p>Page 1</p>
-                  </NavLink>
-                </li>
-                <li className="nav-item">
-                  <NavLink
-                    exact={true}
-                    to={`${url}/page2`}
-                    activeClassName="active"
-                    className="nav-link"
-                  >
-                    <i className="far fa-circle nav-icon" />
-                    <p>Page 2</p>
-                  </NavLink>
-                </li>
+                {links.map((link, i) => {
+                  return (
+                    <li className="nav-item" key={i}>
+                      <NavLink
+
+                        exact={true}
+                        to={link.to}
+                        activeClassName="active"
+                        className="nav-link"
+                      >
+                        <i className={link.iconClassName}></i>
+                        <p>{link.title}</p>
+                      </NavLink>
+                    </li>
+                  )
+                })}
               </ul>
             </li>
           </ul>
         </nav>
         {/* /.sidebar-menu */}
-      </div>
+      </div >
       {/* /.sidebar */}
-    </aside>
+    </aside >
   );
 };
 

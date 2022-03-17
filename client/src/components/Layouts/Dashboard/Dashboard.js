@@ -1,48 +1,49 @@
 import React from "react";
 import Navbar from "../Navbar/Navbar";
 import SideBar from "../SideBar/SideBar";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
+import Content from "../Content/Content";
 
 
 
 
-const Dashboard = () => {
+const Dashboard = ({ links, dashboardTitle }) => {
   let { path } = useRouteMatch();
+
+  const pages = [
+    {
+      path: path + "/campagnes",
+      page: () => <h1>Campagnes</h1>
+    },
+    {
+      path: path + "/studylevels",
+      page: () => <h1>Niveaux d\'étude</h1>
+    },
+    {
+      path: path + "/languages",
+      page: () => <h1>Langues</h1>
+    },
+    {
+      path: path + "/clients",
+      page: () => <h1>Clients</h1>
+    },
+    {
+      path: path + "/interests",
+      page: () => <h1>Centres d\'intérêt</h1>
+    },
+  ];
   return (
     <>
       {/* Navbar */}
-      <Navbar />
+      <Navbar title={dashboardTitle} />
       {/* Sidebar */}
-      <SideBar />
+      <SideBar links={links} />
       {/* Content */}
-      <div className="content-wrapper">
-        <Switch>
-          <Route exact path={path} render={() => <h1>Dashboard</h1>} />
-          <Route path={`${path}/page1`} component={Page1} />
-          <Route path={`${path}/page2`} component={Page2} />
-        </Switch>
-      </div>
+      <Content pages={pages} />
     </>
   );
 };
 
 
-const Page1 = () => {
-
-  return (
-    <div>
-      <h1>Page 1</h1>
-    </div>
-  );
-}
-
-const Page2 = () => {
-
-  return (
-    <div>
-      <h1>Page 2</h1>
-    </div>
-  );
-}
 
 export default Dashboard;
