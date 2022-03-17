@@ -4,11 +4,7 @@ import SideBar from "../SideBar/SideBar";
 import Content from "../Content/Content";
 
 
-
-
-const Dashboard = ({ links, dashboardTitle, pages }) => {
-
-
+const Dashboard = ({ links, dashboardTitle, pages, dashboardPath, dashboardComponent }) => {
   return (
     <>
       {/* Navbar */}
@@ -16,7 +12,7 @@ const Dashboard = ({ links, dashboardTitle, pages }) => {
       {/* Sidebar */}
       <SideBar links={links} />
       {/* Content */}
-      <Content pages={pages} />
+      <Content pages={pages} dashboardPath={dashboardPath} dashboardComponent={dashboardComponent} />
     </>
   );
 };

@@ -1,6 +1,7 @@
 import React from "react";
 import { useRouteMatch } from "react-router-dom";
 import Dashboard from "../../Layouts/Dashboard/Dashboard";
+import MainContent from "./MainContent";
 
 const ManagerDashboard = () => {
 
@@ -65,9 +66,13 @@ const ManagerDashboard = () => {
 
   ];
 
-
   return (
-    <Dashboard pages={pages} links={linksList} dashboardTitle={"Dashboard Administrateur"} />
+    <Dashboard
+      pages={pages}
+      links={linksList}
+      dashboardTitle={"Dashboard Administrateur"}
+      dashboardPath={path}
+      dashboardComponent={MainContent} />
   );
 };
 
