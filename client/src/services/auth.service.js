@@ -8,10 +8,19 @@ export const register = (fullName, email, password) => {
     });
 }
 
-// //Login
-// const login = () => {
+//Login
+const login = (email, password) => {
+    return axios.post(`${API_URL}/signin`, {
+        email,
+        password
+    }).then(response => {
+        if (response.data.accessToken) {
+            localStorage.setItem("manager", JSON.stringify(response.data));
+        }
+        return response.data;
+    });
 
-// }
+}
 
 // //Logout
 // const logout = () => {
@@ -22,5 +31,6 @@ export const register = (fullName, email, password) => {
 
 
 export default {
-    register
+    register,
+    login
 }
