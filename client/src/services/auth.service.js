@@ -18,9 +18,7 @@ const register = (fullName, email, password) => {
 
 // }
 
-const authService = {
+
+export default {
     register
-};
-export {
-    authService
 }

@@ -41,6 +41,6 @@ const register = (fullName, email, password) => dispatch => {
     });
 }
 
-export {
+export default {
     register
 }
