@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
-import validator from "validator";
+import {
+  isEmpty,
+  isEmailValide,
+  isPasswordConfirmed,
+  isPasswordValide
+} from "../../../helpers/formValidation.helpers";
+import authActions from "../../../redux/actions/auth.actions";
+import { useDispatch, useSelector } from "react-redux";
+
+
 
 const ManagerRegister = () => {
   //initial values
@@ -22,6 +31,15 @@ const ManagerRegister = () => {
     passwordErrorMessage: "",
     passwordConfirmationErrorMessage: "",
   });
+  //successful
+  const [successufl, setSuccessful] = useState(null);
+
+  //redux hooks
+  //state
+  const { message } = useSelector(state => state.messageReducer);
+  //dispatch
+  const dispatch = useDispatch();
+
 
   //handle value change
   const handleValueChange = (event) => {
@@ -36,6 +54,9 @@ const ManagerRegister = () => {
   const hasError = (key) => {
     return errors.indexOf(key) !== -1;
   };
+
+
+
 
   //handle form submit
   const handleSubmit = (event) => {
@@ -99,35 +120,32 @@ const ManagerRegister = () => {
 
     setErrorsMessages(errorsMessages);
 
+
+
+
     if (!errors.length > 0) {
-      console.log(formValues);
-      console.log(errors);
-    } else {
-      console.log(errors);
+      dispatch(authActions.register(formValues.fullName, formValues.email, formValues.password))
+        .then(() => {
+          setSuccessful(true);
+          setFormValues({
+            ...formValues,
+            email: "",
+            fullName: "",
+            password: "",
+            passwordConfirmation: "",
+          });
+
+        })
+        .catch(() => {
+          setSuccessful(false);
+          return null;
+        });
     }
   };
 
-  //check if is empty
-  const isEmpty = (field) => {
-    return validator.isEmpty(field);
-  };
 
-  //check if the email is valide
-  const isEmailValide = (value) => {
-    return validator.isEmail(value);
-  };
 
-  //check if the password is valide
-  const isPasswordValide = (value) => {
-    return value.length === 8
-  };
 
-  //check the password confirmation
-  const isPasswordConfirmed = () => {
-    return (
-      formValues.password === formValues.passwordConfirmation
-    );
-  };
 
   return (
     <>
@@ -138,6 +156,20 @@ const ManagerRegister = () => {
               Site <b>Influenceur</b> V2
             </a>
           </div>
+          {
+            successufl === true && (
+              <div className="alert alert-success text-center" role="alert">
+                {message}
+              </div>
+            )
+          }
+          {
+            successufl === false && (
+              <div className="alert alert-danger text-center" role="alert">
+                {message}
+              </div>
+            )
+          }
           <div className="card">
             <div className="card-body register-card-body">
               <p className="login-box-msg">Inscrivez-vous</p>

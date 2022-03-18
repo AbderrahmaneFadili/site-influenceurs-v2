@@ -19,8 +19,8 @@ class AuthController {
     })
       .then((manager) => {
         if (manager) {
-          response.send({
-            message: "le manager est enregistré avec succès",
+          return response.send({
+            message: "l'inscription est fait avec succès",
             manager: {
               fullName: manager.fullName,
               email: manager.email,
@@ -31,7 +31,7 @@ class AuthController {
         }
       })
       .catch((error) => {
-        response.status(500).send({
+        return response.status(500).send({
           message: error.message || "Le Manager ne peut pas s'inscrire",
         });
       });

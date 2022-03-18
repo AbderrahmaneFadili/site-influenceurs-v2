@@ -4,19 +4,20 @@ import {
     SET_MESSAGE
 } from "../constants/auth.constants";
 
-import { authService } from "../../services/auth.service";
+import authService from "../../services/auth.service";
+
 
 const register = (fullName, email, password) => dispatch => {
     return authService.register(fullName, email, password).then(response => {
+        const { message } = response.data;
         dispatch({
             type: REGISTER_SUCCESS,
         });
 
         dispatch({
             type: SET_MESSAGE,
-            payload: response.data.message
+            payload: message
         });
-
         return Promise.resolve();
     }).catch(error => {
 
@@ -36,7 +37,6 @@ const register = (fullName, email, password) => dispatch => {
             type: SET_MESSAGE,
             payload: message
         });
-
         return Promise.reject();
     });
 }
