@@ -3,7 +3,8 @@ import { useRouteMatch, Redirect } from "react-router-dom";
 import Dashboard from "../../Layouts/Dashboard/Dashboard";
 import MainContent from "./MainContent";
 import { useSelector } from "react-redux";
-
+//Pages
+import Langauge from "../Language/Langauge";
 
 const ManagerDashboard = () => {
 
@@ -56,7 +57,7 @@ const ManagerDashboard = () => {
     },
     {
       path: path + "/languages",
-      page: () => <h1>Langues</h1>
+      page: Langauge
     },
     {
       path: path + "/clients",

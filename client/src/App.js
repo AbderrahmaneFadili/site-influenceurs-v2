@@ -6,10 +6,12 @@ import ManagerDashboard from "./components/Manager/Dashboard/ManagerDashboard";
 import InfluencerLogin from "./components/Influencer/Login/InfluencerLogin";
 import InfluencerRegister from "./components/Influencer/Register/InfluencerRegister";
 import RegisterDashboard from "./components/Influencer/Dashboard/InfluencerDashboard";
-import "./App.css";
 import { useDispatch } from "react-redux";
 import { history } from "./helpers/history.helpers";
 import { clearMessage } from "./redux/actions/message.actions";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import "./App.css";
+
 
 
 const App = () => {
