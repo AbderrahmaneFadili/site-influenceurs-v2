@@ -1,7 +1,8 @@
 import React from "react";
-import { useRouteMatch } from "react-router-dom";
+import { useRouteMatch, Redirect } from "react-router-dom";
 import Dashboard from "../../Layouts/Dashboard/Dashboard";
 import MainContent from "./MainContent";
+import { useSelector } from "react-redux";
 
 const ManagerDashboard = () => {
 
@@ -65,6 +66,13 @@ const ManagerDashboard = () => {
     },
 
   ];
+
+  const { manager: currentManager } = useSelector(state => state.authReducer);
+
+
+  if (!currentManager) {
+    return <Redirect to="/" />
+  }
 
   return (
     <Dashboard

@@ -13,7 +13,7 @@ const MainContent = () => {
                     Ici le Dashboard Administrateur
                 </p>
                 <hr className="my-4" />
-                <Link className="btn btn-primary btn-lg" href="dd" role="button">
+                <Link to="" className="btn btn-primary btn-lg" href="dd" role="button">
                     Lire la suite
                 </Link>
             </div>

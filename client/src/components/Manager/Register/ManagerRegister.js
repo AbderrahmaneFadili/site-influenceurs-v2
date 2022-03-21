@@ -33,6 +33,8 @@ const ManagerRegister = () => {
   });
   //successful
   const [successufl, setSuccessful] = useState(null);
+  //loading
+  const [loading, setLoading] = useState(false);
 
   //redux hooks
   //state
@@ -108,7 +110,7 @@ const ManagerRegister = () => {
         ...errorsMessages,
         passwordConfirmationErrorMessage: "Ce champ est requis!",
       };
-    } else if (!isPasswordConfirmed()) {
+    } else if (!isPasswordConfirmed(formValues.password, formValues.passwordConfirmation)) {
       errors.push("passwordConfirmation");
       errorsMessages = {
         ...errorsMessages,
@@ -138,7 +140,6 @@ const ManagerRegister = () => {
         })
         .catch(() => {
           setSuccessful(false);
-          return null;
         });
     }
   };
