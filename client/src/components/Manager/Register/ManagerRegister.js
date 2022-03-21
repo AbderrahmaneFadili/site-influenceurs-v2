@@ -33,8 +33,7 @@ const ManagerRegister = () => {
   });
   //successful
   const [successufl, setSuccessful] = useState(null);
-  //loading
-  const [loading, setLoading] = useState(false);
+  ;
 
   //redux hooks
   //state

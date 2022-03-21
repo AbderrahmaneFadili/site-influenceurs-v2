@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import ManagerLogin from "./components/Manager/Login/ManagerLogin";
 import ManagerRegister from "./components/Manager/Register/ManagerRegister";
@@ -7,8 +7,25 @@ import InfluencerLogin from "./components/Influencer/Login/InfluencerLogin";
 import InfluencerRegister from "./components/Influencer/Register/InfluencerRegister";
 import RegisterDashboard from "./components/Influencer/Dashboard/InfluencerDashboard";
 import "./App.css";
+import { useDispatch } from "react-redux";
+import { history } from "./helpers/history.helpers";
+import { clearMessage } from "./redux/actions/message.actions";
+
 
 const App = () => {
+
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    //* clear message when changing location
+    history.listen(history => {
+      dispatch(clearMessage())
+    })
+  }, [dispatch]);
+
+
+
   return (
     <>
       <Switch>

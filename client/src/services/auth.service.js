@@ -1,14 +1,14 @@
 import axios from "axios";
 import API_URL from "./auth.url";
 
-//Register
+//* Register
 export const register = (fullName, email, password) => {
     return axios.post(`${API_URL}/signup`, {
         fullName, email, password
     });
 }
 
-//Login
+//* Login
 const login = (email, password) => {
     return axios.post(`${API_URL}/signin`, {
         email,
@@ -22,15 +22,16 @@ const login = (email, password) => {
 
 }
 
-// //Logout
-// const logout = () => {
-
-// }
+//* Logout
+const logout = () => {
+    localStorage.removeItem("manager");
+}
 
 
 
 
 export default {
     register,
-    login
+    login,
+    logout
 }

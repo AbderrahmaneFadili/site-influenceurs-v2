@@ -3,7 +3,7 @@ import {
   NavLink
 } from "react-router-dom";
 
-const Navbar = ({ title }) => {
+const Navbar = ({ title, curreentUser }) => {
   return (
     <nav className="main-header navbar navbar-orange navbar-dark navbar-expand border-bottom-0">
       {/* Left navbar links */}
@@ -21,7 +21,9 @@ const Navbar = ({ title }) => {
       </ul>
       {/* Right navbar links */}
       <ul className="navbar-nav ml-auto">
-
+        <NavLink to={curreentUser.to} className="nav-link">
+          {curreentUser.user.fullName}
+        </NavLink>
       </ul>
     </nav>
   );

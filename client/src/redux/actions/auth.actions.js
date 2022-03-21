@@ -3,12 +3,13 @@ import {
     REGISTER_FAIL,
     SET_MESSAGE,
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    LOGOUT
 } from "../constants/auth.constants";
 
 import authService from "../../services/auth.service";
 
-
+//* register
 const register = (fullName, email, password) => dispatch => {
     return authService.register(fullName, email, password).then(response => {
         const { message } = response.data;
@@ -43,6 +44,7 @@ const register = (fullName, email, password) => dispatch => {
     });
 }
 
+//* login
 const login = (email, password) => dispatch => {
     return authService.login(email, password)
         .then(data => {
@@ -72,8 +74,16 @@ const login = (email, password) => dispatch => {
         });
 }
 
+//* logout
+const logout = () => dispatch => {
+    authService.logout();
+    dispatch({
+        type: LOGOUT
+    });
+}
 
 export default {
     register,
-    login
+    login,
+    logout
 }

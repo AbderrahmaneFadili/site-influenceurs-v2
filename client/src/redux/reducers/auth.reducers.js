@@ -2,7 +2,8 @@ import {
     REGISTER_SUCCESS,
     REGISTER_FAIL,
     LOGIN_SUCCESS,
-    LOGIN_FAIL
+    LOGIN_FAIL,
+    LOGOUT
 } from "../constants/auth.constants";
 
 const manager = JSON.parse(localStorage.getItem('manager'));
@@ -33,6 +34,12 @@ const authReducer = (state = initialState, { type, payload }) => {
                 manager: payload.manager,
             }
         case LOGIN_FAIL:
+            return {
+                ...state,
+                isLoggedIn: false,
+                manager: null
+            }
+        case LOGOUT:
             return {
                 ...state,
                 isLoggedIn: false,

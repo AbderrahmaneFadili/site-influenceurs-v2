@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, Redirect, useHistory } from "react-router-dom";
 import {
   isEmpty,
@@ -26,13 +26,13 @@ const ManagerLogin = () => {
   });
   //*loading state
   const [loading, setLoading] = useState(false);
+
   //*histort hooks
   let history = useHistory();
   //*redux hooks
   //*state
   const { isLoggedIn
   } = useSelector(state => state.authReducer);
-  const { message } = useSelector(state => state.messageReducer);
   //*dispatch
   const dispatch = useDispatch();
 
@@ -51,6 +51,7 @@ const ManagerLogin = () => {
       [name]: value,
     });
   };
+
 
   //*handle submit
   const handleSubmit = event => {
@@ -106,16 +107,26 @@ const ManagerLogin = () => {
         .then(() => {
           //* rediect to manager dashboard
           history.push("/manager/dashboard");
+
         })
         .catch(() => {
           setLoading(false);
         });
-
-
     } else {
       setLoading(false);
     }
   }
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      window.location.reload();
+    }
+
+    return () => false;
+  }, []);
+
+
+
 
   if (isLoggedIn) {
     return <Redirect to="/manager/dashboard" />

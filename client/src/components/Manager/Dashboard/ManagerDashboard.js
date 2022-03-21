@@ -4,9 +4,11 @@ import Dashboard from "../../Layouts/Dashboard/Dashboard";
 import MainContent from "./MainContent";
 import { useSelector } from "react-redux";
 
+
 const ManagerDashboard = () => {
 
   const { url, path } = useRouteMatch();
+
 
   //links 
   const linksList = [
@@ -37,7 +39,7 @@ const ManagerDashboard = () => {
     }, {
       to: "/",
       title: "Se déconnecter",
-      iconClassName: "fas fa-sign-out-alt nav-icon"
+      iconClassName: "fas fa-sign-out-alt nav-icon",
     }
 
   ];
@@ -69,19 +71,25 @@ const ManagerDashboard = () => {
 
   const { manager: currentManager } = useSelector(state => state.authReducer);
 
-
+  console.log(currentManager);
   if (!currentManager) {
     return <Redirect to="/" />
   }
 
+  const currentUserOpetions = {
+    to: "/manager/profile",
+    user: currentManager
+  }
   return (
     <Dashboard
+      curreentUser={currentUserOpetions}
       pages={pages}
       links={linksList}
       dashboardTitle={"Dashboard Administrateur"}
       dashboardPath={path}
       dashboardComponent={MainContent} />
   );
+
 };
 
 export default ManagerDashboard;
