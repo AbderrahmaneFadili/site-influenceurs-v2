@@ -33,17 +33,8 @@ const addLangaugeFailure = (payload) => ({
   payload,
 });
 
-//clear error
-export const clearError = () => ({
-  type: CLEAR_ERROR,
-});
-//clear error
-export const clearMessage = () => ({
-  type: CLEAR_MESSAGE,
-});
-
 // add langage action
-const addLangauge = (language) => (dispatch) => {
+const addLangaugeAction = (language) => (dispatch) => {
   dispatch(addLangaugeStart());
   axios
     .post(
@@ -59,4 +50,73 @@ const addLangauge = (language) => (dispatch) => {
     .catch((error) => dispatch(addLangaugeFailure(error)));
 };
 
-export { addLangauge };
+const editLanguageStart = (payload) => ({
+  type: EDIT_LANGAUGE_START,
+});
+
+const editLanguageSuccess = (payload) => ({
+  type: EDIT_LANGAUGE_SUCCESS,
+  payload,
+});
+
+const editLanguageFailure = (payload) => ({
+  type: EDIT_LANGAUGE_FAILURE,
+  payload,
+});
+
+//edit action
+const editLanguageAction = (language) => (dispatch) => {
+  dispatch(editLanguageStart());
+  axios
+    .put(
+      `${url}/edit`,
+      {
+        title: language,
+      },
+      {
+        headers: authHeader(),
+      }
+    )
+    .then((data) => dispatch(editLanguageSuccess(data)))
+    .catch((error) => dispatch(editLanguageFailure(error)));
+};
+
+//get all langauges actions creators
+const getAlllangaugesStart = () => ({
+  type: GET_ALL_LANGAUGE_START,
+});
+
+const getAlllangaugesSuccess = (payload) => ({
+  type: GET_ALL_LANGAUGE_SUCCESS,
+  payload,
+});
+
+const getAlllangaugesFailure = (payload) => ({
+  type: GET_ALL_LANGAUGE_FAILURE,
+  payload,
+});
+
+//get all langauges
+const getAllLangaugesAction = (page, size) => (dispatch) => {
+  dispatch(getAlllangaugesStart());
+  axios({
+    method: "get",
+    url: `${url}/all?page=${page}&size=${size}`,
+    headers: authHeader(),
+  })
+    .then((results) =>
+      dispatch(getAlllangaugesSuccess({ results: results.data, page, size }))
+    )
+    .catch((error) => dispatch(getAlllangaugesFailure(error)));
+};
+
+//clear error
+export const clearError = () => ({
+  type: CLEAR_ERROR,
+});
+//clear error
+export const clearMessage = () => ({
+  type: CLEAR_MESSAGE,
+});
+
+export { addLangaugeAction, editLanguageAction, getAllLangaugesAction };

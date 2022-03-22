@@ -8,7 +8,8 @@ import InfluencerRegister from "./components/Influencer/Register/InfluencerRegis
 import RegisterDashboard from "./components/Influencer/Dashboard/InfluencerDashboard";
 import { useDispatch } from "react-redux";
 import { history } from "./helpers/history.helpers";
-import { clearMessage } from "./redux/actions/message.actions";
+import { clearMessage as authClearMessage } from "./redux/actions/message.actions";
+import { clearMessage as langaugeClearMessage } from "./redux/actions/langauges.actions";
 import "./App.css";
 
 const App = () => {
@@ -17,7 +18,8 @@ const App = () => {
   useEffect(() => {
     //* clear message when changing location
     history.listen((history) => {
-      dispatch(clearMessage());
+      dispatch(authClearMessage());
+      dispatch(langaugeClearMessage());
     });
   }, [dispatch]);
 

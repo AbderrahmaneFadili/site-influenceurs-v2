@@ -4,6 +4,7 @@ import { Alert } from "react-bootstrap";
 import {
   clearError,
   clearMessage,
+  getAllLangaugesAction,
 } from "../../../redux/actions/langauges.actions";
 
 const LanguagesList = () => {
@@ -17,6 +18,32 @@ const LanguagesList = () => {
   const closeSuccessAlert = () => dispatch(clearMessage());
   //close error alert
   const closeDangerAlert = () => dispatch(clearError());
+
+  //next page
+  const nextPage = (next) => {
+    dispatch(getAllLangaugesAction(next, languages.size));
+  };
+
+  const handleNextPage = () => {
+    if (languages) {
+      nextPage(languages.page + 1);
+    }
+  };
+  //previous page
+  const previousPage = (previous) => {
+    dispatch(getAllLangaugesAction(previous, languages.size));
+  };
+
+  const handlePreviousePage = () => {
+    if (languages && languages.page > 0) {
+      previousPage(languages.page - 1);
+    }
+  };
+
+  //get all languages by page
+  const handlePage = (page) => {
+    dispatch(getAllLangaugesAction(page, languages.size));
+  };
 
   return (
     <>
@@ -46,136 +73,53 @@ const LanguagesList = () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>French</td>
-            <td>
-              <i className="fas fa-pen icon edit mr-2"></i>
-              <i className="fas fa-trash icon remove"></i>
-            </td>
-          </tr>
-          <tr>
-            <td>English</td>
-            <td>
-              <i className="fas fa-pen icon edit mr-2"></i>
-              <i className="fas fa-trash icon remove"></i>
-            </td>
-          </tr>
-          <tr>
-            <td>Spanish</td>
-            <td>
-              <i className="fas fa-pen icon edit mr-2"></i>
-              <i className="fas fa-trash icon remove"></i>
-            </td>
-          </tr>
+          {languages &&
+            languages.data.langues.map((langue) => {
+              return (
+                <tr key={langue.id.toString()}>
+                  <td>{langue.title}</td>
+                  <td>
+                    <i className="fas fa-pen icon edit mr-2"></i>
+                    <i className="fas fa-trash icon remove"></i>
+                  </td>
+                </tr>
+              );
+            })}
         </tbody>
       </table>
-      <div className="row align-items-center">
-        <div className="col-sm-12 col-md-5">
-          <div
-            className="dataTables_info"
-            id="example2_info"
-            role="status"
-            aria-live="polite"
-          >
-            Showing 1 to 10 of 57 entries
-          </div>
-        </div>
-        <div className="col-sm-12 col-md-7">
-          <div
-            className="dataTables_paginate paging_simple_numbers"
-            id="example2_paginate"
-          >
+      <div className="row mt-4">
+        <div className="col-sm-12 col-md-6">
+          <div className="dataTables_paginate paging_simple_numbers">
             <ul className="pagination">
-              <li
-                className="paginate_button page-item previous disabled"
-                id="example2_previous"
-              >
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={0}
-                  tabIndex={0}
-                  className="page-link"
-                >
+              <li className="paginate_button page-item previous">
+                <span className="page-link" onClick={handlePreviousePage}>
                   Previous
-                </a>
+                </span>
               </li>
-              <li className="paginate_button page-item active">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={1}
-                  tabIndex={0}
-                  className="page-link"
-                >
-                  1
-                </a>
-              </li>
-              <li className="paginate_button page-item ">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={2}
-                  tabIndex={0}
-                  className="page-link"
-                >
-                  2
-                </a>
-              </li>
-              <li className="paginate_button page-item ">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={3}
-                  tabIndex={0}
-                  className="page-link"
-                >
-                  3
-                </a>
-              </li>
-              <li className="paginate_button page-item ">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={4}
-                  tabIndex={0}
-                  className="page-link"
-                >
-                  4
-                </a>
-              </li>
-              <li className="paginate_button page-item ">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={5}
-                  tabIndex={0}
-                  className="page-link"
-                >
-                  5
-                </a>
-              </li>
-              <li className="paginate_button page-item ">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={6}
-                  tabIndex={0}
-                  className="page-link"
-                >
-                  6
-                </a>
-              </li>
-              <li className="paginate_button page-item next" id="example2_next">
-                <a
-                  href="#"
-                  aria-controls="example2"
-                  data-dt-idx={7}
-                  tabIndex={0}
-                  className="page-link"
-                >
+              {languages &&
+                [...Array(languages.data.totalPages).keys()].map((page, i) => {
+                  return (
+                    <li
+                      key={i.toString()}
+                      className={
+                        languages.data.currentPage === page
+                          ? "paginate_button page-item active"
+                          : "paginate_button page-item"
+                      }
+                    >
+                      <span
+                        className="page-link"
+                        onClick={(e) => handlePage(page)}
+                      >
+                        {page + 1}
+                      </span>
+                    </li>
+                  );
+                })}
+              <li className="paginate_button page-item next">
+                <span className="page-link" onClick={handleNextPage}>
                   Next
-                </a>
+                </span>
               </li>
             </ul>
           </div>

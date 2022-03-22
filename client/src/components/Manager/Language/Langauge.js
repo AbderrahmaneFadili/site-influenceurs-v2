@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import LanguagesList from "./LanguagesList";
 import LanguagesModal from "./LangaugeModal";
 import { useDispatch } from "react-redux";
-import { addLangauge } from "../../../redux/actions/langauges.actions";
+import {
+  addLangaugeAction,
+  editLanguageAction,
+  getAllLangaugesAction,
+} from "../../../redux/actions/langauges.actions";
 import "./Langauge.css";
 
 const Langauge = () => {
@@ -24,15 +28,19 @@ const Langauge = () => {
   };
 
   //get ALl langauges
-  const getAllLangauges = () => {};
+  const getAllLangauges = () => {
+    dispatch(getAllLangaugesAction(0, 3));
+  };
 
   //handle add language
   const addLanguage = (langauge) => {
-    dispatch(addLangauge(langauge));
+    dispatch(addLangaugeAction(langauge));
   };
 
   //handle edit langauge
-  const editLanguage = (langauge) => {};
+  const editLanguage = (langauge) => {
+    dispatch(editLanguageAction(langauge));
+  };
 
   useEffect(() => {
     getAllLangauges();

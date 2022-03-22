@@ -24,3 +24,7 @@ tr .icon:active {
 .close-icon {
   cursor: pointer;
 }
+
+.page-link {
+  cursor: pointer;
+}
