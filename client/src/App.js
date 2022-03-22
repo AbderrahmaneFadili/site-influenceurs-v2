@@ -9,24 +9,17 @@ import RegisterDashboard from "./components/Influencer/Dashboard/InfluencerDashb
 import { useDispatch } from "react-redux";
 import { history } from "./helpers/history.helpers";
 import { clearMessage } from "./redux/actions/message.actions";
-import 'bootstrap/dist/css/bootstrap.min.css';
 import "./App.css";
 
-
-
 const App = () => {
-
-
   const dispatch = useDispatch();
 
   useEffect(() => {
     //* clear message when changing location
-    history.listen(history => {
-      dispatch(clearMessage())
-    })
+    history.listen((history) => {
+      dispatch(clearMessage());
+    });
   }, [dispatch]);
-
-
 
   return (
     <>
@@ -35,16 +28,8 @@ const App = () => {
         <Route path="/register" component={ManagerRegister} />
         <Route path="/manager/dashboard" component={ManagerDashboard} />
         <Route path="/influencer/login" component={InfluencerLogin} />
-        <Route
-
-          path="/influencer/register"
-          component={InfluencerRegister}
-        />
-        <Route
-
-          path="/influencer/dashboard"
-          component={RegisterDashboard}
-        />
+        <Route path="/influencer/register" component={InfluencerRegister} />
+        <Route path="/influencer/dashboard" component={RegisterDashboard} />
       </Switch>
     </>
   );

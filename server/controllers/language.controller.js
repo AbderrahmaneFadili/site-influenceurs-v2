@@ -15,7 +15,9 @@ class languageController {
       })
       .catch((error) => {
         response.status(500).send({
-          message: error.message,
+          message:
+            error.message ||
+            "une erreur s'est produite lors de l'ajout d'une langue",
         });
       });
   };

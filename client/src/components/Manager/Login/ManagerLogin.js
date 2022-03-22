@@ -3,13 +3,12 @@ import { NavLink, Redirect, useHistory } from "react-router-dom";
 import {
   isEmpty,
   isEmailValide,
-  isPasswordValide
+  isPasswordValide,
 } from "../../../helpers/formValidation.helpers";
 import { useDispatch, useSelector } from "react-redux";
 import authActions from "../../../redux/actions/auth.actions";
 
 const ManagerLogin = () => {
-
   //* initial values
   const initialValues = {
     email: "",
@@ -31,17 +30,14 @@ const ManagerLogin = () => {
   let history = useHistory();
   //*redux hooks
   //*state
-  const { isLoggedIn
-  } = useSelector(state => state.authReducer);
+  const { isLoggedIn } = useSelector((state) => state.authReducer);
   //*dispatch
   const dispatch = useDispatch();
-
 
   //*has error handle
   const hasError = (key) => {
     return errors.indexOf(key) !== -1;
   };
-
 
   //*handle value change
   const handleValueChange = (event) => {
@@ -52,15 +48,13 @@ const ManagerLogin = () => {
     });
   };
 
-
   //*handle submit
-  const handleSubmit = event => {
+  const handleSubmit = (event) => {
     event.preventDefault();
     //*errors
     const errors = [];
     //*error messages
     let errorsMessages = {};
-
 
     if (isEmpty(formValues.email)) {
       errors.push("email");
@@ -76,7 +70,6 @@ const ManagerLogin = () => {
       };
     }
 
-
     if (isEmpty(formValues.password)) {
       errors.push("password");
       errorsMessages = {
@@ -87,17 +80,14 @@ const ManagerLogin = () => {
       errors.push("password");
       errorsMessages = {
         ...errorsMessages,
-        passwordErrorMessage: "le mot de passe doit comporter au moins 8 caractères",
+        passwordErrorMessage:
+          "le mot de passe doit comporter au moins 8 caractères",
       };
     }
-
 
     setErrors(errors);
 
     setErrorsMessages(errorsMessages);
-
-
-
 
     if (errors.length === 0) {
       //* set loading to true
@@ -107,7 +97,6 @@ const ManagerLogin = () => {
         .then(() => {
           //* rediect to manager dashboard
           history.push("/manager/dashboard");
-
         })
         .catch(() => {
           setLoading(false);
@@ -115,7 +104,7 @@ const ManagerLogin = () => {
     } else {
       setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     if (isLoggedIn) {
@@ -125,11 +114,8 @@ const ManagerLogin = () => {
     return () => false;
   }, []);
 
-
-
-
   if (isLoggedIn) {
-    return <Redirect to="/manager/dashboard" />
+    return <Redirect to="/manager/dashboard" />;
   }
 
   return (
@@ -171,7 +157,8 @@ const ManagerLogin = () => {
                       hasError("email") ? "error invalid-feedback" : "hidden"
                     }
                   >
-                    {errorsMessages.emailErrorMessage && errorsMessages.emailErrorMessage}
+                    {errorsMessages.emailErrorMessage &&
+                      errorsMessages.emailErrorMessage}
                   </span>
                 </div>
                 <div className="input-group mb-3">
@@ -197,13 +184,18 @@ const ManagerLogin = () => {
                       hasError("password") ? "error invalid-feedback" : "hidden"
                     }
                   >
-                    {errorsMessages.passwordErrorMessage && errorsMessages.passwordErrorMessage}
+                    {errorsMessages.passwordErrorMessage &&
+                      errorsMessages.passwordErrorMessage}
                   </span>
                 </div>
                 <div className="row">
                   {/* /.col */}
                   <div className="col">
-                    <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
+                    <button
+                      type="submit"
+                      className="btn btn-primary btn-block"
+                      disabled={loading}
+                    >
                       {loading && (
                         <span className="spinner-border spinner-border-sm mr-2"></span>
                       )}
