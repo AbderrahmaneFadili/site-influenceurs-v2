@@ -45,12 +45,15 @@ const languageReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+        message: "",
+        error: "",
       };
     case EDIT_LANGUAGE_SUCCESS:
       return {
         ...state,
         loading: false,
         message: "la langue est modifiée",
+        error: "",
       };
     case EDIT_LANGUAGE_FAILURE:
       return {

@@ -1,9 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
-import { findLanguageAction } from "../../../redux/actions/languages.actions";
+import {
+  editLanguageAction,
+  findLanguageAction,
+  clearError,
+  clearMessage,
+} from "../../../redux/actions/languages.actions";
 import { connect } from "react-redux";
 import { isEqual } from "lodash";
+import { Alert } from "react-bootstrap";
+
 class EditLanguage extends React.Component {
   constructor(props) {
     super(props);
@@ -16,6 +23,13 @@ class EditLanguage extends React.Component {
     };
   }
 
+  //* handle language change
+  handleLanguageChange = (event) => {
+    this.setState({
+      ...this.state,
+      language: event.target.value,
+    });
+  };
   //* has error handle
   hasError = (key) => {
     return this.state.errors.indexOf(key) !== -1;
@@ -30,7 +44,7 @@ class EditLanguage extends React.Component {
     //*error messages
     let errorsMessages = {};
 
-    if (isEmpty(this.state.langauge)) {
+    if (isEmpty(this.state.language)) {
       errors.push("language");
       errorsMessages = {
         ...errorsMessages,
@@ -39,14 +53,20 @@ class EditLanguage extends React.Component {
     }
 
     this.setState({
+      ...this.state,
       errors: errors,
     });
 
     this.setState({
+      ...this.state,
       errorsMessages: errorsMessages,
     });
 
     if (errors.length === 0) {
+      this.props.editLanguageAction(
+        this.state.language,
+        this.props.match.params.id
+      );
     }
   };
 
@@ -54,7 +74,7 @@ class EditLanguage extends React.Component {
     if (!isEqual(nextProps.language, this.props.language)) {
       this.setState({
         ...this.state,
-        language: nextProps.language && nextProps.language.title,
+        language: nextProps.language !== null ? nextProps.language.title : "",
       });
     }
   }
@@ -65,12 +85,38 @@ class EditLanguage extends React.Component {
     this.props.findLanguageAction(id);
   }
 
+  closeSuccessAlert = (event) => {
+    clearMessage();
+  };
+
+  closeDangerAlert = (event) => {
+    clearError();
+  };
+
   render = () => {
     console.log(this.props);
 
     return (
       <>
         <Link to="/manager/dashboard/languages">Retour à la liste</Link>
+        {this.props.message && (
+          <Alert className="mt-3" variant="success row align-items-center">
+            {this.props.message}
+            <i
+              className="fas fa-times close-icon ml-auto"
+              onClick={this.closeSuccessAlert}
+            ></i>
+          </Alert>
+        )}
+        {this.props.error && (
+          <Alert className="mt-3" variant="danger row align-items-center">
+            {this.props.error}
+            <i
+              className="fas fa-times close-icon ml-auto"
+              onClick={this.closeDangerAlert}
+            ></i>
+          </Alert>
+        )}
         <div className="card card-secondary mt-3">
           <div className="card-header">
             <h3 className="card-title">Modifier la langue</h3>
@@ -90,7 +136,7 @@ class EditLanguage extends React.Component {
                   }
                   value={this.state.language}
                   placeholder="Label"
-                  onChange={this.handleChange}
+                  onChange={this.handleLanguageChange}
                 />
                 <div className="input-group-append">
                   <div className="input-group-text">
@@ -120,14 +166,19 @@ class EditLanguage extends React.Component {
 }
 
 const mapStateToProps = (state) => {
-  console.log(state.languageReducer);
   return {
     language: state.languageReducer.language,
+    message: state.languageReducer.message,
+    error: state.languageReducer.error,
   };
 };
 
 const mapDispatchToProps = (dispatch) => ({
   findLanguageAction: (id) => dispatch(findLanguageAction(id)),
+  editLanguageAction: (language, id) =>
+    dispatch(editLanguageAction(language, id)),
+  clearError: () => dispatch(clearError()),
+  clearMessage: () => dispatch(clearMessage()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditLanguage);

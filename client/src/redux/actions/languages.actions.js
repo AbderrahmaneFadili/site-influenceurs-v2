@@ -72,11 +72,12 @@ const editLanguageFailure = (payload) => ({
 });
 
 //edit action
-const editLanguageAction = (language) => (dispatch) => {
+const editLanguageAction = (language, id) => (dispatch) => {
   dispatch(editLanguageStart());
+  console.log(`${url}/edit/${id}`);
   axios
     .put(
-      `${url}/edit`,
+      `${url}/edit/${id}`,
       {
         title: language,
       },
