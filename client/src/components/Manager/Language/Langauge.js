@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import LanguagesList from "./LanguagesList";
-import LanguagesModal from "./LangaugeModal";
 import { useDispatch } from "react-redux";
 import {
   addLangaugeAction,
@@ -8,28 +7,22 @@ import {
   getAllLangaugesAction,
 } from "../../../redux/actions/langauges.actions";
 import "./Langauge.css";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
+import AddLanguage from "./AddLanguage";
+import EditLanguage from "./EditLanguage";
 
 const Langauge = () => {
   const [show, setShow] = useState(false);
-  const [title, setTitle] = useState("Ajouter une langue");
   const dispatch = useDispatch();
 
   //handle close
   const handleClose = () => setShow(false);
   //handle show
   const handleShow = () => setShow(true);
-  //handle edit
-  const toggleTitle = () => {
-    setTitle(
-      title === "Ajouter une langue"
-        ? "Modifier la langue"
-        : "Ajouter une langue"
-    );
-  };
 
   //get ALl langauges
   const getAllLangauges = () => {
-    dispatch(getAllLangaugesAction(0, 3));
+    dispatch(getAllLangaugesAction(0, 6));
   };
 
   //handle add language
@@ -46,26 +39,16 @@ const Langauge = () => {
     getAllLangauges();
   }, []);
 
+  const { url, path } = useRouteMatch();
+
   return (
     <>
-      <div className="container mt-5">
-        {/* showing the alerts for success or failure */}
-        {/* add button */}
-        <div className="mb-2">
-          <button className="btn btn-primary" onClick={handleShow}>
-            Ajouter <i className="fas fa-plus"></i>
-          </button>
-        </div>
-        {/* List */}
-        <LanguagesList />
-        {/* Edit & Add Modal */}
-        <LanguagesModal
-          show={show}
-          handleClose={handleClose}
-          title={title}
-          addLanguage={addLanguage}
-          editLangugae={editLanguage}
-        />
+      <div className="container pt-5">
+        <Switch>
+          <Route exact path={`${path}`} component={LanguagesList} />
+          <Route exact path={`${path}/add`} component={AddLanguage} />
+          <Route exact path={`${path}/edit/:id`} component={EditLanguage} />
+        </Switch>
       </div>
     </>
   );

@@ -6,9 +6,10 @@ import {
   clearMessage,
   getAllLangaugesAction,
 } from "../../../redux/actions/langauges.actions";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
-const LanguagesList = () => {
-  const { error, languages, loading, message } = useSelector(
+const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
+  const { error, languages, message } = useSelector(
     (state) => state.langaugeReducer
   );
 
@@ -45,6 +46,15 @@ const LanguagesList = () => {
     dispatch(getAllLangaugesAction(page, languages.size));
   };
 
+  const { path } = useRouteMatch();
+
+  const history = useHistory();
+
+  //go to edit page
+  const goToEditPage = (id) => {
+    history.push(`${path}/edit/${id}`);
+  };
+
   return (
     <>
       {message && (
@@ -65,7 +75,10 @@ const LanguagesList = () => {
           ></i>
         </Alert>
       )}
-      <table className="table table-hover mt-3">
+      <Link to={`${path}/add`} className="btn btn-primary my-3">
+        Ajouter <i className="fas fa-plus"></i>
+      </Link>
+      <table className="table table-hover">
         <thead>
           <tr>
             <th>Label</th>
@@ -79,7 +92,10 @@ const LanguagesList = () => {
                 <tr key={langue.id.toString()}>
                   <td>{langue.title}</td>
                   <td>
-                    <i className="fas fa-pen icon edit mr-2"></i>
+                    <i
+                      className="fas fa-pen icon edit mr-2"
+                      onClick={() => goToEditPage(langue.id)}
+                    ></i>
                     <i className="fas fa-trash icon remove"></i>
                   </td>
                 </tr>

@@ -2,6 +2,9 @@ import {
   ADD_LANGAUGE_START,
   ADD_LANGAUGE_FAILURE,
   ADD_LANGAUGE_SUCCESS,
+  FIND_LANGUAGE_FAILURE,
+  FIND_LANGUAGE_SUCCESS,
+  FIND_LANGUAGE_START,
   DELETE_LANGAUGE_FAILURE,
   DELETE_LANGAUGE_START,
   DELETE_LANGAUGE_SUCCESS,
@@ -81,6 +84,37 @@ const editLanguageAction = (language) => (dispatch) => {
     .catch((error) => dispatch(editLanguageFailure(error)));
 };
 
+//find one
+const findLanguageStart = (payload) => ({
+  type: FIND_LANGUAGE_START,
+});
+
+const findLanguageSuccess = (payload) => ({
+  type: FIND_LANGUAGE_SUCCESS,
+  payload,
+});
+
+const findLanguageFailure = (payload) => ({
+  type: FIND_LANGUAGE_FAILURE,
+  payload,
+});
+
+const findLanguageAction = (id) => (dispatch) => {
+  dispatch(findLanguageStart());
+  axios({
+    method: "get",
+    url: `${url}/find/${id}`,
+    headers: authHeader(),
+  })
+    .then((response) => {
+      console.log(response);
+      dispatch(findLanguageSuccess(response));
+    })
+    .catch((error) => {
+      dispatch(findLanguageFailure(error));
+    });
+};
+
 //get all langauges actions creators
 const getAlllangaugesStart = () => ({
   type: GET_ALL_LANGAUGE_START,
@@ -119,4 +153,9 @@ export const clearMessage = () => ({
   type: CLEAR_MESSAGE,
 });
 
-export { addLangaugeAction, editLanguageAction, getAllLangaugesAction };
+export {
+  addLangaugeAction,
+  editLanguageAction,
+  getAllLangaugesAction,
+  findLanguageAction,
+};

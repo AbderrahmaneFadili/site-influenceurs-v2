@@ -5,6 +5,9 @@ import {
   DELETE_LANGAUGE_FAILURE,
   DELETE_LANGAUGE_START,
   DELETE_LANGAUGE_SUCCESS,
+  FIND_LANGUAGE_FAILURE,
+  FIND_LANGUAGE_SUCCESS,
+  FIND_LANGUAGE_START,
   GET_ALL_LANGAUGE_FAILURE,
   GET_ALL_LANGAUGE_SUCCESS,
   GET_ALL_LANGAUGE_START,
@@ -18,6 +21,7 @@ import {
 const initialState = {
   loading: false,
   languages: null,
+  language: null,
   error: null,
   message: "",
 };
@@ -92,6 +96,28 @@ const langaugeReducer = (state = initialState, { type, payload }) => {
         },
         message: "",
         error: "",
+      };
+    //* Find one
+    case FIND_LANGUAGE_START:
+      return {
+        ...state,
+        loading: true,
+        language: null,
+        error: "",
+      };
+    case FIND_LANGUAGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        language: payload.data,
+        error: "",
+      };
+    case FIND_LANGUAGE_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        language: null,
+        error: payload.message,
       };
     default:
       return state;
