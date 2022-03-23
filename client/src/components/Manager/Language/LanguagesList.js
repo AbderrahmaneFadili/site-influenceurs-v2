@@ -21,7 +21,10 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
   };
 
   const handleNextPage = () => {
-    if (languages) {
+    if (
+      languages &&
+      languages.data.currentPage !== languages.data.totalPages - 1
+    ) {
       nextPage(languages.page + 1);
     }
   };
@@ -49,6 +52,8 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
   const goToEditPage = (id) => {
     history.push(`${path}/edit/${id}`);
   };
+
+  console.log(languages);
 
   return (
     <>
