@@ -14,8 +14,8 @@ import {
   EDIT_LANGAUGE_FAILURE,
   EDIT_LANGAUGE_START,
   EDIT_LANGAUGE_SUCCESS,
-  CLEAR_ERROR,
-  CLEAR_MESSAGE,
+  LANGUGAE_CLEAR_ERROR,
+  LANGUGAE_CLEAR_MESSAGE,
 } from "../constants/langauges.constants";
 import axios from "axios";
 import { url } from "../../api/langauges";
@@ -49,8 +49,12 @@ const addLangaugeAction = (language) => (dispatch) => {
         headers: authHeader(),
       }
     )
-    .then((data) => dispatch(addLangaugeSuccess(data)))
-    .catch((error) => dispatch(addLangaugeFailure(error)));
+    .then((data) => {
+      dispatch(addLangaugeSuccess(data));
+    })
+    .catch((error) => {
+      dispatch(addLangaugeFailure(error));
+    });
 };
 
 const editLanguageStart = (payload) => ({
@@ -146,11 +150,11 @@ const getAllLangaugesAction = (page, size) => (dispatch) => {
 
 //clear error
 export const clearError = () => ({
-  type: CLEAR_ERROR,
+  type: LANGUGAE_CLEAR_MESSAGE,
 });
 //clear error
 export const clearMessage = () => ({
-  type: CLEAR_MESSAGE,
+  type: LANGUGAE_CLEAR_ERROR,
 });
 
 export {

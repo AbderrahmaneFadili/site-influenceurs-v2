@@ -2,12 +2,12 @@ import { combineReducers, applyMiddleware, createStore } from "redux";
 import thunk from "redux-thunk";
 import authReducer from "./reducers/auth.reducers";
 import messageReducer from "./reducers/message.reducers";
-import langaugeReducer from "./reducers/langauges.reducers";
+import languageReducer from "./reducers/langauges.reducers";
 
 const rootReducer = combineReducers({
   authReducer,
   messageReducer,
-  langaugeReducer,
+  languageReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

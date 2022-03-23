@@ -1,8 +1,24 @@
 import React, { useState } from "react";
-import { useRouteMatch, Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addLangaugeAction,
+  clearError,
+  clearMessage,
+} from "../../../redux/actions/langauges.actions";
+import { Alert } from "react-bootstrap";
 
 function AddLanguage() {
+  const { message, error } = useSelector((state) => state.languageReducer);
+
+  const dispatch = useDispatch();
+
+  //close success alert
+  const closeSuccessAlert = () => dispatch(clearMessage());
+  //close error alert
+  const closeDangerAlert = () => dispatch(clearError());
+
   //* langauge state
   const [language, setLanguage] = useState("");
 
@@ -20,6 +36,8 @@ function AddLanguage() {
   const hasError = (key) => {
     return errors.indexOf(key) !== -1;
   };
+
+  const history = useHistory();
 
   //* handle submit
   const handleSubmit = (event) => {
@@ -43,12 +61,33 @@ function AddLanguage() {
     setErrorsMessages(errorsMessages);
 
     if (errors.length === 0) {
+      dispatch(addLangaugeAction(language))
+        .then(() => history.push("/manager/dashboard/languages"))
+        .catch(() => null);
     }
   };
 
   return (
     <>
       <Link to="/manager/dashboard/languages">Retour à la liste</Link>
+      {message && (
+        <Alert className="mt-3" variant="success row align-items-center">
+          {message}
+          <i
+            className="fas fa-times close-icon ml-auto"
+            onClick={closeSuccessAlert}
+          ></i>
+        </Alert>
+      )}
+      {error && (
+        <Alert className="mt-3" variant="danger row align-items-center">
+          {error}
+          <i
+            className="fas fa-times close-icon ml-auto"
+            onClick={closeDangerAlert}
+          ></i>
+        </Alert>
+      )}
       <div className="card card-secondary mt-3">
         <div className="card-header">
           <h3 className="card-title">Ajouter une langue</h3>

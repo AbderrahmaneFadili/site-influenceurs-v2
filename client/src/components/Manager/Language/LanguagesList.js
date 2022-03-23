@@ -9,16 +9,11 @@ import {
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
-  const { error, languages, message } = useSelector(
-    (state) => state.langaugeReducer
+  const { error, languages, message, loading } = useSelector(
+    (state) => state.languageReducer
   );
 
   const dispatch = useDispatch();
-
-  //close success alert
-  const closeSuccessAlert = () => dispatch(clearMessage());
-  //close error alert
-  const closeDangerAlert = () => dispatch(clearError());
 
   //next page
   const nextPage = (next) => {
@@ -57,24 +52,6 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
 
   return (
     <>
-      {message && (
-        <Alert variant="success row align-items-center">
-          {message}
-          <i
-            className="fas fa-times close-icon ml-auto"
-            onClick={closeSuccessAlert}
-          ></i>
-        </Alert>
-      )}
-      {error && (
-        <Alert variant="danger row align-items-center">
-          {error}
-          <i
-            className="fas fa-times close-icon ml-auto"
-            onClick={closeDangerAlert}
-          ></i>
-        </Alert>
-      )}
       <Link to={`${path}/add`} className="btn btn-primary my-3">
         Ajouter <i className="fas fa-plus"></i>
       </Link>

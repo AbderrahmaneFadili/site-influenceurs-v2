@@ -9,7 +9,6 @@ import RegisterDashboard from "./components/Influencer/Dashboard/InfluencerDashb
 import { useDispatch } from "react-redux";
 import { history } from "./helpers/history.helpers";
 import { clearMessage as authClearMessage } from "./redux/actions/message.actions";
-import { clearMessage as langaugeClearMessage } from "./redux/actions/langauges.actions";
 import "./App.css";
 
 const App = () => {
@@ -19,7 +18,6 @@ const App = () => {
     //* clear message when changing location
     history.listen((history) => {
       dispatch(authClearMessage());
-      dispatch(langaugeClearMessage());
     });
   }, [dispatch]);
 

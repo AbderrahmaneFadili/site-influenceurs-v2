@@ -14,8 +14,8 @@ import {
   EDIT_LANGAUGE_FAILURE,
   EDIT_LANGAUGE_START,
   EDIT_LANGAUGE_SUCCESS,
-  CLEAR_ERROR,
-  CLEAR_MESSAGE,
+  LANGUGAE_CLEAR_MESSAGE,
+  LANGUGAE_CLEAR_ERROR,
 } from "../constants/langauges.constants";
 
 const initialState = {
@@ -26,13 +26,15 @@ const initialState = {
   message: "",
 };
 
-const langaugeReducer = (state = initialState, { type, payload }) => {
+const languageReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     //* add
     case ADD_LANGAUGE_START:
       return {
         ...state,
         loading: true,
+        message: "",
+        error: "",
       };
     case ADD_LANGAUGE_SUCCESS:
       return { ...state, loading: false, message: "une langue est ajoutée" };
@@ -54,16 +56,15 @@ const langaugeReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: false,
-        message: "",
         error: payload.message,
       };
     //* clear message & error
-    case CLEAR_ERROR:
+    case LANGUGAE_CLEAR_ERROR:
       return {
         ...state,
         error: "",
       };
-    case CLEAR_MESSAGE:
+    case LANGUGAE_CLEAR_MESSAGE:
       return {
         ...state,
         message: "",
@@ -74,15 +75,12 @@ const langaugeReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: true,
         languages: null,
-        message: "",
-        error: "",
       };
     case GET_ALL_LANGAUGE_FAILURE:
       return {
         ...state,
         langauge: false,
         languages: null,
-        message: "",
         error: payload.message,
       };
     case GET_ALL_LANGAUGE_SUCCESS:
@@ -94,8 +92,6 @@ const langaugeReducer = (state = initialState, { type, payload }) => {
           page: payload.page,
           size: payload.size,
         },
-        message: "",
-        error: "",
       };
     //* Find one
     case FIND_LANGUAGE_START:
@@ -124,4 +120,4 @@ const langaugeReducer = (state = initialState, { type, payload }) => {
   }
 };
 
-export default langaugeReducer;
+export default languageReducer;
