@@ -20,7 +20,7 @@ module.exports = {
       },
       languageId: {
         type: Sequelize.INTEGER,
-        //Language belongs to many Langauges
+        //Language belongs to many languages
         references: {
           model: "Languages",
           key: "id",

@@ -1,22 +1,22 @@
 import {
-  ADD_LANGAUGE_START,
-  ADD_LANGAUGE_FAILURE,
-  ADD_LANGAUGE_SUCCESS,
-  DELETE_LANGAUGE_FAILURE,
-  DELETE_LANGAUGE_START,
-  DELETE_LANGAUGE_SUCCESS,
+  ADD_LANGUAGE_START,
+  ADD_LANGUAGE_FAILURE,
+  ADD_LANGUAGE_SUCCESS,
   FIND_LANGUAGE_FAILURE,
   FIND_LANGUAGE_SUCCESS,
   FIND_LANGUAGE_START,
-  GET_ALL_LANGAUGE_FAILURE,
-  GET_ALL_LANGAUGE_SUCCESS,
-  GET_ALL_LANGAUGE_START,
-  EDIT_LANGAUGE_FAILURE,
-  EDIT_LANGAUGE_START,
-  EDIT_LANGAUGE_SUCCESS,
-  LANGUGAE_CLEAR_MESSAGE,
-  LANGUGAE_CLEAR_ERROR,
-} from "../constants/langauges.constants";
+  DELETE_LANGUAGE_FAILURE,
+  DELETE_LANGUAGE_START,
+  DELETE_LANGUAGE_SUCCESS,
+  GET_ALL_LANGUAGE_FAILURE,
+  GET_ALL_LANGUAGE_SUCCESS,
+  GET_ALL_LANGUAGE_START,
+  EDIT_LANGUAGE_FAILURE,
+  EDIT_LANGUAGE_START,
+  EDIT_LANGUAGE_SUCCESS,
+  LANGUAGE_CLEAR_ERROR,
+  LANGUAGE_CLEAR_MESSAGE,
+} from "../constants/languages.constants";
 
 const initialState = {
   loading: false,
@@ -29,64 +29,65 @@ const initialState = {
 const languageReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     //* add
-    case ADD_LANGAUGE_START:
+    case ADD_LANGUAGE_START:
       return {
         ...state,
         loading: true,
         message: "",
         error: "",
       };
-    case ADD_LANGAUGE_SUCCESS:
+    case ADD_LANGUAGE_SUCCESS:
       return { ...state, loading: false, message: "une langue est ajoutée" };
-    case ADD_LANGAUGE_FAILURE:
+    case ADD_LANGUAGE_FAILURE:
       return { ...state, loading: false, message: "", error: payload.message };
     //* Edit
-    case EDIT_LANGAUGE_START:
+    case EDIT_LANGUAGE_START:
       return {
         ...state,
         loading: true,
       };
-    case EDIT_LANGAUGE_SUCCESS:
+    case EDIT_LANGUAGE_SUCCESS:
       return {
         ...state,
         loading: false,
         message: "la langue est modifiée",
       };
-    case EDIT_LANGAUGE_FAILURE:
+    case EDIT_LANGUAGE_FAILURE:
       return {
         ...state,
         loading: false,
         error: payload.message,
       };
     //* clear message & error
-    case LANGUGAE_CLEAR_ERROR:
+    case LANGUAGE_CLEAR_ERROR:
       return {
         ...state,
         error: "",
       };
-    case LANGUGAE_CLEAR_MESSAGE:
+    case LANGUAGE_CLEAR_MESSAGE:
       return {
         ...state,
         message: "",
       };
     //* get all
-    case GET_ALL_LANGAUGE_START:
+    case GET_ALL_LANGUAGE_START:
       return {
         ...state,
         loading: true,
         languages: null,
+        language: null,
       };
-    case GET_ALL_LANGAUGE_FAILURE:
+    case GET_ALL_LANGUAGE_FAILURE:
       return {
         ...state,
-        langauge: false,
+        language: null,
         languages: null,
         error: payload.message,
       };
-    case GET_ALL_LANGAUGE_SUCCESS:
+    case GET_ALL_LANGUAGE_SUCCESS:
       return {
         ...state,
-        langauge: false,
+        language: null,
         languages: {
           data: payload.results,
           page: payload.page,
@@ -97,22 +98,22 @@ const languageReducer = (state = initialState, { type, payload }) => {
     case FIND_LANGUAGE_START:
       return {
         ...state,
-        loading: true,
         language: null,
         error: "",
+        message: "",
       };
     case FIND_LANGUAGE_SUCCESS:
       return {
         ...state,
         loading: false,
-        language: payload.data,
+        language: payload,
         error: "",
       };
     case FIND_LANGUAGE_FAILURE:
       return {
         ...state,
-        loading: false,
         language: null,
+        loading: null,
         error: payload.message,
       };
     default:

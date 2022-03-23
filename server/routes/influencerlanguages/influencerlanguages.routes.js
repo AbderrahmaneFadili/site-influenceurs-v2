@@ -1,5 +1,5 @@
 const { verifySignUp, authJWT } = require("../../middlewares");
-const influencerLangaugeController = require("../../controllers/influencerlanguage.controller");
+const influencerlanguageController = require("../../controllers/influencerlanguage.controller");
 const router = require("express").Router();
 
 module.exports = (app) => {
@@ -13,31 +13,31 @@ module.exports = (app) => {
   });
 
   //POST
-  router.post("/add", [authJWT.verifyToken], influencerLangaugeController.add);
+  router.post("/add", [authJWT.verifyToken], influencerlanguageController.add);
   //DELETE
   router.delete(
     "/delete",
     [authJWT.verifyToken],
-    influencerLangaugeController.delete
+    influencerlanguageController.delete
   );
   //GET
   router.get(
     "/find/:id",
     [authJWT.verifyToken],
-    influencerLangaugeController.find
+    influencerlanguageController.find
   );
   //GET
   router.get(
     "/all",
     [authJWT.verifyToken],
-    influencerLangaugeController.findAll
+    influencerlanguageController.findAll
   );
   //UPDATE
   router.put(
     "/edit/:id",
     [authJWT.verifyToken],
-    influencerLangaugeController.edit
+    influencerlanguageController.edit
   );
 
-  app.use("/api/influencerLangauges", router);
+  app.use("/api/influencerlanguages", router);
 };

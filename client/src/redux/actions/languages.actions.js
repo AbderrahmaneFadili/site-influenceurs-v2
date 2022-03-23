@@ -1,44 +1,44 @@
 import {
-  ADD_LANGAUGE_START,
-  ADD_LANGAUGE_FAILURE,
-  ADD_LANGAUGE_SUCCESS,
-  FIND_LANGUAGE_FAILURE,
+  ADD_LANGUAGE_START,
+  ADD_LANGUAGE_FAILURE,
+  ADD_LANGUAGE_SUCCESS,
   FIND_LANGUAGE_SUCCESS,
+  FIND_LANGUAGE_FAILURE,
+  DELETE_LANGUAGE_FAILURE,
+  DELETE_LANGUAGE_START,
+  DELETE_LANGUAGE_SUCCESS,
+  GET_ALL_LANGUAGE_FAILURE,
+  GET_ALL_LANGUAGE_SUCCESS,
+  GET_ALL_LANGUAGE_START,
+  EDIT_LANGUAGE_FAILURE,
+  EDIT_LANGUAGE_START,
+  EDIT_LANGUAGE_SUCCESS,
+  LANGUAGE_CLEAR_ERROR,
+  LANGUAGE_CLEAR_MESSAGE,
   FIND_LANGUAGE_START,
-  DELETE_LANGAUGE_FAILURE,
-  DELETE_LANGAUGE_START,
-  DELETE_LANGAUGE_SUCCESS,
-  GET_ALL_LANGAUGE_FAILURE,
-  GET_ALL_LANGAUGE_SUCCESS,
-  GET_ALL_LANGAUGE_START,
-  EDIT_LANGAUGE_FAILURE,
-  EDIT_LANGAUGE_START,
-  EDIT_LANGAUGE_SUCCESS,
-  LANGUGAE_CLEAR_ERROR,
-  LANGUGAE_CLEAR_MESSAGE,
-} from "../constants/langauges.constants";
+} from "../constants/languages.constants";
 import axios from "axios";
-import { url } from "../../api/langauges";
+import { url } from "../../api/languages";
 import authHeader from "../../services/auth-header";
 
 //language actions creators
-const addLangaugeStart = () => ({
-  type: ADD_LANGAUGE_START,
+const addlanguageStart = () => ({
+  type: ADD_LANGUAGE_START,
 });
 
-const addLangaugeSuccess = (payload) => ({
-  type: ADD_LANGAUGE_SUCCESS,
+const addlanguageSuccess = (payload) => ({
+  type: ADD_LANGUAGE_SUCCESS,
   payload,
 });
 
-const addLangaugeFailure = (payload) => ({
-  type: ADD_LANGAUGE_FAILURE,
+const addlanguageFailure = (payload) => ({
+  type: ADD_LANGUAGE_FAILURE,
   payload,
 });
 
 // add langage action
-const addLangaugeAction = (language) => (dispatch) => {
-  dispatch(addLangaugeStart());
+const addlanguageAction = (language) => (dispatch) => {
+  dispatch(addlanguageStart());
   axios
     .post(
       `${url}/add`,
@@ -50,24 +50,24 @@ const addLangaugeAction = (language) => (dispatch) => {
       }
     )
     .then((data) => {
-      dispatch(addLangaugeSuccess(data));
+      dispatch(addlanguageSuccess(data));
     })
     .catch((error) => {
-      dispatch(addLangaugeFailure(error));
+      dispatch(addlanguageFailure(error));
     });
 };
 
 const editLanguageStart = (payload) => ({
-  type: EDIT_LANGAUGE_START,
+  type: EDIT_LANGUAGE_START,
 });
 
 const editLanguageSuccess = (payload) => ({
-  type: EDIT_LANGAUGE_SUCCESS,
+  type: EDIT_LANGUAGE_SUCCESS,
   payload,
 });
 
 const editLanguageFailure = (payload) => ({
-  type: EDIT_LANGAUGE_FAILURE,
+  type: EDIT_LANGUAGE_FAILURE,
   payload,
 });
 
@@ -88,8 +88,8 @@ const editLanguageAction = (language) => (dispatch) => {
     .catch((error) => dispatch(editLanguageFailure(error)));
 };
 
-//find one
-const findLanguageStart = (payload) => ({
+//find action
+const findLanguageStart = () => ({
   type: FIND_LANGUAGE_START,
 });
 
@@ -111,55 +111,54 @@ const findLanguageAction = (id) => (dispatch) => {
     headers: authHeader(),
   })
     .then((response) => {
-      console.log(response);
-      dispatch(findLanguageSuccess(response));
+      dispatch(findLanguageSuccess(response.data));
     })
     .catch((error) => {
       dispatch(findLanguageFailure(error));
     });
 };
 
-//get all langauges actions creators
-const getAlllangaugesStart = () => ({
-  type: GET_ALL_LANGAUGE_START,
+//get all languages actions creators
+const getAlllanguagesStart = () => ({
+  type: GET_ALL_LANGUAGE_START,
 });
 
-const getAlllangaugesSuccess = (payload) => ({
-  type: GET_ALL_LANGAUGE_SUCCESS,
+const getAlllanguagesSuccess = (payload) => ({
+  type: GET_ALL_LANGUAGE_SUCCESS,
   payload,
 });
 
-const getAlllangaugesFailure = (payload) => ({
-  type: GET_ALL_LANGAUGE_FAILURE,
+const getAlllanguagesFailure = (payload) => ({
+  type: GET_ALL_LANGUAGE_FAILURE,
   payload,
 });
 
-//get all langauges
-const getAllLangaugesAction = (page, size) => (dispatch) => {
-  dispatch(getAlllangaugesStart());
+//get all languages
+const getAlllanguagesAction = (page, size) => (dispatch) => {
+  dispatch(getAlllanguagesStart());
   axios({
     method: "get",
     url: `${url}/all?page=${page}&size=${size}`,
     headers: authHeader(),
   })
     .then((results) =>
-      dispatch(getAlllangaugesSuccess({ results: results.data, page, size }))
+      dispatch(getAlllanguagesSuccess({ results: results.data, page, size }))
     )
-    .catch((error) => dispatch(getAlllangaugesFailure(error)));
+    .catch((error) => dispatch(getAlllanguagesFailure(error)));
 };
 
 //clear error
 export const clearError = () => ({
-  type: LANGUGAE_CLEAR_MESSAGE,
+  type: LANGUAGE_CLEAR_ERROR,
 });
 //clear error
 export const clearMessage = () => ({
-  type: LANGUGAE_CLEAR_ERROR,
+  type: LANGUAGE_CLEAR_MESSAGE,
 });
 
 export {
-  addLangaugeAction,
+  addlanguageAction,
   editLanguageAction,
-  getAllLangaugesAction,
+  getAlllanguagesAction,
   findLanguageAction,
 };

@@ -50,8 +50,8 @@ require("./routes").influencerRoutes(app);
 require("./routes").studylevelRoutes(app);
 //Set up language routes
 require("./routes").languageRoutes(app);
-//Set up  influencer Langauge routes
-require("./routes").influencerLangaugesRoutes(app);
+//Set up  influencer language routes
+require("./routes").influencerlanguagesRoutes(app);
 //Set up influencer Interest routes
 require("./routes").influencerInterestRoutes(app);
 

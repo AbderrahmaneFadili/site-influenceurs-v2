@@ -4,8 +4,7 @@ import Dashboard from "../../Layouts/Dashboard/Dashboard";
 import MainContent from "./MainContent";
 import { useSelector } from "react-redux";
 //Pages
-import Langauge from "../Language/Langauge";
-import AddLanguage from "../Language/AddLanguage";
+import Language from "../Language/Language";
 
 const ManagerDashboard = () => {
   const { url, path } = useRouteMatch();
@@ -56,7 +55,7 @@ const ManagerDashboard = () => {
     },
     {
       path: path + "/languages",
-      page: Langauge,
+      page: Language,
     },
     {
       path: path + "/clients",

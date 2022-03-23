@@ -4,8 +4,8 @@ import { Alert } from "react-bootstrap";
 import {
   clearError,
   clearMessage,
-  getAllLangaugesAction,
-} from "../../../redux/actions/langauges.actions";
+  getAlllanguagesAction,
+} from "../../../redux/actions/languages.actions";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
@@ -17,7 +17,7 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
 
   //next page
   const nextPage = (next) => {
-    dispatch(getAllLangaugesAction(next, languages.size));
+    dispatch(getAlllanguagesAction(next, languages.size));
   };
 
   const handleNextPage = () => {
@@ -27,7 +27,7 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
   };
   //previous page
   const previousPage = (previous) => {
-    dispatch(getAllLangaugesAction(previous, languages.size));
+    dispatch(getAlllanguagesAction(previous, languages.size));
   };
 
   const handlePreviousePage = () => {
@@ -38,7 +38,7 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
 
   //get all languages by page
   const handlePage = (page) => {
-    dispatch(getAllLangaugesAction(page, languages.size));
+    dispatch(getAlllanguagesAction(page, languages.size));
   };
 
   const { path } = useRouteMatch();

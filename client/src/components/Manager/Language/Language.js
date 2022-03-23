@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
 import LanguagesList from "./LanguagesList";
 import { useDispatch } from "react-redux";
 import {
-  addLangaugeAction,
+  addlanguageAction,
   editLanguageAction,
-  getAllLangaugesAction,
-} from "../../../redux/actions/langauges.actions";
-import "./Langauge.css";
+  getAlllanguagesAction,
+} from "../../../redux/actions/languages.actions";
+import "./Language.css";
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import AddLanguage from "./AddLanguage";
 import EditLanguage from "./EditLanguage";
 
-const Langauge = () => {
+const Language = () => {
   const [show, setShow] = useState(false);
   const dispatch = useDispatch();
 
@@ -20,26 +20,16 @@ const Langauge = () => {
   //handle show
   const handleShow = () => setShow(true);
 
-  //get ALl langauges
-  const getAllLangauges = () => {
-    dispatch(getAllLangaugesAction(0, 6));
-  };
-
-  //handle add language
-  const addLanguage = (langauge) => {
-    dispatch(addLangaugeAction(langauge));
-  };
-
-  //handle edit langauge
-  const editLanguage = (langauge) => {
-    dispatch(editLanguageAction(langauge));
+  //get ALl languages
+  const getAlllanguages = () => {
+    dispatch(getAlllanguagesAction(0, 6));
   };
 
   useEffect(() => {
-    getAllLangauges();
+    getAlllanguages();
   }, []);
 
-  const { url, path } = useRouteMatch();
+  const { path } = useRouteMatch();
 
   return (
     <>
@@ -54,4 +44,4 @@ const Langauge = () => {
   );
 };
 
-export default Langauge;
+export default Language;

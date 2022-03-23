@@ -3,10 +3,10 @@ import { Link, useHistory } from "react-router-dom";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addLangaugeAction,
+  addlanguageAction,
   clearError,
   clearMessage,
-} from "../../../redux/actions/langauges.actions";
+} from "../../../redux/actions/languages.actions";
 import { Alert } from "react-bootstrap";
 
 function AddLanguage() {
@@ -19,7 +19,7 @@ function AddLanguage() {
   //close error alert
   const closeDangerAlert = () => dispatch(clearError());
 
-  //* langauge state
+  //* language state
   const [language, setLanguage] = useState("");
 
   //* handle change
@@ -29,7 +29,7 @@ function AddLanguage() {
   const [errors, setErrors] = useState([]);
   //*errors messages
   const [errorsMessages, setErrorsMessages] = useState({
-    langaugeErrorMessage: "",
+    languageErrorMessage: "",
   });
 
   //*has error handle
@@ -52,7 +52,7 @@ function AddLanguage() {
       errors.push("language");
       errorsMessages = {
         ...errorsMessages,
-        langaugeErrorMessage: "Ce champ est requis!",
+        languageErrorMessage: "Ce champ est requis!",
       };
     }
 
@@ -61,7 +61,7 @@ function AddLanguage() {
     setErrorsMessages(errorsMessages);
 
     if (errors.length === 0) {
-      dispatch(addLangaugeAction(language))
+      dispatch(addlanguageAction(language))
         .then(() => history.push("/manager/dashboard/languages"))
         .catch(() => null);
     }
@@ -99,7 +99,7 @@ function AddLanguage() {
             <div className="input-group  has-validation">
               <input
                 type="text"
-                name="langauge"
+                name="language"
                 className={
                   hasError("language")
                     ? "form-control is-invalid"
@@ -119,8 +119,8 @@ function AddLanguage() {
                   hasError("language") ? "error invalid-feedback" : "hidden"
                 }
               >
-                {errorsMessages.langaugeErrorMessage &&
-                  errorsMessages.langaugeErrorMessage}
+                {errorsMessages.languageErrorMessage &&
+                  errorsMessages.languageErrorMessage}
               </span>
             </div>
           </div>
