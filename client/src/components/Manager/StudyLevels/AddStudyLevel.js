@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { clearMessage } from "../../../redux/actions/message.actions";
+import { addStudyLevelAction } from "../../../redux/actions/studylevel.actions";
 
 class AddStudyLevel extends Component {
   constructor(props) {
@@ -62,6 +63,21 @@ class AddStudyLevel extends Component {
     });
 
     if (errors.length === 0) {
+      this.props
+        .addStudyLevelAction(this.state.studyLevel)
+        .then(() =>
+          this.setState({
+            ...this.state,
+            successful: true,
+            studyLevel:"",
+          })
+        )
+        .catch(() =>
+          this.setState({
+            ...this.state,
+            successful: false,
+          })
+        );
     }
   };
 
@@ -70,7 +86,7 @@ class AddStudyLevel extends Component {
     return (
       <>
         <Link to="/manager/dashboard/studyLevels">Retour à la liste</Link>
-        {this.props.message && (
+        {this.state.successful === true && (
           <Alert className="mt-3 row align-items-center" variant="success">
             {this.props.message}
             <i
@@ -79,7 +95,7 @@ class AddStudyLevel extends Component {
             ></i>
           </Alert>
         )}
-        {this.props.error && (
+        {this.state.successful === false && (
           <Alert className="mt-3 row align-items-center" variant="danger">
             {this.props.message}
             <i
@@ -146,6 +162,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
+    addStudyLevelAction: (studyLevel) => {
+      try {
+        dispatch(addStudyLevelAction(studyLevel));
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject();
+      }
+    },
   };
 };
 

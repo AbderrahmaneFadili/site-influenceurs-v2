@@ -106,28 +106,28 @@ class StudyLevelsList extends Component {
                           Previous
                         </span>
                       </li>
-                      {this.studyLevels &&
-                        [...Array(this.props.studyLevels).keys()].map(
-                          (page, i) => {
-                            return (
-                              <li
-                                key={i.toString()}
-                                className={
-                                  this.props.studyLevels.currentPage === page
-                                    ? "paginate_button page-item active"
-                                    : "paginate_button page-item"
-                                }
+                      {this.props.studyLevels &&
+                        [
+                          ...Array(this.props.studyLevels.totalPages).keys(),
+                        ].map((page, i) => {
+                          return (
+                            <li
+                              key={i.toString()}
+                              className={
+                                this.props.studyLevels.currentPage === page
+                                  ? "paginate_button page-item active"
+                                  : "paginate_button page-item"
+                              }
+                            >
+                              <span
+                                className="page-link"
+                                onClick={(e) => this.handlePage(page)}
                               >
-                                <span
-                                  className="page-link"
-                                  onClick={(e) => this.handlePage(page)}
-                                >
-                                  {page + 1}
-                                </span>
-                              </li>
-                            );
-                          }
-                        )}
+                                {page + 1}
+                              </span>
+                            </li>
+                          );
+                        })}
                       <li className="paginate_button page-item next">
                         <span
                           className="page-link"

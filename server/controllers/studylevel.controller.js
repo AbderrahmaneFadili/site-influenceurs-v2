@@ -97,6 +97,7 @@ class StudyLevelController {
     StudyLevel.findAndCountAll({
       limit,
       offset,
+      order: [["createdAt", "DESC"]],
     })
       .then((data) => {
         const result = getPagingData(data, page, limit, "studyLevels");
