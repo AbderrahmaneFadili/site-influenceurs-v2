@@ -27,7 +27,7 @@ const Language = () => {
 
   useEffect(() => {
     getAlllanguages();
-  }, []);
+  }, [dispatch]);
 
   const { path } = useRouteMatch();
 

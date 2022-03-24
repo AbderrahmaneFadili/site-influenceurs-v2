@@ -6,11 +6,14 @@ import {
   addlanguageAction,
   clearError,
   clearMessage,
+  getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
 import { Alert } from "react-bootstrap";
 
 function AddLanguage() {
-  const { message, error } = useSelector((state) => state.languageReducer);
+  const { message, error, languages } = useSelector(
+    (state) => state.languageReducer
+  );
 
   const dispatch = useDispatch();
 
@@ -61,9 +64,10 @@ function AddLanguage() {
     setErrorsMessages(errorsMessages);
 
     if (errors.length === 0) {
-      dispatch(addlanguageAction(language))
-        .then(() => history.push("/manager/dashboard/languages"))
-        .catch(() => null);
+      dispatch(addlanguageAction(language)).then(() => {
+        setLanguage("");
+        dispatch(getAlllanguagesAction(languages.data.currentPage, 6));
+      });
     }
   };
 

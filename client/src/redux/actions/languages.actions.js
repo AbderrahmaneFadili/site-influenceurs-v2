@@ -39,7 +39,7 @@ const addlanguageFailure = (payload) => ({
 // add langage action
 const addlanguageAction = (language) => (dispatch) => {
   dispatch(addlanguageStart());
-  axios
+  return axios
     .post(
       `${url}/add`,
       {
@@ -75,7 +75,7 @@ const editLanguageFailure = (payload) => ({
 const editLanguageAction = (language, id) => (dispatch) => {
   dispatch(editLanguageStart());
   console.log(`${url}/edit/${id}`);
-  axios
+  return axios
     .put(
       `${url}/edit/${id}`,
       {
@@ -85,8 +85,14 @@ const editLanguageAction = (language, id) => (dispatch) => {
         headers: authHeader(),
       }
     )
-    .then((data) => dispatch(editLanguageSuccess(data)))
-    .catch((error) => dispatch(editLanguageFailure(error)));
+    .then((data) => {
+      dispatch(editLanguageSuccess(data));
+      return Promise.resolve();
+    })
+    .catch((error) => {
+      dispatch(editLanguageFailure(error));
+      return Promise.reject();
+    });
 };
 
 //find action
@@ -157,9 +163,42 @@ export const clearMessage = () => ({
   type: LANGUAGE_CLEAR_MESSAGE,
 });
 
+//delete languages
+const deleteLanguageStart = () => ({
+  type: DELETE_LANGUAGE_START,
+});
+
+const deleteLanguageSuccess = (payload) => ({
+  type: DELETE_LANGUAGE_SUCCESS,
+  payload,
+});
+
+const deleteLanguageFailure = (payload) => ({
+  type: DELETE_LANGUAGE_FAILURE,
+  payload,
+});
+
+const deleteLanguageAction = (id) => (dispatch) => {
+  dispatch(deleteLanguageStart());
+  console.log(`${url}/delete/${id}`);
+  return axios
+    .delete(`${url}/delete/${id}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(deleteLanguageSuccess(response.data));
+      return Promise.resolve();
+    })
+    .catch((error) => {
+      dispatch(deleteLanguageFailure(error));
+      return Promise.reject();
+    });
+};
+
 export {
   addlanguageAction,
   editLanguageAction,
   getAlllanguagesAction,
   findLanguageAction,
+  deleteLanguageAction,
 };

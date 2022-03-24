@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert } from "react-bootstrap";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import {
-  clearError,
-  clearMessage,
+  deleteLanguageAction,
   getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
 
 const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
   const { error, languages, message, loading } = useSelector(
@@ -53,7 +51,19 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
     history.push(`${path}/edit/${id}`);
   };
 
+  const handleDeleteLanguage = (id) => {
+    if (window.confirm("Voulez-vous supprimez cette langue ?")) {
+      dispatch(deleteLanguageAction(id))
+        .then(() =>
+          dispatch(getAlllanguagesAction(languages.data.currentPage, 6))
+        )
+        .catch((err) => null);
+    }
+  };
+
   console.log(languages);
+  console.log("message : ", message);
+  console.log("error : ", error);
 
   return (
     <>
@@ -68,7 +78,7 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
           </tr>
         </thead>
         <tbody>
-          {languages &&
+          {languages && languages.data.langues.length > 0 ? (
             languages.data.langues.map((langue) => {
               return (
                 <tr key={langue.id.toString()}>
@@ -78,47 +88,59 @@ const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
                       className="fas fa-pen icon edit mr-2"
                       onClick={() => goToEditPage(langue.id)}
                     ></i>
-                    <i className="fas fa-trash icon remove"></i>
+                    <i
+                      className="fas fa-trash icon remove"
+                      onClick={() => handleDeleteLanguage(langue.id)}
+                    ></i>
                   </td>
                 </tr>
               );
-            })}
+            })
+          ) : (
+            <p class="my-4">Aucune langues exists</p>
+          )}
         </tbody>
       </table>
       <div className="row mt-4">
         <div className="col-sm-12 col-md-6">
           <div className="dataTables_paginate paging_simple_numbers">
             <ul className="pagination">
-              <li className="paginate_button page-item previous">
-                <span className="page-link" onClick={handlePreviousePage}>
-                  Previous
-                </span>
-              </li>
-              {languages &&
-                [...Array(languages.data.totalPages).keys()].map((page, i) => {
-                  return (
-                    <li
-                      key={i.toString()}
-                      className={
-                        languages.data.currentPage === page
-                          ? "paginate_button page-item active"
-                          : "paginate_button page-item"
+              {languages && languages.data.langues.length > 0 && (
+                <>
+                  <li className="paginate_button page-item previous">
+                    <span className="page-link" onClick={handlePreviousePage}>
+                      Previous
+                    </span>
+                  </li>
+                  {languages &&
+                    [...Array(languages.data.totalPages).keys()].map(
+                      (page, i) => {
+                        return (
+                          <li
+                            key={i.toString()}
+                            className={
+                              languages.data.currentPage === page
+                                ? "paginate_button page-item active"
+                                : "paginate_button page-item"
+                            }
+                          >
+                            <span
+                              className="page-link"
+                              onClick={(e) => handlePage(page)}
+                            >
+                              {page + 1}
+                            </span>
+                          </li>
+                        );
                       }
-                    >
-                      <span
-                        className="page-link"
-                        onClick={(e) => handlePage(page)}
-                      >
-                        {page + 1}
-                      </span>
-                    </li>
-                  );
-                })}
-              <li className="paginate_button page-item next">
-                <span className="page-link" onClick={handleNextPage}>
-                  Next
-                </span>
-              </li>
+                    )}
+                  <li className="paginate_button page-item next">
+                    <span className="page-link" onClick={handleNextPage}>
+                      Next
+                    </span>
+                  </li>
+                </>
+              )}
             </ul>
           </div>
         </div>

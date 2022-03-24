@@ -6,6 +6,7 @@ import {
   findLanguageAction,
   clearError,
   clearMessage,
+  getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
 import { connect } from "react-redux";
 import { isEqual } from "lodash";
@@ -63,10 +64,10 @@ class EditLanguage extends React.Component {
     });
 
     if (errors.length === 0) {
-      this.props.editLanguageAction(
-        this.state.language,
-        this.props.match.params.id
-      );
+      this.props
+        .editLanguageAction(this.state.language, this.props.match.params.id)
+        .then(() => this.props.getAlllanguagesAction(0, 6))
+        .catch((err) => null);
     }
   };
 
@@ -175,8 +176,16 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
   findLanguageAction: (id) => dispatch(findLanguageAction(id)),
-  editLanguageAction: (language, id) =>
-    dispatch(editLanguageAction(language, id)),
+  editLanguageAction: (language, id) => {
+    try {
+      dispatch(editLanguageAction(language, id));
+      return Promise.resolve();
+    } catch (err) {
+      return Promise.reject();
+    }
+  },
+  getAlllanguagesAction: (page, size) =>
+    dispatch(getAlllanguagesAction(page, size)),
   clearError: () => dispatch(clearError()),
   clearMessage: () => dispatch(clearMessage()),
 });

@@ -119,6 +119,31 @@ const languageReducer = (state = initialState, { type, payload }) => {
         loading: null,
         error: payload.message,
       };
+    //* delete language
+    case DELETE_LANGUAGE_START:
+      return {
+        ...state,
+        language: null,
+        loading: false,
+        message: "",
+        error: null,
+      };
+    case DELETE_LANGUAGE_SUCCESS:
+      return {
+        ...state,
+        language: null,
+        loading: false,
+        message: payload,
+        error: "",
+      };
+    case DELETE_LANGUAGE_FAILURE:
+      return {
+        ...state,
+        language: null,
+        loading: null,
+        message: "",
+        error: payload,
+      };
     default:
       return state;
   }
