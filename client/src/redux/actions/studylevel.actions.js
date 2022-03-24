@@ -2,6 +2,7 @@ import {
   GET_ALL_STUDY_LEVELS_START,
   GET_ALL_STUDY_LEVELS_SUCCESS,
   GET_ALL_STUDY_LEVELS_FAILURE,
+  ADD_STUDY_LEVEL_START,
 } from "../constants/studyLevel.constants.js";
 import axios from "axios";
 import { url } from "../../api/studyLevels";
@@ -38,5 +39,20 @@ const getAllStudyLevelsAction = (page, size) => (dispatch) => {
       dispatch(getAllStudyLevelsFailure());
     });
 };
+
+//add study level ations
+const addStudyLevelStart = () => ({
+  type: ADD_STUDY_LEVEL_START,
+});
+
+const addStudyLevelSuccess = (payload) => ({
+  type: ADD_STUDY_LEVEL_START,
+  payload,
+});
+
+const addStudyLevelFailure = (payload) => ({
+  type: ADD_STUDY_LEVEL_START,
+  payload,
+});
 
 export { getAllStudyLevelsAction };

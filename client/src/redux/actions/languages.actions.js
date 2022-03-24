@@ -13,14 +13,13 @@ import {
   EDIT_LANGUAGE_FAILURE,
   EDIT_LANGUAGE_START,
   EDIT_LANGUAGE_SUCCESS,
-  LANGUAGE_CLEAR_ERROR,
-  LANGUAGE_CLEAR_MESSAGE,
   FIND_LANGUAGE_START,
 } from "../constants/languages.constants";
 import axios from "axios";
 import { url } from "../../api/languages";
 import authHeader from "../../services/auth-header";
-import { clearMessage, setMessage } from "./message.actions";
+import { setMessage } from "./message.actions";
+import { max_size, page } from "../../helpers/paginationsParams";
 
 //language actions creators
 const addlanguageStart = () => ({
@@ -53,10 +52,13 @@ const addlanguageAction = (language) => (dispatch) => {
     .then((data) => {
       dispatch(addlanguageSuccess(data));
       dispatch(setMessage("une langue ajoutée avec succès"));
+      dispatch(getAlllanguagesAction(page, max_size));
+      return Promise.resolve();
     })
     .catch((error) => {
       dispatch(addlanguageFailure(error));
       dispatch(setMessage(error.message));
+      return Promise.reject();
     });
 };
 
@@ -91,6 +93,7 @@ const editLanguageAction = (language, id) => (dispatch) => {
     .then((data) => {
       dispatch(editLanguageSuccess(data));
       dispatch(setMessage("une langue est modifié avec succès"));
+      dispatch(getAlllanguagesAction(page, max_size));
       return Promise.resolve();
     })
     .catch((error) => {
@@ -153,9 +156,7 @@ const getAlllanguagesAction = (page, size) => (dispatch) => {
     url: `${url}/all?page=${page}&size=${size}`,
     headers: authHeader(),
   })
-    .then((response) =>
-      dispatch(getAlllanguagesSuccess({ results: response.data, page, size }))
-    )
+    .then((response) => dispatch(getAlllanguagesSuccess(response.data)))
     .catch((error) => dispatch(getAlllanguagesFailure(error)));
 };
 

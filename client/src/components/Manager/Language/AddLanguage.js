@@ -1,16 +1,12 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addlanguageAction,
-  getAlllanguagesAction,
-} from "../../../redux/actions/languages.actions";
+import { addlanguageAction } from "../../../redux/actions/languages.actions";
 import { Alert } from "react-bootstrap";
 import { clearMessage } from "../../../redux/actions/message.actions";
 
 function AddLanguage() {
-  const { languages } = useSelector((state) => state.languageReducer);
   const { message } = useSelector((state) => state.messageReducer);
 
   const dispatch = useDispatch();
@@ -42,8 +38,6 @@ function AddLanguage() {
     return errors.indexOf(key) !== -1;
   };
 
-  const history = useHistory();
-
   //* handle submit
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -70,7 +64,6 @@ function AddLanguage() {
         .then(() => {
           setLanguage("");
           setSeccessful(true);
-          dispatch(getAlllanguagesAction(languages.data.currentPage, 6));
         })
         .catch(() => {
           setSeccessful(false);

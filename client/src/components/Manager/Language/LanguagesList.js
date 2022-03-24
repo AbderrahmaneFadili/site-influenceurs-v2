@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { max_size } from "../../../helpers/paginationsParams";
 import {
   deleteLanguageAction,
   getAlllanguagesAction,
@@ -15,31 +16,28 @@ const LanguagesList = () => {
 
   //next page
   const nextPage = (next) => {
-    dispatch(getAlllanguagesAction(next, languages.size));
+    dispatch(getAlllanguagesAction(next, max_size));
   };
 
   const handleNextPage = () => {
-    if (
-      languages &&
-      languages.data.currentPage !== languages.data.totalPages - 1
-    ) {
-      nextPage(languages.page + 1);
+    if (languages && languages.currentPage !== languages.totalPages - 1) {
+      nextPage(languages.currentPage + 1);
     }
   };
   //previous page
   const previousPage = (previous) => {
-    dispatch(getAlllanguagesAction(previous, languages.size));
+    dispatch(getAlllanguagesAction(previous, max_size));
   };
 
   const handlePreviousePage = () => {
-    if (languages && languages.page > 0) {
-      previousPage(languages.page - 1);
+    if (languages && languages.currentPage > 0) {
+      previousPage(languages.currentPage - 1);
     }
   };
 
   //get all languages by page
   const handlePage = (page) => {
-    dispatch(getAlllanguagesAction(page, languages.size));
+    dispatch(getAlllanguagesAction(page, max_size));
   };
 
   const { path } = useRouteMatch();
@@ -55,7 +53,7 @@ const LanguagesList = () => {
     if (window.confirm("Voulez-vous supprimez cette langue ?")) {
       dispatch(deleteLanguageAction(id))
         .then(() =>
-          dispatch(getAlllanguagesAction(languages.data.currentPage, 6))
+          dispatch(getAlllanguagesAction(languages.data.currentPage, max_size))
         )
         .catch((err) => null);
     }
@@ -70,16 +68,16 @@ const LanguagesList = () => {
       <Link to={`${path}/add`} className="btn btn-primary my-3">
         Ajouter <i className="fas fa-plus"></i>
       </Link>
-      <table className="table table-hover">
-        <thead>
-          <tr>
-            <th>Label</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {languages && languages.data.langues.length > 0 ? (
-            languages.data.langues.map((langue) => {
+      {languages && languages.langues.length > 0 ? (
+        <table className="table table-hover">
+          <thead>
+            <tr>
+              <th>Label</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {languages.langues.map((langue) => {
               return (
                 <tr key={langue.id.toString()}>
                   <td>{langue.title}</td>
@@ -95,17 +93,17 @@ const LanguagesList = () => {
                   </td>
                 </tr>
               );
-            })
-          ) : (
-            <p class="my-4">Aucune langues exists</p>
-          )}
-        </tbody>
-      </table>
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <p>Acune langues exists</p>
+      )}
       <div className="row mt-4">
         <div className="col-sm-12 col-md-6">
           <div className="dataTables_paginate paging_simple_numbers">
             <ul className="pagination">
-              {languages && languages.data.langues.length > 0 && (
+              {languages && languages.langues.length > 0 && (
                 <>
                   <li className="paginate_button page-item previous">
                     <span className="page-link" onClick={handlePreviousePage}>
@@ -113,27 +111,25 @@ const LanguagesList = () => {
                     </span>
                   </li>
                   {languages &&
-                    [...Array(languages.data.totalPages).keys()].map(
-                      (page, i) => {
-                        return (
-                          <li
-                            key={i.toString()}
-                            className={
-                              languages.data.currentPage === page
-                                ? "paginate_button page-item active"
-                                : "paginate_button page-item"
-                            }
+                    [...Array(languages.totalPages).keys()].map((page, i) => {
+                      return (
+                        <li
+                          key={i.toString()}
+                          className={
+                            languages.currentPage === page
+                              ? "paginate_button page-item active"
+                              : "paginate_button page-item"
+                          }
+                        >
+                          <span
+                            className="page-link"
+                            onClick={(e) => handlePage(page)}
                           >
-                            <span
-                              className="page-link"
-                              onClick={(e) => handlePage(page)}
-                            >
-                              {page + 1}
-                            </span>
-                          </li>
-                        );
-                      }
-                    )}
+                            {page + 1}
+                          </span>
+                        </li>
+                      );
+                    })}
                   <li className="paginate_button page-item next">
                     <span className="page-link" onClick={handleNextPage}>
                       Next

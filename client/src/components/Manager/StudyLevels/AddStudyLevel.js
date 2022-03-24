@@ -2,12 +2,14 @@ import React, { Component } from "react";
 import { Alert } from "react-bootstrap";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { clearMessage } from "../../../redux/actions/message.actions";
 
 class AddStudyLevel extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      successful: null,
       studyLevel: "",
       errors: [],
       errorsMessages: {
@@ -17,16 +19,44 @@ class AddStudyLevel extends Component {
   }
 
   //close success alert
-  closeSuccessAlert = () => {};
-
-  //close success alert
-  closeErrorAlert = () => {};
+  closeAlert = () => {
+    this.setState({
+      ...this.state,
+      successful: null,
+    });
+  };
 
   //handle change
   handleChange = (event) => {};
 
   //handle submit
-  handleSubmit = (event) => {};
+  handleSubmit = (event) => {
+    event.preventDefault();
+
+    const errors = [];
+    //*error messages
+    let errorsMessages = {};
+
+    if (isEmpty(this.state.studyLevel)) {
+      errors.push("language");
+      errorsMessages = {
+        ...errorsMessages,
+        studyLevelErrorMessage: "Ce champ est requis!",
+      };
+    }
+    this.setState({
+      ...this.state,
+      errors: errors,
+    });
+
+    this.setState({
+      ...this.state,
+      errorsMessages: errorsMessages,
+    });
+
+    if (errors.length === 0) {
+    }
+  };
 
   render() {
     console.log(this.props);
@@ -34,20 +64,20 @@ class AddStudyLevel extends Component {
       <>
         <Link to="/manager/dashboard/languages">Retour à la liste</Link>
         {this.props.message && (
-          <Alert className="mt-3" variant="success row align-items-center">
+          <Alert className="mt-3 row align-items-center" variant="success">
             {this.props.message}
             <i
               className="fas fa-times close-icon ml-auto"
-              onClick={this.closeSuccessAlert}
+              onClick={this.closeAlert}
             ></i>
           </Alert>
         )}
         {this.props.error && (
-          <Alert className="mt-3" variant="danger row align-items-center">
-            {this.props.error}
+          <Alert className="mt-3 row align-items-center" variant="danger">
+            {this.props.message}
             <i
               className="fas fa-times close-icon ml-auto"
-              onClick={this.closeDangerAlert}
+              onClick={this.closeAlert}
             ></i>
           </Alert>
         )}
@@ -101,8 +131,7 @@ class AddStudyLevel extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    message: state.studyLevelReducer.message,
-    error: state.studyLevelReducer.error,
+    message: state.messageReducer.message,
     loading: state.studyLevelReducer.loading,
   };
 };

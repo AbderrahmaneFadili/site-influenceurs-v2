@@ -56,25 +56,23 @@ const languageReducer = (state = initialState, { type, payload }) => {
     case GET_ALL_LANGUAGE_START:
       return {
         ...state,
-        loading: true,
+        loading: false,
         languages: null,
         language: null,
       };
     case GET_ALL_LANGUAGE_FAILURE:
       return {
         ...state,
+        loading: false,
         language: null,
         languages: null,
       };
     case GET_ALL_LANGUAGE_SUCCESS:
       return {
         ...state,
+        loading: false,
         language: null,
-        languages: {
-          data: payload.results,
-          page: payload.page,
-          size: payload.size,
-        },
+        languages: payload,
       };
     //* Find one
     case FIND_LANGUAGE_START:

@@ -4,7 +4,6 @@ import { isEmpty } from "../../../helpers/formValidation.helpers";
 import {
   editLanguageAction,
   findLanguageAction,
-  getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
 import { connect } from "react-redux";
 import { isEqual } from "lodash";
@@ -71,7 +70,6 @@ class EditLanguage extends React.Component {
             ...this.state,
             successful: true,
           });
-          this.props.getAlllanguagesAction(0, 6);
         })
         .catch((err) =>
           this.setState({
@@ -194,8 +192,6 @@ const mapDispatchToProps = (dispatch) => ({
       return Promise.reject();
     }
   },
-  getAlllanguagesAction: (page, size) =>
-    dispatch(getAlllanguagesAction(page, size)),
   clearMessage: () => dispatch(clearMessage()),
 });
 

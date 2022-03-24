@@ -9,12 +9,13 @@ import {
 import { Route, Switch, useRouteMatch } from "react-router-dom";
 import AddLanguage from "./AddLanguage";
 import EditLanguage from "./EditLanguage";
+import { max_size, page } from "../../../helpers/paginationsParams";
 
 const Language = () => {
   const dispatch = useDispatch();
   //get ALl languages
   const getAlllanguages = () => {
-    dispatch(getAlllanguagesAction(0, 6));
+    dispatch(getAlllanguagesAction(page, max_size));
   };
 
   useEffect(() => {
