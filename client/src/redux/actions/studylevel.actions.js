@@ -3,6 +3,12 @@ import {
   GET_ALL_STUDY_LEVELS_SUCCESS,
   GET_ALL_STUDY_LEVELS_FAILURE,
   ADD_STUDY_LEVEL_START,
+  FIND_STUDY_LEVEL_FAILURE,
+  FIND_STUDY_LEVEL_SUCCESS,
+  FIND_STUDY_LEVEL_START,
+  EDIT_STUDY_LEVEL_START,
+  EDIT_STUDY_LEVEL_SUCCESS,
+  EDIT_STUDY_LEVEL_FAILURE,
 } from "../constants/studyLevel.constants.js";
 import axios from "axios";
 import { url } from "../../api/studyLevels";
@@ -73,10 +79,83 @@ const addStudyLevelAction = (studyLevel) => (dispatch) => {
       return Promise.resolve();
     })
     .catch((err) => {
-      dispatch(addStudyLevelAction(err));
+      dispatch(addStudyLevelFailure(err));
       dispatch(setMessage(err.message));
       return Promise.reject();
     });
 };
 
-export { getAllStudyLevelsAction, addStudyLevelAction };
+//find study level actions
+const findStudyLevelStart = () => ({
+  type: FIND_STUDY_LEVEL_START,
+});
+
+const findStudyLevelSuccess = (payload) => ({
+  type: FIND_STUDY_LEVEL_SUCCESS,
+  payload,
+});
+
+const findStudyLevelFailure = (payload) => ({
+  type: FIND_STUDY_LEVEL_FAILURE,
+  payload,
+});
+
+const findStudyLevelAction = (id) => (dispatch) => {
+  dispatch(findStudyLevelStart());
+  axios({
+    method: "get",
+    url: `${url}/find/${id}`,
+    headers: authHeader(),
+  })
+    .then((response) => {
+      dispatch(findStudyLevelSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(findStudyLevelFailure(error));
+    });
+};
+
+//edit study level actions
+const editStudyLevelStart = () => ({
+  type: EDIT_STUDY_LEVEL_START,
+});
+
+const editStudyLevelSuccess = (payload) => ({
+  type: EDIT_STUDY_LEVEL_SUCCESS,
+  payload,
+});
+
+const editStudyLevelFailure = (payload) => ({
+  type: EDIT_STUDY_LEVEL_FAILURE,
+  payload,
+});
+
+const editStudyLevelAction = (studyLevel, id) => (dispatch) => {
+  dispatch(editStudyLevelStart());
+  axios
+    .put(
+      `${url}/edit/${id}`,
+      {
+        title: studyLevel,
+      },
+      {
+        headers: authHeader(),
+      }
+    )
+    .then((response) => {
+      dispatch(editStudyLevelSuccess(response.data));
+      dispatch(getAllStudyLevelsAction(page, max_size));
+      dispatch(setMessage("un niveau d'étude est modifié"));
+    })
+    .catch((error) => {
+      dispatch(editStudyLevelFailure(error));
+      dispatch(setMessage(error.message));
+    });
+};
+
+export {
+  getAllStudyLevelsAction,
+  addStudyLevelAction,
+  findStudyLevelAction,
+  editStudyLevelAction,
+};

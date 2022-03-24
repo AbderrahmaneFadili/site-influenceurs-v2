@@ -58,7 +58,7 @@ class EditLanguage extends React.Component {
       errorsMessages: errorsMessages,
     });
 
-    if (errors.length === 0) {
+    if (this.state.errors.length === 0) {
       this.props
         .editLanguageAction(this.state.language, this.props.match.params.id)
         .then(() => {

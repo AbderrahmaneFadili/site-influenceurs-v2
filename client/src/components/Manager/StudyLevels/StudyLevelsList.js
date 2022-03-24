@@ -45,9 +45,7 @@ class StudyLevelsList extends Component {
   }
 
   goToEditPage = (id) => {
-    this.props.history.push(
-      `${this.props.match.path}/edit/${this.props.match.params.id}`
-    );
+    this.props.history.push(`${this.props.match.path}/edit/${id}`);
   };
 
   handleDeleteLanguage = (id) => {};

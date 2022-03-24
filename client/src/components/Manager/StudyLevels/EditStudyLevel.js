@@ -5,6 +5,10 @@ import { connect } from "react-redux";
 import { isEqual } from "lodash";
 import { Alert } from "react-bootstrap";
 import { clearMessage } from "../../../redux/actions/message.actions";
+import {
+  editStudyLevelAction,
+  findStudyLevelAction,
+} from "../../../redux/actions/studylevel.actions";
 
 class EditStudyLevel extends Component {
   constructor(props) {
@@ -19,12 +23,40 @@ class EditStudyLevel extends Component {
     };
   }
 
-  handleChange = (event) => {};
+  handleChange = (event) => {
+    this.setState({
+      ...this.state,
+      studyLevel: event.target.value,
+    });
+  };
+
+  closeAlert = (event) => {
+    this.props.clearMessage();
+    this.setState({
+      ...this.state,
+      successful: null,
+    });
+  };
 
   //* has error handle
   hasError = (key) => {
     return this.state.errors.indexOf(key) !== -1;
   };
+
+  UNSAFE_componentWillReceiveProps(nextProps) {
+    if (!isEqual(nextProps.language, this.props.studyLevel)) {
+      this.setState({
+        ...this.state,
+        studyLevel:
+          nextProps.studyLevel !== null ? nextProps.studyLevel.title : "",
+      });
+    }
+  }
+
+  componentDidMount() {
+    const id = this.props.match.params.id;
+    this.props.findStudyLevelAction(id);
+  }
 
   handleSubmit = (event) => {
     event.preventDefault();
@@ -48,7 +80,22 @@ class EditStudyLevel extends Component {
       errorsMessages: errorsMessages,
     });
 
-    if (this.state.errors.length > 0) {
+    if (this.state.errors.length === 0) {
+      const id = this.props.match.params.id;
+      this.props
+        .editStudyLevelAction(this.state.studyLevel, id)
+        .then(() => {
+          this.setState({
+            ...this.state,
+            successful: true,
+          });
+        })
+        .catch(() => {
+          this.setState({
+            ...this.state,
+            successful: false,
+          });
+        });
     }
   };
 
@@ -122,4 +169,26 @@ class EditStudyLevel extends Component {
   }
 }
 
-export default EditStudyLevel;
+const mapStateToProps = (state) => {
+  return {
+    studyLevel: state.studyLevelReducer.studyLevel,
+    message: state.messageReducer.message,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    findStudyLevelAction: (id) => dispatch(findStudyLevelAction(id)),
+    clearMessage: () => dispatch(clearMessage()),
+    editStudyLevelAction: (studyLevel, id) => {
+      try {
+        dispatch(editStudyLevelAction(studyLevel, id));
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject();
+      }
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditStudyLevel);
