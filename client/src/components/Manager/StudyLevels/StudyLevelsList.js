@@ -56,7 +56,10 @@ class StudyLevelsList extends Component {
     console.log(this.props);
     return (
       <>
-        <Link to={`${this.props.match.path}/add`} className="btn btn-primary">
+        <Link
+          to={`${this.props.match.path}/add`}
+          className="btn btn-primary mb-3"
+        >
           Ajouter <i className="fas fa-plus"></i>
         </Link>
         {this.props.studyLevels &&
