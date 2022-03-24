@@ -20,6 +20,7 @@ import {
 import axios from "axios";
 import { url } from "../../api/languages";
 import authHeader from "../../services/auth-header";
+import { clearMessage, setMessage } from "./message.actions";
 
 //language actions creators
 const addlanguageStart = () => ({
@@ -51,9 +52,11 @@ const addlanguageAction = (language) => (dispatch) => {
     )
     .then((data) => {
       dispatch(addlanguageSuccess(data));
+      dispatch(setMessage("une langue ajoutée avec succès"));
     })
     .catch((error) => {
       dispatch(addlanguageFailure(error));
+      dispatch(setMessage(error.message));
     });
 };
 
@@ -87,10 +90,12 @@ const editLanguageAction = (language, id) => (dispatch) => {
     )
     .then((data) => {
       dispatch(editLanguageSuccess(data));
+      dispatch(setMessage("une langue est modifié avec succès"));
       return Promise.resolve();
     })
     .catch((error) => {
       dispatch(editLanguageFailure(error));
+      dispatch(setMessage(error.message));
       return Promise.reject();
     });
 };
@@ -148,20 +153,11 @@ const getAlllanguagesAction = (page, size) => (dispatch) => {
     url: `${url}/all?page=${page}&size=${size}`,
     headers: authHeader(),
   })
-    .then((results) =>
-      dispatch(getAlllanguagesSuccess({ results: results.data, page, size }))
+    .then((response) =>
+      dispatch(getAlllanguagesSuccess({ results: response.data, page, size }))
     )
     .catch((error) => dispatch(getAlllanguagesFailure(error)));
 };
-
-//clear error
-export const clearError = () => ({
-  type: LANGUAGE_CLEAR_ERROR,
-});
-//clear error
-export const clearMessage = () => ({
-  type: LANGUAGE_CLEAR_MESSAGE,
-});
 
 //delete languages
 const deleteLanguageStart = () => ({

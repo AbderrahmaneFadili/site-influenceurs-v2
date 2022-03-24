@@ -5,6 +5,7 @@ import MainContent from "./MainContent";
 import { useSelector } from "react-redux";
 //Pages
 import Language from "../Language/Language";
+import StudyLevel from "../StudyLevels/StudyLevel";
 
 const ManagerDashboard = () => {
   const { url, path } = useRouteMatch();
@@ -51,7 +52,7 @@ const ManagerDashboard = () => {
     },
     {
       path: path + "/studylevels",
-      page: () => <h1>Niveaux d\'étude</h1>,
+      page: StudyLevel,
     },
     {
       path: path + "/languages",

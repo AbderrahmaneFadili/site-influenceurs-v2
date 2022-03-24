@@ -22,8 +22,6 @@ const initialState = {
   loading: false,
   languages: null,
   language: null,
-  error: null,
-  message: "",
 };
 
 const languageReducer = (state = initialState, { type, payload }) => {
@@ -33,44 +31,26 @@ const languageReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
-        message: "",
-        error: "",
       };
     case ADD_LANGUAGE_SUCCESS:
-      return { ...state, loading: false, message: "une langue est ajoutée" };
+      return { ...state, loading: false };
     case ADD_LANGUAGE_FAILURE:
-      return { ...state, loading: false, message: "", error: payload.message };
+      return { ...state, loading: false };
     //* Edit
     case EDIT_LANGUAGE_START:
       return {
         ...state,
         loading: true,
-        message: "",
-        error: "",
       };
     case EDIT_LANGUAGE_SUCCESS:
       return {
         ...state,
         loading: false,
-        message: "la langue est modifiée",
-        error: "",
       };
     case EDIT_LANGUAGE_FAILURE:
       return {
         ...state,
         loading: false,
-        error: payload.message,
-      };
-    //* clear message & error
-    case LANGUAGE_CLEAR_ERROR:
-      return {
-        ...state,
-        error: "",
-      };
-    case LANGUAGE_CLEAR_MESSAGE:
-      return {
-        ...state,
-        message: "",
       };
     //* get all
     case GET_ALL_LANGUAGE_START:
@@ -85,7 +65,6 @@ const languageReducer = (state = initialState, { type, payload }) => {
         ...state,
         language: null,
         languages: null,
-        error: payload.message,
       };
     case GET_ALL_LANGUAGE_SUCCESS:
       return {
@@ -101,23 +80,20 @@ const languageReducer = (state = initialState, { type, payload }) => {
     case FIND_LANGUAGE_START:
       return {
         ...state,
+        loading: false,
         language: null,
-        error: "",
-        message: "",
       };
     case FIND_LANGUAGE_SUCCESS:
       return {
         ...state,
         loading: false,
         language: payload,
-        error: "",
       };
     case FIND_LANGUAGE_FAILURE:
       return {
         ...state,
         language: null,
         loading: null,
-        error: payload.message,
       };
     //* delete language
     case DELETE_LANGUAGE_START:
@@ -125,24 +101,18 @@ const languageReducer = (state = initialState, { type, payload }) => {
         ...state,
         language: null,
         loading: false,
-        message: "",
-        error: null,
       };
     case DELETE_LANGUAGE_SUCCESS:
       return {
         ...state,
         language: null,
         loading: false,
-        message: payload,
-        error: "",
       };
     case DELETE_LANGUAGE_FAILURE:
       return {
         ...state,
         language: null,
         loading: null,
-        message: "",
-        error: payload,
       };
     default:
       return state;

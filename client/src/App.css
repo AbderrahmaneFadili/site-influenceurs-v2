@@ -2,3 +2,34 @@ html,
 body {
   font-family: "Open Sans", sans-serif;
 }
+
+.edit {
+  color: #13135f;
+  cursor: pointer;
+}
+
+.remove {
+  color: #dc3545;
+  cursor: pointer;
+}
+
+.icon {
+  display: none;
+}
+
+tr:hover .icon {
+  opacity: 0.6;
+  display: inline;
+}
+
+tr .icon:active {
+  opacity: 1;
+}
+
+.close-icon {
+  cursor: pointer;
+}
+
+.page-link {
+  cursor: pointer;
+}

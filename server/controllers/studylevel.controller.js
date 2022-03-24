@@ -99,7 +99,7 @@ class StudyLevelController {
       offset,
     })
       .then((data) => {
-        const result = getPagingData(data, page, limit, "niveaux d'études");
+        const result = getPagingData(data, page, limit, "studyLevels");
         response.send(result);
       })
       .catch((error) => {

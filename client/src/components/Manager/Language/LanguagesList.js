@@ -6,8 +6,8 @@ import {
   getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
 
-const LanguagesList = ({ showModal, changeTitleToEdit, setLanguageId }) => {
-  const { error, languages, message, loading } = useSelector(
+const LanguagesList = () => {
+  const { error, languages, message } = useSelector(
     (state) => state.languageReducer
   );
 

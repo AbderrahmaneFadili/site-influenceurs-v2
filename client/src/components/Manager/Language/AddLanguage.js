@@ -4,23 +4,25 @@ import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addlanguageAction,
-  clearError,
-  clearMessage,
   getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
 import { Alert } from "react-bootstrap";
+import { clearMessage } from "../../../redux/actions/message.actions";
 
 function AddLanguage() {
-  const { message, error, languages } = useSelector(
-    (state) => state.languageReducer
-  );
+  const { languages } = useSelector((state) => state.languageReducer);
+  const { message } = useSelector((state) => state.messageReducer);
 
   const dispatch = useDispatch();
 
   //close success alert
-  const closeSuccessAlert = () => dispatch(clearMessage());
-  //close error alert
-  const closeDangerAlert = () => dispatch(clearError());
+  const closeAlert = () => {
+    dispatch(clearMessage());
+    setSeccessful(null);
+  };
+
+  //*seccessfuly
+  const [seccessful, setSeccessful] = useState(null);
 
   //* language state
   const [language, setLanguage] = useState("");
@@ -64,31 +66,36 @@ function AddLanguage() {
     setErrorsMessages(errorsMessages);
 
     if (errors.length === 0) {
-      dispatch(addlanguageAction(language)).then(() => {
-        setLanguage("");
-        dispatch(getAlllanguagesAction(languages.data.currentPage, 6));
-      });
+      dispatch(addlanguageAction(language))
+        .then(() => {
+          setLanguage("");
+          setSeccessful(true);
+          dispatch(getAlllanguagesAction(languages.data.currentPage, 6));
+        })
+        .catch(() => {
+          setSeccessful(false);
+        });
     }
   };
 
   return (
     <>
       <Link to="/manager/dashboard/languages">Retour à la liste</Link>
-      {message && (
-        <Alert className="mt-3" variant="success row align-items-center">
+      {seccessful === true && (
+        <Alert className="mt-3  row align-items-center" variant="success">
           {message}
           <i
             className="fas fa-times close-icon ml-auto"
-            onClick={closeSuccessAlert}
+            onClick={closeAlert}
           ></i>
         </Alert>
       )}
-      {error && (
-        <Alert className="mt-3" variant="danger row align-items-center">
-          {error}
+      {seccessful === false && (
+        <Alert className="mt-3 row align-items-center" variant="danger">
+          {message}
           <i
             className="fas fa-times close-icon ml-auto"
-            onClick={closeDangerAlert}
+            onClick={closeAlert}
           ></i>
         </Alert>
       )}

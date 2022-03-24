@@ -4,18 +4,18 @@ import { isEmpty } from "../../../helpers/formValidation.helpers";
 import {
   editLanguageAction,
   findLanguageAction,
-  clearError,
-  clearMessage,
   getAlllanguagesAction,
 } from "../../../redux/actions/languages.actions";
 import { connect } from "react-redux";
 import { isEqual } from "lodash";
 import { Alert } from "react-bootstrap";
+import { clearMessage } from "../../../redux/actions/message.actions";
 
 class EditLanguage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      successful: null,
       language: "",
       errors: [],
       errorsMessages: {
@@ -66,8 +66,19 @@ class EditLanguage extends React.Component {
     if (errors.length === 0) {
       this.props
         .editLanguageAction(this.state.language, this.props.match.params.id)
-        .then(() => this.props.getAlllanguagesAction(0, 6))
-        .catch((err) => null);
+        .then(() => {
+          this.setState({
+            ...this.state,
+            successful: true,
+          });
+          this.props.getAlllanguagesAction(0, 6);
+        })
+        .catch((err) =>
+          this.setState({
+            ...this.state,
+            successful: false,
+          })
+        );
     }
   };
 
@@ -86,12 +97,12 @@ class EditLanguage extends React.Component {
     this.props.findLanguageAction(id);
   }
 
-  closeSuccessAlert = (event) => {
-    clearMessage();
-  };
-
-  closeDangerAlert = (event) => {
-    clearError();
+  closeAlert = (event) => {
+    this.props.clearMessage();
+    this.setState({
+      ...this.state,
+      successful: null,
+    });
   };
 
   render = () => {
@@ -100,21 +111,21 @@ class EditLanguage extends React.Component {
     return (
       <>
         <Link to="/manager/dashboard/languages">Retour à la liste</Link>
-        {this.props.message && (
-          <Alert className="mt-3" variant="success row align-items-center">
+        {this.state.successful === true && (
+          <Alert className="mt-3 row align-items-center" variant="success">
             {this.props.message}
             <i
               className="fas fa-times close-icon ml-auto"
-              onClick={this.closeSuccessAlert}
+              onClick={this.closeAlert}
             ></i>
           </Alert>
         )}
-        {this.props.error && (
-          <Alert className="mt-3" variant="danger row align-items-center">
-            {this.props.error}
+        {this.state.successful === false && (
+          <Alert className="mt-3 row align-items-center" variant="danger">
+            {this.props.message}
             <i
               className="fas fa-times close-icon ml-auto"
-              onClick={this.closeDangerAlert}
+              onClick={this.closeAlert}
             ></i>
           </Alert>
         )}
@@ -169,8 +180,7 @@ class EditLanguage extends React.Component {
 const mapStateToProps = (state) => {
   return {
     language: state.languageReducer.language,
-    message: state.languageReducer.message,
-    error: state.languageReducer.error,
+    message: state.messageReducer.message,
   };
 };
 
@@ -186,7 +196,6 @@ const mapDispatchToProps = (dispatch) => ({
   },
   getAlllanguagesAction: (page, size) =>
     dispatch(getAlllanguagesAction(page, size)),
-  clearError: () => dispatch(clearError()),
   clearMessage: () => dispatch(clearMessage()),
 });
 
