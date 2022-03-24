@@ -20,6 +20,7 @@ class AddStudyLevel extends Component {
 
   //close success alert
   closeAlert = () => {
+    this.props.clearMessage();
     this.setState({
       ...this.state,
       successful: null,
@@ -27,7 +28,16 @@ class AddStudyLevel extends Component {
   };
 
   //handle change
-  handleChange = (event) => {};
+  handleChange = (event) => {
+    this.setState({
+      ...this.state,
+      studyLevel: event.target.value,
+    });
+  };
+
+  hasError = (key) => {
+    return this.state.errors.indexOf(key) !== -1;
+  };
 
   //handle submit
   handleSubmit = (event) => {
@@ -38,19 +48,16 @@ class AddStudyLevel extends Component {
     let errorsMessages = {};
 
     if (isEmpty(this.state.studyLevel)) {
-      errors.push("language");
+      errors.push("studyLevel");
       errorsMessages = {
         ...errorsMessages,
         studyLevelErrorMessage: "Ce champ est requis!",
       };
     }
-    this.setState({
-      ...this.state,
-      errors: errors,
-    });
 
     this.setState({
       ...this.state,
+      errors: errors,
       errorsMessages: errorsMessages,
     });
 
@@ -62,7 +69,7 @@ class AddStudyLevel extends Component {
     console.log(this.props);
     return (
       <>
-        <Link to="/manager/dashboard/languages">Retour à la liste</Link>
+        <Link to="/manager/dashboard/studyLevels">Retour à la liste</Link>
         {this.props.message && (
           <Alert className="mt-3 row align-items-center" variant="success">
             {this.props.message}
@@ -98,7 +105,7 @@ class AddStudyLevel extends Component {
                       ? "form-control is-invalid"
                       : "form-control"
                   }
-                  value={""}
+                  value={this.state.studyLevel}
                   placeholder="Label"
                   onChange={this.handleChange}
                 />
@@ -114,8 +121,8 @@ class AddStudyLevel extends Component {
                       : "hidden"
                   }
                 >
-                  {this.errorsMessages.studyLevelErrorMessage &&
-                    this.errorsMessages.studyLevelErrorMessage}
+                  {this.state.errorsMessages.studyLevelErrorMessage &&
+                    this.state.errorsMessages.studyLevelErrorMessage}
                 </span>
               </div>
             </div>

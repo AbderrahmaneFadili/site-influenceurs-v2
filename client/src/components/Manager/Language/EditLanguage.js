@@ -55,10 +55,6 @@ class EditLanguage extends React.Component {
     this.setState({
       ...this.state,
       errors: errors,
-    });
-
-    this.setState({
-      ...this.state,
       errorsMessages: errorsMessages,
     });
 

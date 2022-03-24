@@ -97,7 +97,7 @@ const LanguagesList = () => {
           </tbody>
         </table>
       ) : (
-        <p>Acune langues exists</p>
+        <p>Aucune langues exists</p>
       )}
       <div className="row mt-4">
         <div className="col-sm-12 col-md-6">

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { getAllStudyLevelsAction } from "../../../redux/actions/studylevel.actions";
+import { max_size, page } from "../../../helpers/paginationsParams";
 
 class StudyLevelsList extends Component {
   //get all study levels
@@ -9,8 +10,38 @@ class StudyLevelsList extends Component {
     this.props.getAllStudyLevelsAction(page, size);
   };
 
+  //next page
+  nextPage = (next) => {
+    this.props.getAllStudyLevelsAction(next, max_size);
+  };
+
+  handleNextPage = () => {
+    if (
+      this.props.studyLevels &&
+      this.props.studyLevels.currentPage !==
+        this.props.studyLevels.totalPages - 1
+    ) {
+      this.nextPage(this.props.studyLevels.currentPage + 1);
+    }
+  };
+  //previous page
+  previousPage = (previous) => {
+    this.props.getAllStudyLevelsAction(previous, max_size);
+  };
+
+  handlePreviousePage = () => {
+    if (this.props.studyLevels && this.props.studyLevels.currentPage > 0) {
+      this.previousPage(this.props.studyLevels.currentPage - 1);
+    }
+  };
+
+  //get all languages by page
+  handlePage = (page) => {
+    this.props.getAllStudyLevelsAction(page, max_size);
+  };
+
   componentDidMount() {
-    this.getAllStudyLevels(0, 6);
+    this.getAllStudyLevels(page, max_size);
   }
 
   goToEditPage = (id) => {
@@ -28,16 +59,17 @@ class StudyLevelsList extends Component {
         <Link to={`${this.props.match.path}/add`} className="btn btn-primary">
           Ajouter <i className="fas fa-plus"></i>
         </Link>
-        <table className="table table-hover">
-          <thead>
-            <tr>
-              <th>Label</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {this.props.studyLevels && this.props.studyLevels.length > 0 ? (
-              this.props.studyLevels.map((studyLevel) => {
+        {this.props.studyLevels &&
+        this.props.studyLevels.studyLevels.length > 0 ? (
+          <table className="table table-hover">
+            <thead>
+              <tr>
+                <th>Label</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.props.studyLevels.studyLevels.map((studyLevel) => {
                 return (
                   <tr key={studyLevel.id.toString()}>
                     <td>{studyLevel.title}</td>
@@ -53,12 +85,63 @@ class StudyLevelsList extends Component {
                     </td>
                   </tr>
                 );
-              })
-            ) : (
-              <p class="my-4">Aucune langues exists</p>
-            )}
-          </tbody>
-        </table>
+              })}
+            </tbody>
+          </table>
+        ) : (
+          <p className="my-3">Aucune niveau d'êtudes exists</p>
+        )}
+        <div className="row mt-4">
+          <div className="col-sm-12 col-md-6">
+            <div className="dataTables_paginate paging_simple_numbers">
+              <ul className="pagination">
+                {this.props.studyLevels &&
+                  this.props.studyLevels.studyLevels.length > 0 && (
+                    <>
+                      <li className="paginate_button page-item previous">
+                        <span
+                          className="page-link"
+                          onClick={this.handlePreviousePage}
+                        >
+                          Previous
+                        </span>
+                      </li>
+                      {this.studyLevels &&
+                        [...Array(this.props.studyLevels).keys()].map(
+                          (page, i) => {
+                            return (
+                              <li
+                                key={i.toString()}
+                                className={
+                                  this.props.studyLevels.currentPage === page
+                                    ? "paginate_button page-item active"
+                                    : "paginate_button page-item"
+                                }
+                              >
+                                <span
+                                  className="page-link"
+                                  onClick={(e) => this.handlePage(page)}
+                                >
+                                  {page + 1}
+                                </span>
+                              </li>
+                            );
+                          }
+                        )}
+                      <li className="paginate_button page-item next">
+                        <span
+                          className="page-link"
+                          onClick={this.handleNextPage}
+                        >
+                          Next
+                        </span>
+                      </li>
+                    </>
+                  )}
+              </ul>
+            </div>
+          </div>
+        </div>
       </>
     );
   }

@@ -31,9 +31,7 @@ const getAllStudyLevelsAction = (page, size) => (dispatch) => {
     headers: authHeader(),
   })
     .then((response) => {
-      dispatch(
-        getAllStudyLevelsSuccess({ results: response.data, page, size })
-      );
+      dispatch(getAllStudyLevelsSuccess(response.data));
     })
     .catch((error) => {
       dispatch(getAllStudyLevelsFailure());
