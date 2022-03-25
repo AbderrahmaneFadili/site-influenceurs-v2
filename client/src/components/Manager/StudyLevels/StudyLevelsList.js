@@ -169,7 +169,6 @@ const mapStateToProps = (state) => {
   return {
     loading: state.studyLevelReducer.loading,
     studyLevels: state.studyLevelReducer.studyLevels,
-    error: state.studyLevelReducer.error,
   };
 };
 
