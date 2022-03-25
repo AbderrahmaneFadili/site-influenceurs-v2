@@ -18,6 +18,8 @@ import {
 import authHeaders from "../../services/auth-header";
 import { url } from "../../api/interests";
 import axios from "axios";
+import { setMessage } from "./message.actions";
+import { page, max_size } from "../../helpers/paginationsParams";
 
 const getAllInterestsStart = () => ({
   type: GET_ALL_INTERESTS_START,
@@ -48,4 +50,40 @@ const getAllInterestsAction = (page, size) => (dispatch) => {
     });
 };
 
-export { getAllInterestsAction };
+//add
+const addInterestStart = () => ({
+  type: ADD_INTEREST_START,
+});
+
+const addInterestSuccess = () => ({
+  type: ADD_INTEREST_SUCCESS,
+});
+
+const addInterestFailure = () => ({
+  type: ADD_INTEREST_FAILURE,
+});
+
+const addInterestAction = (interest) => (dispatch) => {
+  dispatch(addInterestStart());
+  axios
+    .post(
+      `${url}/add`,
+      {
+        title: interest,
+      },
+      {
+        headers: authHeaders(),
+      }
+    )
+    .then((response) => {
+      dispatch(addInterestSuccess(response.data));
+      dispatch(getAllInterestsAction(page, max_size));
+      dispatch(setMessage("Un centre d'intérêt est ajoutée avec succés"));
+    })
+    .catch((error) => {
+      dispatch(addInterestFailure(error));
+      dispatch(setMessage(error.message));
+    });
+};
+
+export { getAllInterestsAction, addInterestAction };

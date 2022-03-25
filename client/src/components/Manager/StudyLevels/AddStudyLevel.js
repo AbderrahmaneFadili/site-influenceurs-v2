@@ -19,7 +19,7 @@ class AddStudyLevel extends Component {
     };
   }
 
-  //close success alert
+  //close  alert
   closeAlert = () => {
     this.props.clearMessage();
     this.setState({
@@ -69,7 +69,7 @@ class AddStudyLevel extends Component {
           this.setState({
             ...this.state,
             successful: true,
-            studyLevel:"",
+            studyLevel: "",
           })
         )
         .catch(() =>
@@ -106,7 +106,7 @@ class AddStudyLevel extends Component {
         )}
         <div className="card card-secondary mt-3">
           <div className="card-header">
-            <h3 className="card-title">Ajouter une langue</h3>
+            <h3 className="card-title">Ajouter un niveau d'étude</h3>
           </div>
           {/* /.card-header */}
           {/* form start */}

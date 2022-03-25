@@ -83,7 +83,7 @@ class EditStudyLevel extends Component {
       errorsMessages: errorsMessages,
     });
 
-    if (this.state.errors.length === 0) {
+    if (errors.length === 0) {
       const id = this.props.match.params.id;
       this.props
         .editStudyLevelAction(this.state.studyLevel, id)
@@ -127,7 +127,7 @@ class EditStudyLevel extends Component {
         )}
         <div className="card card-secondary mt-3">
           <div className="card-header">
-            <h3 className="card-title">Modifier la langue</h3>
+            <h3 className="card-title">Modifier le niveau d'étude</h3>
           </div>
           {/* /.card-header */}
           {/* form start */}
