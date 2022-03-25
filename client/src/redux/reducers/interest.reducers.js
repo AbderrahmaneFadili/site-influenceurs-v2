@@ -45,6 +45,32 @@ const interestReducer = (state = initialState, { type, payload }) => {
         interest: null,
         interests: null,
       };
+    //* add
+    case ADD_INTEREST_START:
+      return { ...state, loading: true };
+    case ADD_INTEREST_SUCCESS:
+      return { ...state, loading: false };
+    case ADD_INTEREST_FAILURE:
+      return { ...state, loading: false };
+    //* find
+    case FIND_INTEREST_START:
+      return {
+        ...state,
+        loading: true,
+        interest: null,
+      };
+    case FIND_INTEREST_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        interest: payload,
+      };
+    case FIND_INTEREST_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        interest: null,
+      };
     default:
       return state;
   }

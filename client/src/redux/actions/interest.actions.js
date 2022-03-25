@@ -86,4 +86,76 @@ const addInterestAction = (interest) => (dispatch) => {
     });
 };
 
-export { getAllInterestsAction, addInterestAction };
+//find
+const findInterestStart = () => ({
+  type: FIND_INTEREST_START,
+});
+
+const findInterestSuccess = (payload) => ({
+  type: FIND_INTEREST_SUCCESS,
+  payload,
+});
+
+const findInterestFailure = (payload) => ({
+  type: FIND_INTEREST_FAILURE,
+  payload,
+});
+
+const findInterestAction = (id) => (dispatch) => {
+  dispatch(findInterestStart());
+  axios
+    .get(`${url}/find/${id}`, {
+      headers: authHeaders(),
+    })
+    .then((response) => {
+      dispatch(findInterestSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(findInterestFailure(error));
+    });
+};
+
+//edit
+const editInterestStart = () => ({
+  type: EDIT_INTEREST_START,
+});
+
+const editInterestSuccess = (payload) => ({
+  type: EDIT_INTEREST_SUCCESS,
+  payload,
+});
+
+const editInterestFailure = (payload) => ({
+  type: EDIT_INTEREST_FAILURE,
+  payload,
+});
+
+const editInterestAction = (interest, id) => (dispatch) => {
+  dispatch(editInterestStart());
+  axios
+    .put(
+      `${url}/edit/${id}`,
+      {
+        title: interest,
+      },
+      {
+        headers: authHeaders(),
+      }
+    )
+    .then((response) => {
+      dispatch(editInterestSuccess(response.data));
+      dispatch(getAllInterestsAction(page, max_size));
+      dispatch(setMessage("le centre d'intérêt est modifié avec succés"));
+    })
+    .catch((error) => {
+      dispatch(editInterestFailure(error));
+      dispatch(setMessage(error.message));
+    });
+};
+
+export {
+  getAllInterestsAction,
+  addInterestAction,
+  findInterestAction,
+  editInterestAction,
+};

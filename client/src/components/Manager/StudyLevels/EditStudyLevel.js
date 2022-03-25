@@ -63,7 +63,7 @@ class EditStudyLevel extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault();
-    //* Add Or Edit
+
     //*errors
     const errors = [];
     //*error messages
