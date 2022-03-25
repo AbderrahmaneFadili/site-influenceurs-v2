@@ -71,6 +71,13 @@ const interestReducer = (state = initialState, { type, payload }) => {
         loading: false,
         interest: null,
       };
+    //* delete
+    case DELETE_INTEREST_START:
+      return { ...state, loading: true };
+    case DELETE_INTEREST_SUCCESS:
+      return { ...state, loading: false };
+    case DELETE_INTEREST_FAILURE:
+      return { ...state, loading: false };
     default:
       return state;
   }

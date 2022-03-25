@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getAllInterestsAction } from "../../../redux/actions/interest.actions";
+import {
+  deleteInterestAction,
+  getAllInterestsAction,
+} from "../../../redux/actions/interest.actions";
 import { max_size, page } from "../../../helpers/paginationsParams";
 
 class InterestsList extends Component {
@@ -42,7 +45,11 @@ class InterestsList extends Component {
     this.props.history.push(`${this.props.match.path}/edit/${id}`);
   };
 
-  handleDeleteInterest = (id) => {};
+  handleDeleteInterest = (id) => {
+    if (window.confirm("Voulez-vous supprimez ce centre d'interet ?")) {
+      this.props.deleteInterestAction(id);
+    }
+  };
 
   render() {
     console.log(this.props);
@@ -152,6 +159,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllInterestsAction: (page, size) =>
       dispatch(getAllInterestsAction(page, size)),
+    deleteInterestAction: (id) => {
+      dispatch(deleteInterestAction(id));
+    },
   };
 };
 

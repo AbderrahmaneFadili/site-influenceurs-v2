@@ -153,9 +153,40 @@ const editInterestAction = (interest, id) => (dispatch) => {
     });
 };
 
+//delete
+const deleteInterestStart = () => ({
+  type: DELETE_INTEREST_START,
+});
+
+const deleteInterestSeccuss = (payload) => ({
+  type: DELETE_INTEREST_SUCCESS,
+  payload,
+});
+
+const deleteInterestFaiure = (payload) => ({
+  type: DELETE_INTEREST_FAILURE,
+  payload,
+});
+
+const deleteInterestAction = (id) => (dispatch) => {
+  dispatch(deleteInterestStart());
+  axios
+    .delete(`${url}/delete/${id}`, {
+      headers: authHeaders(),
+    })
+    .then((response) => {
+      dispatch(deleteInterestSeccuss(response.data));
+      dispatch(getAllInterestsAction(page, max_size));
+    })
+    .catch((error) => {
+      dispatch(deleteInterestFaiure(error));
+    });
+};
+
 export {
   getAllInterestsAction,
   addInterestAction,
   findInterestAction,
   editInterestAction,
+  deleteInterestAction,
 };
