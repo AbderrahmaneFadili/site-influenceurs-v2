@@ -31,10 +31,11 @@ class EditStudyLevel extends Component {
   };
 
   closeAlert = (event) => {
-    this.props.clearMessage();
-    this.setState({
-      ...this.state,
-      successful: null,
+    this.props.clearMessage().then(() => {
+      this.setState({
+        ...this.state,
+        successful: null,
+      });
     });
   };
 
@@ -44,11 +45,13 @@ class EditStudyLevel extends Component {
   };
 
   UNSAFE_componentWillReceiveProps(nextProps) {
-    if (!isEqual(nextProps.language, this.props.studyLevel)) {
+    if (!isEqual(nextProps.studyLevel, this.props.studyLevel)) {
       this.setState({
         ...this.state,
         studyLevel:
-          nextProps.studyLevel !== null ? nextProps.studyLevel.title : "",
+          nextProps.studyLevel !== null
+            ? nextProps.studyLevel.title
+            : this.state.studyLevel,
       });
     }
   }
@@ -88,6 +91,7 @@ class EditStudyLevel extends Component {
           this.setState({
             ...this.state,
             successful: true,
+            studyLevel: this.state.studyLevel,
           });
         })
         .catch(() => {
@@ -100,6 +104,7 @@ class EditStudyLevel extends Component {
   };
 
   render() {
+    console.log("studyLevel state :", this.state.studyLevel);
     return (
       <>
         <Link to="/manager/dashboard/studyLevels">Retour à la liste</Link>
@@ -179,7 +184,14 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     findStudyLevelAction: (id) => dispatch(findStudyLevelAction(id)),
-    clearMessage: () => dispatch(clearMessage()),
+    clearMessage: () => {
+      try {
+        dispatch(clearMessage());
+        return Promise.resolve();
+      } catch (err) {
+        return Promise.reject();
+      }
+    },
     editStudyLevelAction: (studyLevel, id) => {
       try {
         dispatch(editStudyLevelAction(studyLevel, id));

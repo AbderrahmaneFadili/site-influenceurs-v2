@@ -65,6 +65,7 @@ class EditLanguage extends React.Component {
           this.setState({
             ...this.state,
             successful: true,
+            language: this.state.language,
           });
         })
         .catch((err) =>
@@ -80,7 +81,10 @@ class EditLanguage extends React.Component {
     if (!isEqual(nextProps.language, this.props.language)) {
       this.setState({
         ...this.state,
-        language: nextProps.language !== null ? nextProps.language.title : "",
+        language:
+          nextProps.language !== null
+            ? nextProps.language.title
+            : this.state.language,
       });
     }
   }

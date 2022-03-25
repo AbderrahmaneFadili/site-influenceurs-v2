@@ -22,7 +22,12 @@ const studyLevelReducer = (state = initialState, { type, payload }) => {
     case GET_ALL_STUDY_LEVELS_START:
       return { ...state, loading: true, studyLevels: null };
     case GET_ALL_STUDY_LEVELS_SUCCESS:
-      return { ...state, loading: false, studyLevels: payload };
+      return {
+        ...state,
+        loading: false,
+        studyLevels: payload,
+        studyLevel: null,
+      };
     case GET_ALL_STUDY_LEVELS_FAILURE:
       return { ...state, loading: false, studyLevels: null };
     //* Add
