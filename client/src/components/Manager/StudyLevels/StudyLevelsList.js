@@ -1,7 +1,10 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { getAllStudyLevelsAction } from "../../../redux/actions/studylevel.actions";
+import {
+  deleteStudyLevelAction,
+  getAllStudyLevelsAction,
+} from "../../../redux/actions/studylevel.actions";
 import { max_size, page } from "../../../helpers/paginationsParams";
 
 class StudyLevelsList extends Component {
@@ -48,7 +51,21 @@ class StudyLevelsList extends Component {
     this.props.history.push(`${this.props.match.path}/edit/${id}`);
   };
 
-  handleDeleteLanguage = (id) => {};
+  handleDeleteLanguage = (id) => {
+    if (window.confirm("Voulez-vous supprimez cet niveau d'étude ?")) {
+      this.props
+        .deleteStudyLevelAction(id)
+        .then(() => {
+          this.props.getAllStudyLevelsAction(
+            this.props.studyLevels.currentPage,
+            max_size
+          );
+        })
+        .catch(() => {
+          return null;
+        });
+    }
+  };
 
   render() {
     console.log(this.props);
@@ -160,6 +177,14 @@ const mapStateToDipatch = (dispatch) => {
   return {
     getAllStudyLevelsAction: (page, size) =>
       dispatch(getAllStudyLevelsAction(page, size)),
+    deleteStudyLevelAction: (id) => {
+      try {
+        dispatch(deleteStudyLevelAction(id));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
+    },
   };
 };
 

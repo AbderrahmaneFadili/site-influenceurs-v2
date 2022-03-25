@@ -9,6 +9,9 @@ import {
   EDIT_STUDY_LEVEL_START,
   EDIT_STUDY_LEVEL_SUCCESS,
   EDIT_STUDY_LEVEL_FAILURE,
+  DELETE_STUDT_LEVEL_START,
+  DELETE_STUDT_LEVEL_SUCCESS,
+  DELETE_STUDT_LEVEL_FAILURE,
 } from "../constants/studyLevel.constants.js";
 import axios from "axios";
 import { url } from "../../api/studyLevels";
@@ -153,9 +156,37 @@ const editStudyLevelAction = (studyLevel, id) => (dispatch) => {
     });
 };
 
+//delete
+const deleteStudyLevelStart = () => ({
+  type: DELETE_STUDT_LEVEL_START,
+});
+
+const deleteStudyLevelSuccess = () => ({
+  type: DELETE_STUDT_LEVEL_SUCCESS,
+});
+
+const deleteStudyLevelFailure = () => ({
+  type: DELETE_STUDT_LEVEL_FAILURE,
+});
+
+const deleteStudyLevelAction = (id) => (dispatch) => {
+  dispatch(deleteStudyLevelStart());
+  axios
+    .delete(`${url}/delete/${id}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(deleteStudyLevelSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(deleteStudyLevelFailure(error));
+    });
+};
+
 export {
   getAllStudyLevelsAction,
   addStudyLevelAction,
   findStudyLevelAction,
   editStudyLevelAction,
+  deleteStudyLevelAction,
 };

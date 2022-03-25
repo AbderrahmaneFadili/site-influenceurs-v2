@@ -104,7 +104,6 @@ class EditStudyLevel extends Component {
   };
 
   render() {
-    console.log("studyLevel state :", this.state.studyLevel);
     return (
       <>
         <Link to="/manager/dashboard/studyLevels">Retour à la liste</Link>
