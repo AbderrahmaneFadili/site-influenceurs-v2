@@ -5,6 +5,10 @@ import { max_size, page } from "../../../helpers/paginationsParams";
 import { getAllClientsAction } from "../../../redux/actions/client.actions";
 
 class ClientsList extends Component {
+  nextPage = (next) => {
+    this.props.getAllClientsAction(next, max_size);
+  };
+
   handleNextPage = () => {
     if (
       this.props.clients &&
@@ -44,7 +48,6 @@ class ClientsList extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <>
         <Link
