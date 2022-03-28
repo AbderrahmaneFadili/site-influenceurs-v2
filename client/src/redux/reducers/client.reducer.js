@@ -25,6 +25,7 @@ const initialState = {
 
 const clientReducer = (state = initialState, { payload, type }) => {
   switch (type) {
+    //* Get all CLients
     case GET_ALL_CLIENTS_START:
       return {
         ...state,
@@ -42,6 +43,22 @@ const clientReducer = (state = initialState, { payload, type }) => {
         ...state,
         loading: false,
         clients: null,
+      };
+    //* Add Client
+    case ADD_CLIENT_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADD_CLIENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case ADD_CLIENT_FAILURE:
+      return {
+        ...state,
+        loading: false,
       };
     default:
       return state;

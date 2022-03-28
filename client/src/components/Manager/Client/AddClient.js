@@ -6,6 +6,10 @@ import {
   isEmpty,
   isPhoneValide,
 } from "../../../helpers/formValidation.helpers";
+import { connect } from "react-redux";
+import clientReducer from "../../../redux/reducers/client.reducer";
+import { addClientAction } from "../../../redux/actions/client.actions";
+import { clearMessage } from "../../../redux/actions/message.actions";
 
 class AddClient extends Component {
   constructor(props) {
@@ -63,6 +67,11 @@ class AddClient extends Component {
         ...errorsMessages,
         companyNameErrorMessage: "Ce champ est requis!",
       };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        companyNameErrorMessage: "",
+      };
     }
 
     if (isEmpty(this.state.country)) {
@@ -70,6 +79,11 @@ class AddClient extends Component {
       errorsMessages = {
         ...errorsMessages,
         countryErrorMessage: "Ce champ est requis!",
+      };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        countryErrorMessage: "",
       };
     }
 
@@ -79,6 +93,11 @@ class AddClient extends Component {
         ...errorsMessages,
         streetErrorMessage: "Ce champ est requis!",
       };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        streetErrorMessage: "",
+      };
     }
 
     if (isEmpty(this.state.city)) {
@@ -87,6 +106,11 @@ class AddClient extends Component {
         ...errorsMessages,
         cityErrorMessage: "Ce champ est requis!",
       };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        cityErrorMessage: "",
+      };
     }
 
     if (isEmpty(this.state.directorName)) {
@@ -94,6 +118,11 @@ class AddClient extends Component {
       errorsMessages = {
         ...errorsMessages,
         directorNameErrorMessage: "Ce champ est requis!",
+      };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        directorNameErrorMessage: "",
       };
     }
 
@@ -109,6 +138,11 @@ class AddClient extends Component {
         ...errorsMessages,
         emailErrorMessage: "Email est invalide",
       };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        emailErrorMessage: "",
+      };
     }
 
     if (isEmpty(this.state.tel)) {
@@ -123,17 +157,53 @@ class AddClient extends Component {
         ...errorsMessages,
         telErrorMessage: "Nombre de telephone est invalide",
       };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        telErrorMessage: "",
+      };
     }
 
-    this.setState({
-      ...this.state,
-      errors: errors,
-      errorsMessages: errorsMessages,
-    });
-
-    if (errors.length === 0) {
-      console.log(this.state);
-    }
+    this.setState(
+      (prevState) => ({
+        ...prevState,
+        errors: errors,
+        errorsMessages: errorsMessages,
+      }),
+      () => {
+        if (this.state.errors.length === 0) {
+          this.props
+            .addClientAction(
+              this.state.companyName,
+              this.state.country,
+              this.state.city,
+              this.state.street,
+              this.state.directorName,
+              this.state.tel,
+              this.state.email
+            )
+            .then(() => {
+              this.setState({
+                ...this.state,
+                successful: true,
+                companyName: "",
+                country: "",
+                city: "",
+                street: "",
+                directorName: "",
+                tel: "",
+                email: "",
+              });
+            })
+            .catch(() => {
+              this.setState({
+                ...this.state,
+                successful: false,
+              });
+            });
+        }
+      }
+    );
   };
 
   render() {
@@ -381,4 +451,43 @@ class AddClient extends Component {
   }
 }
 
-export default AddClient;
+const mapStateToProps = (state) => {
+  return {
+    loading: state.clientReducer.loading,
+    message: state.messageReducer.message,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearMessage: () => dispatch(clearMessage()),
+    addClientAction: (
+      companyName,
+      country,
+      city,
+      street,
+      directorName,
+      tel,
+      email
+    ) => {
+      try {
+        dispatch(
+          addClientAction(
+            companyName,
+            country,
+            city,
+            street,
+            directorName,
+            tel,
+            email
+          )
+        );
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
+    },
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddClient);
