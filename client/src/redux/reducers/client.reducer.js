@@ -60,6 +60,25 @@ const clientReducer = (state = initialState, { payload, type }) => {
         ...state,
         loading: false,
       };
+    //* Find CLient
+    case FIND_CLIENT_START:
+      return {
+        ...state,
+        loading: true,
+        client: null,
+      };
+    case FIND_CLIENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        client: payload,
+      };
+    case FIND_CLIENT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        client: null,
+      };
     default:
       return state;
   }

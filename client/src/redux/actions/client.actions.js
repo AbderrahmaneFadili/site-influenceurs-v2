@@ -97,4 +97,33 @@ const addClientAction =
       });
   };
 
-export { getAllClientsAction, addClientAction };
+//find
+const findClientStart = () => ({
+  type: FIND_CLIENT_START,
+});
+
+const findClientSuccess = (payload) => ({
+  type: FIND_CLIENT_SUCCESS,
+  payload,
+});
+
+const findClientFailure = (payload) => ({
+  type: FIND_CLIENT_FAILURE,
+  payload,
+});
+
+const findClientAction = (id) => (dispatch) => {
+  dispatch(findClientStart());
+  axios
+    .get(`${url}/find/${id}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(findClientSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(findClientFailure(error));
+    });
+};
+
+export { getAllClientsAction, addClientAction, findClientAction };

@@ -7,7 +7,6 @@ import {
   isPhoneValide,
 } from "../../../helpers/formValidation.helpers";
 import { connect } from "react-redux";
-import clientReducer from "../../../redux/reducers/client.reducer";
 import { addClientAction } from "../../../redux/actions/client.actions";
 import { clearMessage } from "../../../redux/actions/message.actions";
 
@@ -51,6 +50,15 @@ class AddClient extends Component {
 
   hasError = (key) => {
     return this.state.errors.indexOf(key) !== -1;
+  };
+
+  //handle close alert
+  closeAlert = () => {
+    this.props.clearMessage();
+    this.setState({
+      ...this.state,
+      successful: null,
+    });
   };
 
   //handle submit
