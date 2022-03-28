@@ -126,4 +126,53 @@ const findClientAction = (id) => (dispatch) => {
     });
 };
 
-export { getAllClientsAction, addClientAction, findClientAction };
+//edit actios
+const editClientStart = () => ({
+  type: EDIT_CLIENT_START,
+});
+
+const editClientSuccess = (payload) => ({
+  type: EDIT_CLIENT_SUCCESS,
+  payload,
+});
+
+const editClientFailure = (payload) => ({
+  type: EDIT_CLIENT_FAILURE,
+  payload,
+});
+
+const editClientAction = (client, id) => (dispatch) => {
+  dispatch(editClientStart());
+  axios
+    .put(
+      `${url}/edit/${id}`,
+      {
+        companyName: client.companyName,
+        country: client.country,
+        city: client.city,
+        street: client.street,
+        directorName: client.directorName,
+        tel: client.tel,
+        email: client.email,
+      },
+      {
+        headers: authHeader(),
+      }
+    )
+    .then((response) => {
+      dispatch(editClientSuccess(response.data));
+      dispatch(getAllClientsAction(page, max_size));
+      dispatch(setMessage("Le client est modifié avec succès"));
+    })
+    .catch((error) => {
+      dispatch(editClientFailure(error));
+      dispatch(setMessage(error.message));
+    });
+};
+
+export {
+  getAllClientsAction,
+  addClientAction,
+  findClientAction,
+  editClientAction,
+};

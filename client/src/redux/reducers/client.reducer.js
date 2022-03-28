@@ -79,6 +79,22 @@ const clientReducer = (state = initialState, { payload, type }) => {
         loading: false,
         client: null,
       };
+    //* Edit
+    case EDIT_CLIENT_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case EDIT_CLIENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case EDIT_CLIENT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

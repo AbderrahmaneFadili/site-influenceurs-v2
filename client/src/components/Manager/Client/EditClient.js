@@ -7,7 +7,10 @@ import {
   isPhoneValide,
 } from "../../../helpers/formValidation.helpers";
 import { connect } from "react-redux";
-import { findClientAction } from "../../../redux/actions/client.actions";
+import {
+  editClientAction,
+  findClientAction,
+} from "../../../redux/actions/client.actions";
 import { clearMessage } from "../../../redux/actions/message.actions";
 import { isEqual } from "lodash";
 
@@ -48,6 +51,7 @@ class EditClient extends Component {
     this.setState({
       ...this.state,
       client: {
+        ...this.state.client,
         [name]: value,
       },
     });
@@ -228,12 +232,29 @@ class EditClient extends Component {
       }),
       () => {
         if (this.state.errors.length === 0) {
+          const { id } = this.props.match.params;
+          this.props
+            .editClientAction(this.state.client, id)
+            .then(() => {
+              this.setState({
+                ...this.state,
+                successful: true,
+              });
+            })
+            .catch(() => {
+              this.setState({
+                ...this.state,
+                successful: false,
+              });
+            });
         }
       }
     );
   };
 
   render() {
+    console.log("props : ", this.props);
+    console.log("state : ", this.state);
     return (
       <>
         <Link to="/manager/dashboard/clients">Retour à la liste</Link>
@@ -469,7 +490,7 @@ class EditClient extends Component {
               </div>
             </div>
             <div className="card-footer">
-              <button className="btn btn-success">Ajouter</button>
+              <button className="btn btn-success">Modifier</button>
             </div>
           </form>
         </div>
@@ -490,6 +511,14 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     findClientAction: (id) => dispatch(findClientAction(id)),
+    editClientAction: (client, id) => {
+      try {
+        dispatch(editClientAction(client, id));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
+    },
   };
 };
 
