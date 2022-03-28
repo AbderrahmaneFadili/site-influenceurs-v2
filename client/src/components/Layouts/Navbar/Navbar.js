@@ -1,15 +1,24 @@
 import React from "react";
-import {
-  NavLink
-} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-const Navbar = ({ title, curreentUser }) => {
+const Navbar = ({ title, curreentUser, navColor }) => {
   return (
-    <nav className="main-header navbar navbar-orange navbar-dark navbar-expand border-bottom-0">
+    <nav
+      className={
+        "main-header navbar navbar-" +
+        navColor +
+        " navbar-dark navbar-expand border-bottom-0"
+      }
+    >
       {/* Left navbar links */}
       <ul className="navbar-nav">
         <li className="nav-item">
-          <a className="nav-link" data-widget="pushmenu" href="menu" role="button">
+          <a
+            className="nav-link"
+            data-widget="pushmenu"
+            href="menu"
+            role="button"
+          >
             <i className="fas fa-bars" />
           </a>
         </li>

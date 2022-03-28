@@ -104,6 +104,7 @@ class ClientController {
     Client.findAndCountAll({
       limit,
       offset,
+      order: [["createdAt", "DESC"]],
     })
       .then((data) => {
         const result = getPagingData(data, page, limit, "clients");

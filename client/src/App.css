@@ -14,12 +14,12 @@ body {
 }
 
 .icon {
-  display: none;
+  visibility: hidden;
 }
 
 tr:hover .icon {
   opacity: 0.6;
-  display: inline;
+  visibility: visible;
 }
 
 tr .icon:active {

@@ -5,6 +5,7 @@ import messageReducer from "./reducers/message.reducers";
 import languageReducer from "./reducers/languages.reducers";
 import studyLevelReducer from "./reducers/studyLevel.reducers";
 import interestReducer from "./reducers/interest.reducers";
+import clientReducer from "./reducers/client.reducer";
 
 const rootReducer = combineReducers({
   authReducer,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
   languageReducer,
   studyLevelReducer,
   interestReducer,
+  clientReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

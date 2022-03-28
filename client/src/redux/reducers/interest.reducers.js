@@ -14,7 +14,7 @@ import {
   DELETE_INTEREST_FAILURE,
   DELETE_INTEREST_START,
   DELETE_INTEREST_SUCCESS,
-} from "../constants/interest.constnats";
+} from "../constants/interest.constants";
 
 const initialState = {
   loading: false,
