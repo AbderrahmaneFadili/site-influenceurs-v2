@@ -95,6 +95,22 @@ const clientReducer = (state = initialState, { payload, type }) => {
         ...state,
         loading: false,
       };
+    //* Delete
+    case DELETE_CLIENT_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_CLIENT_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case DELETE_CLIENT_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

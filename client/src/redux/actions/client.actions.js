@@ -170,9 +170,40 @@ const editClientAction = (client, id) => (dispatch) => {
     });
 };
 
+//* Delete action
+const deleteClientStart = () => ({
+  type: DELETE_CLIENT_START,
+});
+
+const deleteClientSuccess = (payload) => ({
+  type: DELETE_CLIENT_SUCCESS,
+  payload,
+});
+
+const deleteClientFailure = (payload) => ({
+  type: DELETE_CLIENT_FAILURE,
+  payload,
+});
+
+const deleteClientAction = (id) => (dispatch) => {
+  dispatch(deleteClientStart());
+  axios
+    .delete(`${url}/delete/${id}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(deleteClientSuccess(response.data));
+      dispatch(getAllClientsAction(page, max_size));
+    })
+    .catch((error) => {
+      dispatch(deleteClientFailure(error));
+    });
+};
+
 export {
   getAllClientsAction,
   addClientAction,
   findClientAction,
   editClientAction,
+  deleteClientAction,
 };

@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { max_size, page } from "../../../helpers/paginationsParams";
-import { getAllClientsAction } from "../../../redux/actions/client.actions";
+import {
+  deleteClientAction,
+  getAllClientsAction,
+} from "../../../redux/actions/client.actions";
 
 class ClientsList extends Component {
   nextPage = (next) => {
@@ -43,7 +46,7 @@ class ClientsList extends Component {
 
   handleDeleteClient = (id) => {
     if (window.confirm("Voulez-vous supprimez ce client ?")) {
-      //  this.props.deleteClientAction(id);
+      this.props.deleteClientAction(id);
     }
   };
 
@@ -162,6 +165,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getAllClientsAction: (page, size) =>
       dispatch(getAllClientsAction(page, size)),
+    deleteClientAction: (id) => dispatch(deleteClientAction(id)),
   };
 };
 
