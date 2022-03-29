@@ -8,7 +8,7 @@ class Campaign extends Component {
   render() {
     const { path } = this.props.match;
     return (
-      <div className="container pt-5">
+      <div className="container">
         <Switch>
           <Route exact path={path} component={CampaignsList} />
           <Route path={`${path}/add`} component={AddCampaign} />

@@ -5,6 +5,7 @@ import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { connect } from "react-redux";
 import { clearMessage } from "../../../redux/actions/message.actions";
 import { findAllClientsAction } from "../../../redux/actions/client.actions";
+import { Multiselect } from "multiselect-react-dropdown";
 
 class AddCampaign extends Component {
   constructor(props) {
@@ -226,8 +227,141 @@ class AddCampaign extends Component {
           </div>
           {/* /.card-header */}
           {/* form start */}
-          <form onSubmit={this.handleSubmit}>
-            <div className="card-body"></div>
+          <form onSubmit={this.handleSumbit}>
+            <div className="card-body">
+              {/* Client */}
+              <div className="form-group">
+                <label htmlFor="client">Client</label>
+                <select class="form-control" id="client">
+                  <option>Sélectionner un client</option>
+                  {this.props.clientsList &&
+                    this.props.clientsList.list.map((client) => (
+                      <option value={client.id} key={client.id}>
+                        {client.companyName}
+                      </option>
+                    ))}
+                </select>
+              </div>
+              {/* Titre */}
+              <div className="form-group">
+                <label htmlFor="title">Titre</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="title"
+                  id="title"
+                  placeholder="Titre"
+                />
+              </div>
+              {/* date debut */}
+              <div className="form-group">
+                <label htmlFor="startdate">Date de début</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="startdate"
+                  id="startdate"
+                />
+              </div>
+              {/* date de fin */}
+              <div className="form-group">
+                <label htmlFor="enddate">Date de fin</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  name="enddate"
+                  id="enddate"
+                  placeholder="date de fin"
+                />
+              </div>
+              {/* Centre d'intérêt */}
+              <div className="form-group">
+                <label htmlFor="interest">Centre d'intérêt</label>
+                <Multiselect
+                  name="interest"
+                  id="interest"
+                  placeholder="Centre d'intérêt"
+                  style={{
+                    searchBox: {
+                      borderColor: "",
+                    },
+                  }}
+                />
+              </div>
+              {/* Presence */}
+              <div className="form-group">
+                <label htmlFor="presence">Présence</label>
+                <div>
+                  <div className="form-check-inline">
+                    <label className="form-check-label">
+                      <input
+                        id="presence"
+                        name="presence"
+                        type="radio"
+                        className="form-check-input"
+                      />
+                      Oui
+                    </label>
+                  </div>
+                  <div className="form-check-inline">
+                    <label className="form-check-label">
+                      <input
+                        id="presence"
+                        name="presence"
+                        type="radio"
+                        className="form-check-input"
+                      />
+                      Non
+                    </label>
+                  </div>
+                </div>
+              </div>
+              {/* Number of influencers */}
+              <div className="form-group">
+                <label htmlFor="numberOfInfluencers">
+                  Nombre d'influenceurs
+                </label>
+                <input
+                  type="number"
+                  className="form-control"
+                  name="numberOfInfluencers"
+                  id="numberOfInfluencers"
+                />
+              </div>
+              {/* Description */}
+              <div className="form-group">
+                <label htmlFor="description">Description</label>
+                <textarea
+                  name="description"
+                  id="description"
+                  rows="4"
+                  className="form-control"
+                ></textarea>
+              </div>
+              {/* Hashtag */}
+              <div className="form-group">
+                <label htmlFor="hashtag">Hashtag</label>
+                <textarea
+                  name="hashtag"
+                  id="hashtag"
+                  rows="4"
+                  className="form-control"
+                ></textarea>
+              </div>
+              {/* Accounts */}
+              <div className="form-group">
+                <label htmlFor="comptes">Comptes</label>
+                <textarea
+                  name="comptes"
+                  id="comptes"
+                  rows="4"
+                  className="form-control"
+                ></textarea>
+              </div>
+            </div>
+            <div className="card-footer">
+              <button className="btn btn-success">Ajouter</button>
+            </div>
           </form>
         </div>
       </>
