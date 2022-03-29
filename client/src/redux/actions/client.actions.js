@@ -18,6 +18,9 @@ import {
   DELETE_CLIENT_FAILURE,
   DELETE_CLIENT_START,
   DELETE_CLIENT_SUCCESS,
+  FIND_ALL_CLIENTS_START,
+  FIND_ALL_CLIENTS_SUCCESS,
+  FIND_ALL_CLIENTS_FAILURE,
 } from "../constants/client.constants";
 import { setMessage } from "./message.actions";
 
@@ -200,10 +203,40 @@ const deleteClientAction = (id) => (dispatch) => {
     });
 };
 
+//Find all clients without pagination
+const findAllClientsStart = () => ({
+  type: FIND_ALL_CLIENTS_START,
+});
+
+const findAllClientsSuccess = (payload) => ({
+  type: FIND_ALL_CLIENTS_SUCCESS,
+  payload,
+});
+
+const findAllClientsFailure = (payload) => ({
+  type: FIND_ALL_CLIENTS_FAILURE,
+  payload,
+});
+
+const findAllClientsAction = () => (dispatch) => {
+  dispatch(findAllClientsStart());
+  axios
+    .get(`${url}/findAll`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(findAllClientsSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(findAllClientsFailure(error));
+    });
+};
+
 export {
   getAllClientsAction,
   addClientAction,
   findClientAction,
   editClientAction,
   deleteClientAction,
+  findAllClientsAction,
 };

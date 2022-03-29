@@ -1,7 +1,12 @@
-//get all
+//get all with pagination
 export const GET_ALL_CLIENTS_START = "GET_ALL_CLIENTS_START";
 export const GET_ALL_CLIENTS_SUCCESS = "GET_ALL_CLIENTS_SUCCESS";
 export const GET_ALL_CLIENTS_FAILURE = "GET_ALL_CLIENTS_FAILURE";
+
+//find all without pagination
+export const FIND_ALL_CLIENTS_START = "FIND_ALL_CLIENTS_START";
+export const FIND_ALL_CLIENTS_SUCCESS = "FIND_ALL_CLIENTS_SUCCESS";
+export const FIND_ALL_CLIENTS_FAILURE = "FIND_ALL_CLIENTS_FAILURE";
 
 //add
 export const ADD_CLIENT_START = "ADD_CLIENT_START";

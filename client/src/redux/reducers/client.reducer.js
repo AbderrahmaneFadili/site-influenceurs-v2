@@ -14,12 +14,16 @@ import {
   DELETE_CLIENT_FAILURE,
   DELETE_CLIENT_START,
   DELETE_CLIENT_SUCCESS,
+  FIND_ALL_CLIENTS_START,
+  FIND_ALL_CLIENTS_FAILURE,
+  FIND_ALL_CLIENTS_SUCCESS,
 } from "../constants/client.constants";
 
 const initialState = {
   loading: false,
   client: null,
   clients: null,
+  clientsList: null,
   error: null,
 };
 
@@ -110,6 +114,25 @@ const clientReducer = (state = initialState, { payload, type }) => {
       return {
         ...state,
         loading: false,
+      };
+    // Find All
+    case FIND_ALL_CLIENTS_START:
+      return {
+        ...state,
+        loading: true,
+        clientsList: null,
+      };
+    case FIND_ALL_CLIENTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        clientsList: payload,
+      };
+    case FIND_ALL_CLIENTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        clientsList: null,
       };
     default:
       return state;

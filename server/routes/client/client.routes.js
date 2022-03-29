@@ -27,5 +27,8 @@ module.exports = (app) => {
   //GET /api/clients/all
   router.get("/all", [authJWT.verifyToken], clientController.all);
 
+  //GET /api/clients/findAll
+  router.get("/findAll", [authJWT.verifyToken], clientController.findAll);
+
   app.use("/api/clients", router);
 };

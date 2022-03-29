@@ -116,6 +116,26 @@ class ClientController {
         });
       });
   };
+
+  /**
+   * GET /api/clients/findAll
+   * Find all Clients Actions (without pagination)
+   */
+  findAll = (request, response) => {
+    Client.findAll({
+      order: [["createdAt", "DESC"]],
+    })
+      .then((clients) => {
+        response.status(200).send({
+          list: clients,
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
 }
 
 module.exports = new ClientController();

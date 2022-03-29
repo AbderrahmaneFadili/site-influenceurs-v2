@@ -49,6 +49,40 @@ const getAllCampaignsAction = (page, size) => (dispatch) => {
     });
 };
 
-export default {
-  getAllCampaignsAction,
+//Add Campaing
+const addCampaignStart = () => ({
+  type: ADD_CAMPAIGN_START,
+});
+
+const addCampaignSuccess = (payload) => ({
+  type: ADD_CAMPAIGN_SUCCESS,
+  payload,
+});
+
+const addCampaignFailure = (payload) => ({
+  type: ADD_CAMPAIGN_FAILURE,
+  payload,
+});
+
+const addCampaignAction = (campaign) => (dispatch) => {
+  dispatch(addCampaignStart());
+  axios
+    .post(
+      `${url}/add`,
+      {
+        ...campaign,
+      },
+      {
+        headers: authHeader(),
+      }
+    )
+    .then((response) => {
+      if (response.data) {
+      }
+    })
+    .catch((error) => {
+      dispatch(addCampaignFailure(error));
+    });
 };
+
+export { getAllCampaignsAction };
