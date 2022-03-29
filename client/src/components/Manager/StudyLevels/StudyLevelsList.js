@@ -53,17 +53,7 @@ class StudyLevelsList extends Component {
 
   handleDeleteLanguage = (id) => {
     if (window.confirm("Voulez-vous supprimez cet niveau d'étude ?")) {
-      this.props
-        .deleteStudyLevelAction(id)
-        .then(() => {
-          this.props.getAllStudyLevelsAction(
-            this.props.studyLevels.currentPage,
-            max_size
-          );
-        })
-        .catch(() => {
-          return null;
-        });
+      this.props.deleteStudyLevelAction(id);
     }
   };
 
@@ -177,12 +167,7 @@ const mapStateToDipatch = (dispatch) => {
     getAllStudyLevelsAction: (page, size) =>
       dispatch(getAllStudyLevelsAction(page, size)),
     deleteStudyLevelAction: (id) => {
-      try {
-        dispatch(deleteStudyLevelAction(id));
-        return Promise.resolve();
-      } catch (error) {
-        return Promise.reject();
-      }
+      dispatch(deleteStudyLevelAction(id));
     },
   };
 };

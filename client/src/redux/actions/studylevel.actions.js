@@ -177,6 +177,7 @@ const deleteStudyLevelAction = (id) => (dispatch) => {
     })
     .then((response) => {
       dispatch(deleteStudyLevelSuccess(response.data));
+      dispatch(getAllStudyLevelsAction(page, max_size));
     })
     .catch((error) => {
       dispatch(deleteStudyLevelFailure(error));

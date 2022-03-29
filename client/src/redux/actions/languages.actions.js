@@ -178,17 +178,16 @@ const deleteLanguageFailure = (payload) => ({
 const deleteLanguageAction = (id) => (dispatch) => {
   dispatch(deleteLanguageStart());
   console.log(`${url}/delete/${id}`);
-  return axios
+  axios
     .delete(`${url}/delete/${id}`, {
       headers: authHeader(),
     })
     .then((response) => {
       dispatch(deleteLanguageSuccess(response.data));
-      return Promise.resolve();
+      dispatch(getAlllanguagesAction(page, max_size));
     })
     .catch((error) => {
       dispatch(deleteLanguageFailure(error));
-      return Promise.reject();
     });
 };
 

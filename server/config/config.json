@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": null,
+    "password": "123456789",
     "database": "site_influencers",
     "host": "localhost",
     "dialect": "mysql"

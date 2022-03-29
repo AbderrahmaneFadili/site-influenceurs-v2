@@ -51,11 +51,7 @@ const LanguagesList = () => {
 
   const handleDeleteLanguage = (id) => {
     if (window.confirm("Voulez-vous supprimez cette langue ?")) {
-      dispatch(deleteLanguageAction(id))
-        .then(() =>
-          dispatch(getAlllanguagesAction(languages.data.currentPage, max_size))
-        )
-        .catch((err) => null);
+      dispatch(deleteLanguageAction(id));
     }
   };
 

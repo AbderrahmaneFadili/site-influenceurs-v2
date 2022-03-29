@@ -192,12 +192,7 @@ const mapDispatchToProps = (dispatch) => {
       }
     },
     editStudyLevelAction: (studyLevel, id) => {
-      try {
-        dispatch(editStudyLevelAction(studyLevel, id));
-        return Promise.resolve();
-      } catch (err) {
-        return Promise.reject();
-      }
+      dispatch(editStudyLevelAction(studyLevel, id));
     },
   };
 };
