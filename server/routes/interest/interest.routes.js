@@ -25,5 +25,7 @@ module.exports = (app) => {
   );
   //GET /api/interests/all
   router.get("/all", [authJWT.verifyToken], interestController.all);
+  //Get /api/interests/findAll
+  router.get("/findAll", [authJWT.verifyToken], interestController.findAll);
   app.use("/api/interests", router);
 };

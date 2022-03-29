@@ -6,6 +6,7 @@ import { connect } from "react-redux";
 import { clearMessage } from "../../../redux/actions/message.actions";
 import { findAllClientsAction } from "../../../redux/actions/client.actions";
 import { Multiselect } from "multiselect-react-dropdown";
+import { findAllInterestAction } from "../../../redux/actions/interest.actions";
 
 class AddCampaign extends Component {
   constructor(props) {
@@ -14,13 +15,14 @@ class AddCampaign extends Component {
       successful: null,
       //data
       campaign: {
+        client: "",
         title: "",
         startDate: "",
         endDate: "",
         presence: false,
         numberInfluencers: 0,
         description: "",
-        hashtage: "",
+        hashtag: "",
         accounts: "",
         interests: [],
       },
@@ -35,7 +37,7 @@ class AddCampaign extends Component {
         presenceErrorMessage: "",
         numberInfluencersErrorMessage: "",
         descriptionErrorMessage: "",
-        hashtageErrorMessage: "",
+        hashtagErrorMessage: "",
         accountsErrorMessage: "",
         interestsErrorMessage: "",
       },
@@ -50,6 +52,26 @@ class AddCampaign extends Component {
       campaign: {
         ...this.state.campaign,
         [name]: value,
+      },
+    });
+  };
+
+  //on select interests
+  onSelect = (selectedList, selectedItem) => {
+    this.setState({
+      campaign: {
+        ...this.state.campaign,
+        interests: [...selectedList],
+      },
+    });
+  };
+
+  //on remove interests
+  onRemove = (selectedList, removedItem) => {
+    this.setState({
+      campaign: {
+        ...this.state.campaign,
+        interests: [...selectedList],
       },
     });
   };
@@ -69,6 +91,7 @@ class AddCampaign extends Component {
 
   componentDidMount() {
     this.props.getClientsList();
+    this.props.getInterestsList();
   }
 
   //handle Submit
@@ -80,109 +103,109 @@ class AddCampaign extends Component {
     // error messages
     let errorsMessages = {};
 
-    if (isEmpty(this.state.campaign.title)) {
-      errors.push("title");
-      errorsMessages = {
-        ...errorsMessages,
-        titleErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        titleErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.title)) {
+    //   errors.push("title");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     titleErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     titleErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.startDate)) {
-      errors.push("startDate");
-      errorsMessages = {
-        ...errorsMessages,
-        startDateErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        startDateErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.startDate)) {
+    //   errors.push("startDate");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     startDateErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     startDateErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.endDate)) {
-      errors.push("endDate");
-      errorsMessages = {
-        ...errorsMessages,
-        endDateErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        endDateErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.endDate)) {
+    //   errors.push("endDate");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     endDateErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     endDateErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.presence)) {
-      errors.push("presence");
-      errorsMessages = {
-        ...errorsMessages,
-        presenceErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        presenceErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.presence)) {
+    //   errors.push("presence");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     presenceErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     presenceErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.numberInfluencers)) {
-      errors.push("numberInfluencers");
-      errorsMessages = {
-        ...errorsMessages,
-        numberInfluencersErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        numberInfluencersErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.numberInfluencers)) {
+    //   errors.push("numberInfluencers");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     numberInfluencersErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     numberInfluencersErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.description)) {
-      errors.push("description");
-      errorsMessages = {
-        ...errorsMessages,
-        descriptionErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        descriptionErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.description)) {
+    //   errors.push("description");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     descriptionErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     descriptionErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.hashtage)) {
-      errors.push("hashtage");
-      errorsMessages = {
-        ...errorsMessages,
-        hashtageErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        hashtageErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.hashtag)) {
+    //   errors.push("hashtag");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     hashtagErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     hashtagErrorMessage: "",
+    //   };
+    // }
 
-    if (isEmpty(this.state.campaign.accounts)) {
-      errors.push("accounts");
-      errorsMessages = {
-        ...errorsMessages,
-        accountsErrorMessage: "Ce champ est requis!",
-      };
-    } else {
-      errorsMessages = {
-        ...errorsMessages,
-        accountsErrorMessage: "",
-      };
-    }
+    // if (isEmpty(this.state.campaign.accounts)) {
+    //   errors.push("accounts");
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     accountsErrorMessage: "Ce champ est requis!",
+    //   };
+    // } else {
+    //   errorsMessages = {
+    //     ...errorsMessages,
+    //     accountsErrorMessage: "",
+    //   };
+    // }
 
     this.setState(
       (prevState) => ({
@@ -193,6 +216,7 @@ class AddCampaign extends Component {
       () => {
         if (this.state.errors.length === 0) {
           //add campaign action
+          console.log(this.state.campaign);
         }
       }
     );
@@ -232,7 +256,12 @@ class AddCampaign extends Component {
               {/* Client */}
               <div className="form-group">
                 <label htmlFor="client">Client</label>
-                <select class="form-control" id="client">
+                <select
+                  className="form-control"
+                  id="client"
+                  name="client"
+                  onChange={this.handleValueChange}
+                >
                   <option>Sélectionner un client</option>
                   {this.props.clientsList &&
                     this.props.clientsList.list.map((client) => (
@@ -246,6 +275,7 @@ class AddCampaign extends Component {
               <div className="form-group">
                 <label htmlFor="title">Titre</label>
                 <input
+                  onChange={this.handleValueChange}
                   type="text"
                   className="form-control"
                   name="title"
@@ -255,22 +285,24 @@ class AddCampaign extends Component {
               </div>
               {/* date debut */}
               <div className="form-group">
-                <label htmlFor="startdate">Date de début</label>
+                <label htmlFor="startDate">Date de début</label>
                 <input
+                  onChange={this.handleValueChange}
                   type="date"
                   className="form-control"
-                  name="startdate"
-                  id="startdate"
+                  name="startDate"
+                  id="startDate"
                 />
               </div>
               {/* date de fin */}
               <div className="form-group">
-                <label htmlFor="enddate">Date de fin</label>
+                <label htmlFor="endDate">Date de fin</label>
                 <input
+                  onChange={this.handleValueChange}
                   type="date"
                   className="form-control"
-                  name="enddate"
-                  id="enddate"
+                  name="endDate"
+                  id="endDate"
                   placeholder="date de fin"
                 />
               </div>
@@ -278,9 +310,17 @@ class AddCampaign extends Component {
               <div className="form-group">
                 <label htmlFor="interest">Centre d'intérêt</label>
                 <Multiselect
+                  options={
+                    this.props.interestsList
+                      ? this.props.interestsList.list
+                      : []
+                  }
+                  onRemove={this.onRemove}
+                  onSelect={this.onSelect}
+                  displayValue={"title"}
                   name="interest"
                   id="interest"
-                  placeholder="Centre d'intérêt"
+                  placeholder="centres d'intérêts"
                   style={{
                     searchBox: {
                       borderColor: "",
@@ -296,9 +336,11 @@ class AddCampaign extends Component {
                     <label className="form-check-label">
                       <input
                         id="presence"
+                        value={1}
                         name="presence"
                         type="radio"
                         className="form-check-input"
+                        onChange={this.handleValueChange}
                       />
                       Oui
                     </label>
@@ -306,10 +348,12 @@ class AddCampaign extends Component {
                   <div className="form-check-inline">
                     <label className="form-check-label">
                       <input
+                        value={0}
                         id="presence"
                         name="presence"
                         type="radio"
                         className="form-check-input"
+                        onChange={this.handleValueChange}
                       />
                       Non
                     </label>
@@ -322,9 +366,10 @@ class AddCampaign extends Component {
                   Nombre d'influenceurs
                 </label>
                 <input
+                  onChange={this.handleValueChange}
                   type="number"
                   className="form-control"
-                  name="numberOfInfluencers"
+                  name="numberInfluencers"
                   id="numberOfInfluencers"
                 />
               </div>
@@ -332,6 +377,7 @@ class AddCampaign extends Component {
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <textarea
+                  onChange={this.handleValueChange}
                   name="description"
                   id="description"
                   rows="4"
@@ -342,6 +388,7 @@ class AddCampaign extends Component {
               <div className="form-group">
                 <label htmlFor="hashtag">Hashtag</label>
                 <textarea
+                  onChange={this.handleValueChange}
                   name="hashtag"
                   id="hashtag"
                   rows="4"
@@ -350,10 +397,11 @@ class AddCampaign extends Component {
               </div>
               {/* Accounts */}
               <div className="form-group">
-                <label htmlFor="comptes">Comptes</label>
+                <label htmlFor="accounts">Comptes</label>
                 <textarea
-                  name="comptes"
-                  id="comptes"
+                  onChange={this.handleValueChange}
+                  name="accounts"
+                  id="accounts"
                   rows="4"
                   className="form-control"
                 ></textarea>
@@ -375,6 +423,7 @@ const mapStateToProps = (state) => {
     message: state.messageReducer.message,
     loading: state.campaignReducer.loading,
     clientsList: state.clientReducer.clientsList,
+    interestsList: state.interestReducer.interestsList,
   };
 };
 
@@ -383,6 +432,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearMessage: () => dispatch(clearMessage()),
     getClientsList: () => dispatch(findAllClientsAction()),
+    getInterestsList: () => dispatch(findAllInterestAction()),
   };
 };
 

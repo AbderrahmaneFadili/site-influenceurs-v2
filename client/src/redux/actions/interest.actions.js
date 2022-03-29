@@ -14,6 +14,9 @@ import {
   DELETE_INTEREST_FAILURE,
   DELETE_INTEREST_START,
   DELETE_INTEREST_SUCCESS,
+  FIND_ALL_INTERESTS_START,
+  FIND_ALL_INTERESTS_FAILURE,
+  FIND_ALL_INTERESTS_SUCCESS,
 } from "../constants/interest.constants";
 import authHeaders from "../../services/auth-header";
 import { url } from "../../api/interests";
@@ -183,10 +186,40 @@ const deleteInterestAction = (id) => (dispatch) => {
     });
 };
 
+//get all interests without pagination
+const findAllInterestsStart = () => ({
+  type: FIND_ALL_INTERESTS_START,
+});
+
+const findAllInterestsSuccess = (payload) => ({
+  type: FIND_ALL_INTERESTS_SUCCESS,
+  payload,
+});
+
+const findAllInterestsFailure = (payload) => ({
+  type: FIND_ALL_INTERESTS_FAILURE,
+  payload,
+});
+
+const findAllInterestAction = () => (dispatch) => {
+  dispatch(findAllInterestsStart());
+  axios
+    .get(`${url}/findAll`, {
+      headers: authHeaders(),
+    })
+    .then((response) => {
+      dispatch(findAllInterestsSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(findAllInterestsFailure(error));
+    });
+};
+
 export {
   getAllInterestsAction,
   addInterestAction,
   findInterestAction,
   editInterestAction,
   deleteInterestAction,
+  findAllInterestAction,
 };

@@ -100,6 +100,22 @@ class InterestController {
         });
       });
   };
+  /**
+   * Find All Interests
+   */
+  findAll = (request, response) => {
+    Interest.findAll({
+      order: [["createdAt"]],
+    })
+      .then((interests) => {
+        response.status(200).send({
+          list: interests,
+        });
+      })
+      .catch((error) => {
+        response.status(500).send(error);
+      });
+  };
 }
 
 module.exports = new InterestController();

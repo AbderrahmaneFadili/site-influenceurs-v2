@@ -14,12 +14,16 @@ import {
   DELETE_INTEREST_FAILURE,
   DELETE_INTEREST_START,
   DELETE_INTEREST_SUCCESS,
+  FIND_ALL_INTERESTS_START,
+  FIND_ALL_INTERESTS_FAILURE,
+  FIND_ALL_INTERESTS_SUCCESS,
 } from "../constants/interest.constants";
 
 const initialState = {
   loading: false,
   interest: null,
   interests: null,
+  interestsList: null,
 };
 
 const interestReducer = (state = initialState, { type, payload }) => {
@@ -78,6 +82,32 @@ const interestReducer = (state = initialState, { type, payload }) => {
       return { ...state, loading: false };
     case DELETE_INTEREST_FAILURE:
       return { ...state, loading: false };
+    //edit
+    case EDIT_INTEREST_START:
+      return { ...state, loading: true };
+    case EDIT_INTEREST_SUCCESS:
+      return { ...state, loading: false };
+    case EDIT_INTEREST_FAILURE:
+      return { ...state, loading: false };
+    //find all (without pagination)
+    case FIND_ALL_INTERESTS_START:
+      return {
+        ...state,
+        loading: true,
+        interestsList: null,
+      };
+    case FIND_ALL_INTERESTS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        interestsList: payload,
+      };
+    case FIND_ALL_INTERESTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        interestsList: null,
+      };
     default:
       return state;
   }
