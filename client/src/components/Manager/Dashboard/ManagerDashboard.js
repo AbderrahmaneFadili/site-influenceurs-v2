@@ -8,6 +8,7 @@ import Language from "../Language/Language";
 import StudyLevel from "../StudyLevels/StudyLevel";
 import Interest from "../Interests/Interest";
 import Client from "../Client/Client";
+import Campaign from "../Campaigns/Campaign";
 
 const ManagerDashboard = () => {
   const { url, path } = useRouteMatch();
@@ -15,7 +16,7 @@ const ManagerDashboard = () => {
   //links
   const linksList = [
     {
-      to: url + "/campagnes",
+      to: url + "/campaigns",
       title: "Campagnes",
       iconClassName: "fas fa-pager nav-icon",
     },
@@ -49,8 +50,8 @@ const ManagerDashboard = () => {
   //pages
   const pages = [
     {
-      path: path + "/campagnes",
-      page: () => <h1>Campagnes</h1>,
+      path: path + "/campaigns",
+      page: Campaign,
     },
     {
       path: path + "/studylevels",
