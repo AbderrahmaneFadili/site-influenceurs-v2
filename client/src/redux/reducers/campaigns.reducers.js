@@ -25,6 +25,7 @@ const initialState = {
 
 const campaignReducer = (state = initialState, { type, payload }) => {
   switch (type) {
+    //get all campaigns
     case GET_ALL_CAMPAIGNS_START:
       return {
         ...state,
@@ -45,6 +46,41 @@ const campaignReducer = (state = initialState, { type, payload }) => {
         loading: false,
         campaigns: null,
         error: payload,
+      };
+    //add campaign
+    case ADD_CAMPAIGN_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case ADD_CAMPAIGN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case ADD_CAMPAIGN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
+    //find campaign
+    case FIND_CAMPAIGN_START:
+      return {
+        ...state,
+        loading: true,
+        campaign: null,
+      };
+    case FIND_CAMPAIGN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        campaign: payload,
+      };
+    case FIND_CAMPAIGN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        campaign: null,
       };
     default:
       return state;

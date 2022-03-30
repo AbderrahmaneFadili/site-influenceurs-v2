@@ -18,7 +18,9 @@ import {
 import axios from "axios";
 import authHeader from "../../services/auth-header";
 import { url } from "../../api/campaigns";
+import { url as campaignInterestsUrl } from "../../api/campaigninterests";
 import { max_size, page } from "../../helpers/paginationsParams";
+import { setMessage } from "./message.actions";
 
 //get all campaigns actions
 const getAllCampaignsStart = () => ({
@@ -70,7 +72,15 @@ const addCampaignAction = (campaign) => (dispatch) => {
     .post(
       `${url}/add`,
       {
-        ...campaign,
+        clientId: campaign.client,
+        title: campaign.title,
+        startDate: campaign.startDate,
+        endDate: campaign.endDate,
+        presence: campaign.presence,
+        numberInfluencers: campaign.numberInfluencers,
+        description: campaign.description,
+        hashtage: campaign.hashtage,
+        accounts: campaign.accounts,
       },
       {
         headers: authHeader(),
@@ -78,11 +88,64 @@ const addCampaignAction = (campaign) => (dispatch) => {
     )
     .then((response) => {
       if (response.data) {
+        //add interests
+        let interestRequests = [];
+        campaign.interests.forEach((interest) => {
+          interestRequests.push(
+            axios.post(
+              `${campaignInterestsUrl}/add?interestId=${interest.id}&campaignId=${response.data.id}`,
+              {},
+              { headers: authHeader() }
+            )
+          );
+        });
+
+        Promise.all(interestRequests)
+          .then((result) => {
+            console.log(result);
+            dispatch(getAllCampaignsAction(page, max_size));
+            dispatch(
+              setMessage(
+                "Une campagne est ajoutée avec succès, vous pouvez ajouter une galerie de campagne"
+              )
+            );
+          })
+          .catch((error) => dispatch(setMessage(error)));
       }
     })
     .catch((error) => {
       dispatch(addCampaignFailure(error));
+      dispatch(setMessage(error.message));
     });
 };
 
-export { getAllCampaignsAction };
+//find
+const findCampaignStart = () => ({
+  type: FIND_CAMPAIGN_START,
+});
+
+const findCampaignSuccess = (payload) => ({
+  type: FIND_CAMPAIGN_SUCCESS,
+  payload,
+});
+
+const findCampaignFailure = (payload) => ({
+  type: FIND_CAMPAIGN_FAILURE,
+  payload,
+});
+
+const findCampaignAction = (id) => (dispatch) => {
+  dispatch(findCampaignStart());
+  axios
+    .get(`${url}/find/${id}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(findCampaignSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(findCampaignFailure(error));
+    });
+};
+
+export { getAllCampaignsAction, findCampaignAction, addCampaignAction };
