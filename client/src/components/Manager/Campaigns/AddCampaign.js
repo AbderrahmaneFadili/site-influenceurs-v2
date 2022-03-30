@@ -225,7 +225,7 @@ class AddCampaign extends Component {
   render() {
     console.log(this.props);
     return (
-      <>
+      <div className="pt-5">
         <Link to="/manager/dashboard/campaigns">Retour à la liste</Link>
         {this.state.successful === true && (
           <Alert className="mt-3 row align-items-center" variant="success">
@@ -412,7 +412,13 @@ class AddCampaign extends Component {
             </div>
           </form>
         </div>
-      </>
+        {/* Add Campaign Gallery */}
+        <div className="card card-indigo mt-3">
+          <div className="card-header">
+            <h3 className="card-title">Ajouter une campagne</h3>
+          </div>
+        </div>
+      </div>
     );
   }
 }

@@ -33,7 +33,3 @@ tr .icon:active {
 .page-link {
   cursor: pointer;
 }
-
-.content-wrapper {
-  height: 100vh;
-}
