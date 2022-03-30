@@ -79,7 +79,7 @@ const addCampaignAction = (campaign) => (dispatch) => {
         presence: campaign.presence,
         numberInfluencers: campaign.numberInfluencers,
         description: campaign.description,
-        hashtage: campaign.hashtage,
+        hashtage: campaign.hashtag,
         accounts: campaign.accounts,
       },
       {

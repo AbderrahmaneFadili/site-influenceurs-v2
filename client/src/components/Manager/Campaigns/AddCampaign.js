@@ -7,11 +7,13 @@ import { clearMessage } from "../../../redux/actions/message.actions";
 import { findAllClientsAction } from "../../../redux/actions/client.actions";
 import { Multiselect } from "multiselect-react-dropdown";
 import { findAllInterestAction } from "../../../redux/actions/interest.actions";
+import { addCampaignAction } from "../../../redux/actions/campaigns.actions";
 import "./Campaign.css";
 
 class AddCampaign extends Component {
   constructor(props) {
     super(props);
+    this.Multiselect = React.createRef();
     this.state = {
       successful: null,
       //data
@@ -177,6 +179,13 @@ class AddCampaign extends Component {
         ...errorsMessages,
         numberInfluencersErrorMessage: "Ce champ est requis!",
       };
+    } else if (parseInt(this.state.campaign.numberInfluencers) <= 0) {
+      errors.push("numberInfluencers");
+      errorsMessages = {
+        ...errorsMessages,
+        numberInfluencersErrorMessage:
+          "le nombre d'influenceurs doit être supérieur à 0",
+      };
     } else {
       errorsMessages = {
         ...errorsMessages,
@@ -249,7 +258,37 @@ class AddCampaign extends Component {
       () => {
         if (this.state.errors.length === 0) {
           //add campaign action
-          console.log(this.state);
+          this.props
+            .addCampaignAction(this.state.campaign)
+            .then(() => {
+              this.setState({
+                ...this.state,
+                successful: true,
+                //resest state
+                campaign: {
+                  client: "",
+                  title: "",
+                  startDate: "",
+                  endDate: "",
+                  presence: "",
+                  numberInfluencers: "",
+                  description: "",
+                  hashtag: "",
+                  accounts: "",
+                  interests: [],
+                },
+              });
+              console.log(this.state.campaign);
+              console.log(this.Multiselect);
+              //remove Selected Values From Options in Multiselect
+              this.Multiselect.current.resetSelectedValues();
+            })
+            .catch(() => {
+              this.setState({
+                ...this.state,
+                successful: false,
+              });
+            });
         } else {
           console.log(this.state.errorsMessages);
           console.log(this.state.campaign);
@@ -302,7 +341,9 @@ class AddCampaign extends Component {
                   name="client"
                   onChange={this.handleValueChange}
                 >
-                  <option>Sélectionner un client</option>
+                  <option value={""} selected={this.state.successful && true}>
+                    Sélectionner un client
+                  </option>
                   {this.props.clientsList &&
                     this.props.clientsList.list.map((client) => (
                       <option value={client.id} key={client.id}>
@@ -407,10 +448,13 @@ class AddCampaign extends Component {
 
                 <Multiselect
                   options={
-                    this.props.interestsList
+                    this.props.interestsList !== null &&
+                    this.state.successful === null
                       ? this.props.interestsList.list
                       : []
                   }
+                  ref={this.Multiselect}
+                  closeIcon="<i class='fas fa-times'></i>"
                   onRemove={this.onRemove}
                   onSelect={this.onSelect}
                   displayValue={"title"}
@@ -456,8 +500,9 @@ class AddCampaign extends Component {
                     }}
                   >
                     <input
+                      checked={this.state.successful && false}
                       id="presence"
-                      value={this.state.campaign.presence}
+                      value={"1"}
                       name="presence"
                       type="radio"
                       className={"form-check-input"}
@@ -470,11 +515,12 @@ class AddCampaign extends Component {
                   <label
                     className="form-check-label"
                     style={{
-                      color: this.hasError("interests") ? "#dc3545" : "",
+                      color: this.hasError("presence") ? "#dc3545" : "",
                     }}
                   >
                     <input
-                      value={this.state.campaign.presence}
+                      checked={this.state.successful && false}
+                      value={"1"}
                       id="presence"
                       name="presence"
                       type="radio"
@@ -488,8 +534,8 @@ class AddCampaign extends Component {
                 <span
                   style={{
                     fontSize: 12.22,
-                    color: this.hasError("interests") ? "#dc3545" : "",
-                    visibility: this.hasError("interests")
+                    color: this.hasError("presence") ? "#dc3545" : "",
+                    visibility: this.hasError("presence")
                       ? "visible"
                       : "hidden",
                   }}
@@ -636,6 +682,14 @@ const mapDispatchToProps = (dispatch) => {
     clearMessage: () => dispatch(clearMessage()),
     getClientsList: () => dispatch(findAllClientsAction()),
     getInterestsList: () => dispatch(findAllInterestAction()),
+    addCampaignAction: (campaign) => {
+      try {
+        dispatch(addCampaignAction(campaign));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
   };
 };
 
