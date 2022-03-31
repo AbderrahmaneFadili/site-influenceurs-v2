@@ -9,12 +9,14 @@ import { Multiselect } from "multiselect-react-dropdown";
 import { findAllInterestAction } from "../../../redux/actions/interest.actions";
 import { addCampaignAction } from "../../../redux/actions/campaigns.actions";
 import "./Campaign.css";
+import { addCampaignPhotosAction } from "../../../redux/actions/campaignPhotos.actions";
 
 class AddCampaign extends Component {
   constructor(props) {
     super(props);
     this.Multiselect = React.createRef();
     this.state = {
+      shawAddGalleryForm: false,
       successful: null,
       //data
       campaign: {
@@ -28,6 +30,7 @@ class AddCampaign extends Component {
         hashtag: "",
         accounts: "",
         interests: [],
+        photos: null,
       },
 
       //errors:
@@ -44,6 +47,7 @@ class AddCampaign extends Component {
         hashtagErrorMessage: "",
         accountsErrorMessage: "",
         interestsErrorMessage: "",
+        photosErrorMessage: "",
       },
     };
   }
@@ -56,6 +60,16 @@ class AddCampaign extends Component {
       campaign: {
         ...this.state.campaign,
         [name]: value,
+      },
+    });
+  };
+
+  handlePhotosChange = (event) => {
+    this.setState({
+      ...this.state,
+      campaign: {
+        ...this.state.campaign,
+        photos: event.target.files,
       },
     });
   };
@@ -263,6 +277,7 @@ class AddCampaign extends Component {
             .then(() => {
               this.setState({
                 ...this.state,
+                shawAddGalleryForm: true,
                 successful: true,
                 //resest state
                 campaign: {
@@ -279,7 +294,6 @@ class AddCampaign extends Component {
                 },
               });
               console.log(this.state.campaign);
-              console.log(this.Multiselect);
               //remove Selected Values From Options in Multiselect
               this.Multiselect.current.resetSelectedValues();
             })
@@ -296,9 +310,64 @@ class AddCampaign extends Component {
       }
     );
   };
+  //handle submit photos
+  handleSumbitPhotos = (event) => {
+    event.preventDefault();
+
+    const errors = [];
+
+    let errorsMessages = {};
+
+    if (
+      this.state.campaign.photos === null ||
+      this.state.campaign.photos.length === 0
+    ) {
+      errors.push("photos");
+      errorsMessages = {
+        ...errorsMessages,
+        photosErrorMessage: "Ce champs est requis!",
+      };
+    } else {
+      errorsMessages = {
+        ...errorsMessages,
+        photosErrorMessage: "",
+      };
+    }
+
+    this.setState(
+      {
+        ...this.state,
+        errors,
+        errorsMessages,
+      },
+      () => {
+        if (this.state.errors.length === 0 && this.props.addedCampaign) {
+          this.props
+            .addCampaignPhotosAction(
+              this.state.campaign.photos,
+              this.props.addedCampaign.id
+            )
+            .then(() => {
+              this.setState({
+                ...this.state,
+                successful: true,
+              });
+              window.scrollTo(0, 0);
+            })
+            .catch(() => {
+              this.setState({
+                ...this.state,
+                successful: false,
+              });
+            });
+        }
+      }
+    );
+  };
 
   render() {
     console.log(this.props);
+    console.log(this.state.campaign);
     return (
       <div className="pt-5">
         <Link to="/manager/dashboard/campaigns">Retour à la liste</Link>
@@ -656,11 +725,60 @@ class AddCampaign extends Component {
               </div>
             </div>
             <div className="card-footer">
-              <button className="btn btn-success">Ajouter</button>
+              <button
+                className="btn btn-success"
+                disabled={this.state.successful === true ? true : false}
+              >
+                Ajouter
+              </button>
             </div>
           </form>
         </div>
         {/* Add Campaign Gallery */}
+        {this.state.shawAddGalleryForm === true && (
+          <div className="card card-indigo mt-3">
+            <div className="card-header">
+              <h3 className="card-title">
+                Ajouter galerie photot pour la campagne :{" "}
+                {this.props.addedCampaign && this.props.addedCampaign.title}
+              </h3>
+            </div>
+            {/* /.card-header */}
+            {/* form start */}
+            <form onSubmit={this.handleSumbitPhotos}>
+              <div className="card-body">
+                <label htmlFor="photos">Photos de la campagne</label>
+                <input
+                  onChange={this.handlePhotosChange}
+                  type="file"
+                  multiple
+                  className={
+                    this.hasError("photos")
+                      ? "form-control is-invalid"
+                      : "form-control"
+                  }
+                  accept="image/*"
+                  name="photos"
+                  id="photos"
+                  placeholder="photo(s) de la campagne"
+                />
+                <span
+                  className={
+                    this.hasError("photos")
+                      ? "error invalid-feedback mt-2"
+                      : "hidden"
+                  }
+                >
+                  {this.state.errorsMessages.photosErrorMessage &&
+                    this.state.errorsMessages.photosErrorMessage}
+                </span>
+              </div>
+              <div className="card-footer">
+                <button className="btn btn-success">Enregister</button>
+              </div>
+            </form>
+          </div>
+        )}
       </div>
     );
   }
@@ -673,12 +791,22 @@ const mapStateToProps = (state) => {
     loading: state.campaignReducer.loading,
     clientsList: state.clientReducer.clientsList,
     interestsList: state.interestReducer.interestsList,
+    addedCampaign: state.campaignReducer.addedCampaign,
+    gallery: state.campaignPhotosReducer.createdGallery,
   };
 };
 
 //map dispatch
 const mapDispatchToProps = (dispatch) => {
   return {
+    addCampaignPhotosAction: (photos, campaignId) => {
+      try {
+        dispatch(addCampaignPhotosAction(photos, campaignId));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      }
+    },
     clearMessage: () => dispatch(clearMessage()),
     getClientsList: () => dispatch(findAllClientsAction()),
     getInterestsList: () => dispatch(findAllInterestAction()),

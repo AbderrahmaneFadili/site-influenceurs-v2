@@ -2,7 +2,7 @@ const { verifySignUp, authJWT } = require("../../middlewares");
 const campaignPhotosController = require("../../controllers/campaignPhotots.controller");
 const express = require("express");
 const router = express.Router();
-const fileuploaded = require("express-fileupload");
+const uploadHelper = require("../../helpers/uploadHelper");
 
 module.exports = (app) => {
   //use header middleware
@@ -14,13 +14,11 @@ module.exports = (app) => {
     next();
   });
 
-  //Set file uploaded
-  app.use(fileuploaded());
-
   //POST /api/campaignPhotos/create
   router.post(
     "/create",
     [authJWT.verifyToken],
+    uploadHelper.upload.array("images", 30),
     campaignPhotosController.create
   );
   //GET /api/campaignPhotos/find/

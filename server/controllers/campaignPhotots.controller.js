@@ -13,54 +13,33 @@ class CampaignPhotosController {
    * POST Add Campaign Photos Action
    */
   create = (request, response) => {
-    const gallery = [];
-    if (Array.isArray(request.files.images)) {
-      request.files.images.forEach((file) => {
-        //move the file uploaded to uploads/campaigns/images
-        const time = new Date().getTime();
-        file.mv(`uploads/campaigns/images/${time}-${file.name}`, (error) => {
-          if (error) {
-            throw error;
-          } else {
-            const campaignPhoto = {
-              campaignId: request.body.campaignId,
-              link: `uploads/campaigns/images/${time}-${file.name}`,
-            };
-            gallery.push(campaignPhoto);
-          }
-        });
-      });
-    } else {
-      //move the file uploaded to uploads/campaigns/images
-      const time = new Date().getTime();
-      request.files.images.mv(
-        `uploads/campaigns/images/${time}-${request.files.images.name}`,
-        (error) => {
-          if (error) {
-            throw error;
-          } else {
-            const campaignPhoto = {
-              campaignId: request.body.campaignId,
-              link: `uploads/campaigns/images/${time}-${request.files.images.name}`,
-            };
-            gallery.push(campaignPhoto);
-          }
-        }
-      );
-    }
+    console.log("request.files : ", request.files);
+    console.log("campaign id : ", request.body.campaignId);
+
+    let gallery = [];
+
+    request.files.forEach((file) => {
+      const campaignPhoto = {
+        campaignId: request.body.campaignId,
+        link: file.path,
+      };
+      gallery.push(campaignPhoto);
+    });
 
     setTimeout(() => {
       if (gallery.length > 0) {
-        CampaignPhoto.bulkCreate(gallery).then((gl) => {
-          response.send({
-            gallery: gl,
-            message: "les images sont téléchargées",
+        CampaignPhoto.bulkCreate(gallery)
+          .then((gl) => {
+            response.send({
+              gallery: gl,
+              message: "les images sont téléchargées",
+            });
+          })
+          .catch((error) => {
+            response.send({
+              message: "les images ne sont pas téléchargées",
+            });
           });
-        });
-      } else {
-        response.send({
-          message: "les images ne sont pas téléchargées",
-        });
       }
     }, 3000);
   };

@@ -103,10 +103,11 @@ const addCampaignAction = (campaign) => (dispatch) => {
         Promise.all(interestRequests)
           .then((result) => {
             console.log(result);
+            dispatch(addCampaignSuccess(response.data));
             dispatch(getAllCampaignsAction(page, max_size));
             dispatch(
               setMessage(
-                "Une campagne est ajoutée avec succès, vous pouvez ajouter une galerie de campagne"
+                "Une campagne est ajoutée avec succès, vous pouvez ajouter une galerie de campagne en bas."
               )
             );
           })

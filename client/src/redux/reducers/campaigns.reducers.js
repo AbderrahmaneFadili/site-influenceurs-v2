@@ -21,6 +21,7 @@ const initialState = {
   campaigns: null,
   campaign: null,
   error: null,
+  addedCampaign: null,
 };
 
 const campaignReducer = (state = initialState, { type, payload }) => {
@@ -52,16 +53,19 @@ const campaignReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
+        addedCampaign: null,
       };
     case ADD_CAMPAIGN_SUCCESS:
       return {
         ...state,
         loading: false,
+        addedCampaign: payload,
       };
     case ADD_CAMPAIGN_FAILURE:
       return {
         ...state,
         loading: false,
+        addedCampaign: null,
       };
     //find campaign
     case FIND_CAMPAIGN_START:
