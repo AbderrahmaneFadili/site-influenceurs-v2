@@ -10,6 +10,8 @@ import { useDispatch } from "react-redux";
 import { history } from "./helpers/history.helpers";
 import { clearMessage as authClearMessage } from "./redux/actions/message.actions";
 import "./App.css";
+import moment from "moment";
+moment.locale("fr");
 
 const App = () => {
   const dispatch = useDispatch();

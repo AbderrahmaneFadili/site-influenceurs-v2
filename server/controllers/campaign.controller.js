@@ -5,7 +5,7 @@ const CampaignInterest = require("../models/campaigninterest")(
   db.sequelize,
   db.Sequelize
 );
-const Interest = require("../models/interest")(db.sequelize, db.Sequelize);
+const Client = require("../models/client")(db.sequelize, db.Sequelize);
 const CampaignPhoto = require("../models/campaignphoto")(
   db.sequelize,
   db.Sequelize
