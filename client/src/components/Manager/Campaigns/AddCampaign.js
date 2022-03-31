@@ -18,6 +18,7 @@ class AddCampaign extends Component {
     this.state = {
       shawAddGalleryForm: false,
       successful: null,
+      disabledSaveImages: true,
       //data
       campaign: {
         client: "",
@@ -64,14 +65,16 @@ class AddCampaign extends Component {
     });
   };
 
+  //handle photos change
   handlePhotosChange = (event) => {
-    this.setState({
-      ...this.state,
+    this.setState((prev) => ({
+      ...prev,
+      disabledSaveImages: false,
       campaign: {
         ...this.state.campaign,
         photos: event.target.files,
       },
-    });
+    }));
   };
 
   //on select interests
@@ -318,10 +321,8 @@ class AddCampaign extends Component {
 
     let errorsMessages = {};
 
-    if (
-      this.state.campaign.photos === null ||
-      this.state.campaign.photos.length === 0
-    ) {
+    if (this.state.campaign.photos === null) {
+      console.log("this.state.campaign.photos :", this.state.campaign.photos);
       errors.push("photos");
       errorsMessages = {
         ...errorsMessages,
@@ -337,8 +338,8 @@ class AddCampaign extends Component {
     this.setState(
       {
         ...this.state,
-        errors,
-        errorsMessages,
+        errors: errors,
+        errorsMessages: errorsMessages,
       },
       () => {
         if (this.state.errors.length === 0 && this.props.addedCampaign) {
@@ -351,6 +352,7 @@ class AddCampaign extends Component {
               this.setState({
                 ...this.state,
                 successful: true,
+                shawAddGalleryForm: false,
               });
               window.scrollTo(0, 0);
             })
@@ -368,6 +370,9 @@ class AddCampaign extends Component {
   render() {
     console.log(this.props);
     console.log(this.state.campaign);
+    console.log(this.state.errorsMessages);
+    console.log(this.state.errors);
+    console.log(this.state);
     return (
       <div className="pt-5">
         <Link to="/manager/dashboard/campaigns">Retour à la liste</Link>
@@ -589,7 +594,7 @@ class AddCampaign extends Component {
                   >
                     <input
                       checked={this.state.successful && false}
-                      value={"1"}
+                      value={"0"}
                       id="presence"
                       name="presence"
                       type="radio"
@@ -727,7 +732,12 @@ class AddCampaign extends Component {
             <div className="card-footer">
               <button
                 className="btn btn-success"
-                disabled={this.state.successful === true ? true : false}
+                disabled={
+                  this.state.successful === true &&
+                  this.state.shawAddGalleryForm === true
+                    ? true
+                    : false
+                }
               >
                 Ajouter
               </button>
@@ -774,7 +784,14 @@ class AddCampaign extends Component {
                 </span>
               </div>
               <div className="card-footer">
-                <button className="btn btn-success">Enregister</button>
+                <button
+                  className="btn btn-success"
+                  disabled={
+                    this.state.disabledSaveImages === true ? true : false
+                  }
+                >
+                  Enregister
+                </button>
               </div>
             </form>
           </div>

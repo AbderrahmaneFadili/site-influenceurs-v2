@@ -19,10 +19,11 @@ module.exports = (sequelize, DataTypes) => {
       });
 
       //Interest belongs to many Compaign
-      this.belongsTo(models.Influencer, {
+      this.belongsToMany(models.Campaign, {
         through: "campaign_interest",
+        as: "Campaigns",
         foreignKey: "interestId",
-        onDelete: "SET NULL",
+        onDelete: "RISTRICT",
         onUpdate: "CASCADE",
       });
     }

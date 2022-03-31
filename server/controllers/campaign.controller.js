@@ -5,6 +5,11 @@ const CampaignInterest = require("../models/campaigninterest")(
   db.sequelize,
   db.Sequelize
 );
+const Interest = require("../models/interest")(db.sequelize, db.Sequelize);
+const CampaignPhoto = require("../models/campaignphoto")(
+  db.sequelize,
+  db.Sequelize
+);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
 

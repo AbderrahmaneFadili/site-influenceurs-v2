@@ -20,9 +20,9 @@ module.exports = (sequelize, DataTypes) => {
       //Campaign belongs to many interest
       this.belongsToMany(models.Interest, {
         through: "campaign_interest",
-        as: "Campaigns",
+        as: "Interests",
         foreignKey: "campaignId",
-        onDelete: "CASCADE",
+        onDelete: "RISTRICT",
         onUpdate: "CASCADE",
       });
 
