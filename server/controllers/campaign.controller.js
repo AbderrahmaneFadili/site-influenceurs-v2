@@ -56,6 +56,7 @@ class CampaignController {
           numberInfluencers: campaign.numberInfluencers,
           description: campaign.description,
           hashtage: campaign.hashtage,
+          accounts: campaign.accounts,
         });
       })
       .catch((err) => {

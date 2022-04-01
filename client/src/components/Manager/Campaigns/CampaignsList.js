@@ -84,6 +84,7 @@ class CampaignsList extends Component {
                     <td>
                       <i
                         className="fas fa-file-alt details icon"
+                        title="Détails"
                         onClick={() => this.goToDetailsPage(campaign.id)}
                       ></i>
                     </td>
