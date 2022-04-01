@@ -76,7 +76,7 @@ const addCampaignAction = (campaign) => (dispatch) => {
         title: campaign.title,
         startDate: campaign.startDate,
         endDate: campaign.endDate,
-        presence: campaign.presence,
+        presence: campaign.presence === "1" ? true : false,
         numberInfluencers: campaign.numberInfluencers,
         description: campaign.description,
         hashtage: campaign.hashtag,
@@ -87,6 +87,7 @@ const addCampaignAction = (campaign) => (dispatch) => {
       }
     )
     .then((response) => {
+      console.log("campaign add :", response.data);
       if (response.data) {
         //add interests
         let interestRequests = [];

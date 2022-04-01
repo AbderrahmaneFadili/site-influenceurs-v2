@@ -34,7 +34,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.STRING(600),
       },
       hashtage: {
         type: Sequelize.STRING,

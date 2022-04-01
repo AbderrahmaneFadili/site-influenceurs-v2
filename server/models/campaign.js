@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
       endDate: DataTypes.DATE,
       presence: DataTypes.BOOLEAN,
       numberInfluencers: DataTypes.INTEGER,
-      description: DataTypes.STRING,
+      description: DataTypes.STRING(600),
       hashtage: DataTypes.STRING,
       accounts: DataTypes.STRING,
     },

@@ -3,11 +3,15 @@ import {
   ADD_CAMPAIGN_PHOTOS_START,
   ADD_CAMPAIGN_PHOTOS_SUCCESS,
   ADD_CAMPAIGN_PHOTOS_FAILURE,
+  GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_START,
+  GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_SUCCESS,
+  GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_FAILURE,
 } from "../constants/campaignPhotos.constants";
 import { url } from "../../api/campaignPhotos";
 import authHeader from "../../services/auth-header";
 import { setMessage } from "./message.actions";
 
+//add
 const addCampaignPhotosStart = () => ({
   type: ADD_CAMPAIGN_PHOTOS_START,
 });
@@ -53,4 +57,33 @@ const addCampaignPhotosAction = (photos, campaignId) => (dispatch) => {
     });
 };
 
-export { addCampaignPhotosAction };
+//get by campaign id
+const getCampaignsPhotosByCampaignIdStart = () => ({
+  type: GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_START,
+});
+
+const getCampaignsPhotosByCampaignIdSuccess = (payload) => ({
+  type: GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_SUCCESS,
+  payload,
+});
+
+const getCampaignsPhotosByCampaignIdFailure = (payload) => ({
+  type: GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_FAILURE,
+  payload,
+});
+
+const getCampaignsPhotosByCampaignIdAction = (campaignId) => (dispatch) => {
+  dispatch(getCampaignsPhotosByCampaignIdStart());
+  axios
+    .get(`${url}/findByCampaign?campaignId=${campaignId}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(getCampaignsPhotosByCampaignIdSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(getCampaignsPhotosByCampaignIdFailure(error));
+    });
+};
+
+export { addCampaignPhotosAction, getCampaignsPhotosByCampaignIdAction };
