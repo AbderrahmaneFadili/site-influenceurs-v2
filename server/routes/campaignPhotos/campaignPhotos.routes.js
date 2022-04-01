@@ -37,5 +37,11 @@ module.exports = (app) => {
   );
   //GET /api/campaignPhotos/all
   router.get("/all", [authJWT.verifyToken], campaignPhotosController.all);
+  //GET /api/campaignPhotots/findByCampaign
+  router.get(
+    "/findByCampaign",
+    [authJWT.verifyToken],
+    campaignPhotosController.getByCampaignId
+  );
   app.use("/api/campaignPhotos", router);
 };

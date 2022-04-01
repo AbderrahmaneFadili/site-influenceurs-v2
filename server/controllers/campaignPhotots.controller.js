@@ -151,6 +151,22 @@ class CampaignPhotosController {
         });
       });
   };
+  /**
+   * Get by campaign id
+   */
+  getByCampaignId = (request, response) => {
+    CampaignPhoto.findAll({
+      where: {
+        campaignId: request.query.campaignId,
+      },
+    })
+      .then((campaignPhotos) => response.status(200).send(campaignPhotos))
+      .catch((error) =>
+        response.status(500).send({
+          message: error.message,
+        })
+      );
+  };
 }
 
 module.exports = new CampaignPhotosController();
