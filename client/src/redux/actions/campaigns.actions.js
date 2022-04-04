@@ -181,9 +181,45 @@ const deleteCampaignAction = (id) => (dispatch) => {
     });
 };
 
+//edit
+const editCampaignStart = () => ({
+  type: EDIT_CAMPAIGN_START,
+});
+
+const editCampaignSuccess = (payload) => ({
+  type: EDIT_CAMPAIGN_SUCCESS,
+  payload,
+});
+
+const editCampaignFailure = (payload) => ({
+  type: EDIT_CAMPAIGN_FAILURE,
+  payload,
+});
+
+const editCampaignAction = (campaign, id) => (dispatch) => {
+  dispatch(editCampaignStart());
+  axios
+    .put(
+      `${url}/edit/${id}`,
+      {
+        ...campaign,
+      },
+      {
+        headers: authHeader(),
+      }
+    )
+    .then((response) => {
+      dispatch(editCampaignSuccess(response.data));
+    })
+    .catch((error) => {
+      dispatch(editCampaignFailure(error));
+    });
+};
+
 export {
   getAllCampaignsAction,
   findCampaignAction,
   addCampaignAction,
   deleteCampaignAction,
+  editCampaignAction,
 };

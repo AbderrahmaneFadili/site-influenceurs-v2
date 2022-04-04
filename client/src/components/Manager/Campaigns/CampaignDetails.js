@@ -233,7 +233,14 @@ class CampaignDetails extends Component {
                     >
                       Supprimer
                     </button>
-                    <button className="btn btn-secondary">Modifier</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={(event) =>
+                        this.goToEditPage(this.props.campaign.id)
+                      }
+                    >
+                      Modifier
+                    </button>
                   </div>
                 </div>
               </div>

@@ -102,6 +102,25 @@ const campaignReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: false,
       };
+    //edit campaign
+    case EDIT_CAMPAIGN_START:
+      return {
+        ...state,
+        loading: true,
+        error: null,
+      };
+    case EDIT_CAMPAIGN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        error: null,
+      };
+    case EDIT_CAMPAIGN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: payload,
+      };
     default:
       return state;
   }
