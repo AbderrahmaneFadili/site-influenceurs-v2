@@ -21,6 +21,7 @@ import { url } from "../../api/campaigns";
 import { url as campaignInterestsUrl } from "../../api/campaigninterests";
 import { max_size, page } from "../../helpers/paginationsParams";
 import { setMessage } from "./message.actions";
+import { deleteAllCampaignsPhotosAction } from "./campaignPhotos.actions";
 
 //get all campaigns actions
 const getAllCampaignsStart = () => ({
@@ -150,4 +151,39 @@ const findCampaignAction = (id) => (dispatch) => {
     });
 };
 
-export { getAllCampaignsAction, findCampaignAction, addCampaignAction };
+//delete
+const deleteCampaignStart = () => ({
+  type: DELETE_CAMPAIGN_START,
+});
+
+const deleteCampaignSuccess = (payload) => ({
+  type: DELETE_CAMPAIGN_SUCCESS,
+  payload,
+});
+
+const deleteCampaignFailure = (payload) => ({
+  type: DELETE_CAMPAIGN_FAILURE,
+  payload,
+});
+
+const deleteCampaignAction = (id) => (dispatch) => {
+  dispatch(deleteCampaignStart());
+  axios
+    .delete(`${url}/delete/${id}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(deleteCampaignSuccess(response.data));
+      dispatch(getAllCampaignsAction(page, max_size));
+    })
+    .catch((error) => {
+      dispatch(deleteCampaignFailure(error));
+    });
+};
+
+export {
+  getAllCampaignsAction,
+  findCampaignAction,
+  addCampaignAction,
+  deleteCampaignAction,
+};

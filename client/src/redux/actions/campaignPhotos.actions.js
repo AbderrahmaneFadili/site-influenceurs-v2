@@ -6,6 +6,9 @@ import {
   GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_START,
   GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_SUCCESS,
   GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_FAILURE,
+  DELETE_ALL_CMPS_PHOTOS_START,
+  DELETE_ALL_CMPS_PHOTOS_SUCCESS,
+  DELETE_ALL_CMPS_PHOTOS_FAILURE,
 } from "../constants/campaignPhotos.constants";
 import { url } from "../../api/campaignPhotos";
 import authHeader from "../../services/auth-header";
@@ -86,4 +89,38 @@ const getCampaignsPhotosByCampaignIdAction = (campaignId) => (dispatch) => {
     });
 };
 
-export { addCampaignPhotosAction, getCampaignsPhotosByCampaignIdAction };
+//delete all
+const deleteAllCampaignsPhotosStart = () => ({
+  type: DELETE_ALL_CMPS_PHOTOS_START,
+});
+
+const deleteAllCampaignsPhotosSuccess = (payload) => ({
+  type: DELETE_ALL_CMPS_PHOTOS_SUCCESS,
+});
+
+const deleteAllCampaignsPhotosFailure = (payload) => ({
+  type: DELETE_ALL_CMPS_PHOTOS_FAILURE,
+  payload,
+});
+
+const deleteAllCampaignsPhotosAction = (campaignId) => (dispatch) => {
+  dispatch(deleteAllCampaignsPhotosStart());
+  axios
+    .delete(`${url}/deleteAll/${campaignId}`, {
+      headers: authHeader(),
+    })
+    .then((response) => {
+      dispatch(deleteAllCampaignsPhotosSuccess(response.data));
+      dispatch(setMessage(response.data.message));
+    })
+    .catch((error) => {
+      dispatch(deleteAllCampaignsPhotosFailure(error));
+      dispatch(setMessage(error.message));
+    });
+};
+
+export {
+  addCampaignPhotosAction,
+  getCampaignsPhotosByCampaignIdAction,
+  deleteAllCampaignsPhotosAction,
+};

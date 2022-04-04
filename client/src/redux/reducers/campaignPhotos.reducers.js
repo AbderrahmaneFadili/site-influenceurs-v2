@@ -5,6 +5,9 @@ import {
   GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_FAILURE,
   GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_START,
   GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_SUCCESS,
+  DELETE_ALL_CMPS_PHOTOS_START,
+  DELETE_ALL_CMPS_PHOTOS_SUCCESS,
+  DELETE_ALL_CMPS_PHOTOS_FAILURE,
 } from "../constants/campaignPhotos.constants";
 
 const initialState = {
@@ -51,6 +54,22 @@ const campaignPhotosReducer = (state = initialState, { type, payload }) => {
         ...state,
         loading: false,
         campaignsPhotos: null,
+      };
+    //Delete
+    case DELETE_ALL_CMPS_PHOTOS_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_ALL_CMPS_PHOTOS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case DELETE_ALL_CMPS_PHOTOS_FAILURE:
+      return {
+        ...state,
+        loading: false,
       };
     default:
       return state;

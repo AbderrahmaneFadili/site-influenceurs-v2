@@ -86,6 +86,22 @@ const campaignReducer = (state = initialState, { type, payload }) => {
         loading: false,
         campaign: null,
       };
+    //delete campaign
+    case DELETE_CAMPAIGN_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_CAMPAIGN_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case DELETE_CAMPAIGN_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

@@ -1,8 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { findCampaignAction } from "../../../redux/actions/campaigns.actions";
+import {
+  deleteCampaignAction,
+  findCampaignAction,
+} from "../../../redux/actions/campaigns.actions";
 import { findClientAction } from "../../../redux/actions/client.actions";
-import { getCampaignsPhotosByCampaignIdAction } from "../../../redux/actions/campaignPhotos.actions";
+import {
+  deleteAllCampaignsPhotosAction,
+  getCampaignsPhotosByCampaignIdAction,
+} from "../../../redux/actions/campaignPhotos.actions";
 import moment from "moment";
 import "moment/locale/fr";
 import { isEqual } from "lodash";
@@ -20,6 +26,32 @@ class CampaignDetails extends Component {
       }
     }
   }
+
+  //handle delete campaign
+  handleDeleteCampaign = () => {
+    if (this.props.campaign) {
+      this.props
+        .deleteAllCampignPhotos(this.props.campaign.id)
+        .then(() => {
+          if (window.confirm("Voulez-vous supprimer cette campagne ?")) {
+            this.props
+              .deleteCampaign(
+                this.props.match.params.id,
+                this.props.campaign.id
+              )
+              .then(() => {
+                this.props.history.goBack();
+              })
+              .catch(() => {
+                return null;
+              });
+          }
+        })
+        .catch((error) => {
+          return null;
+        });
+    }
+  };
 
   render() {
     console.log(this.props);
@@ -195,7 +227,12 @@ class CampaignDetails extends Component {
                 </div>
                 <div className="card-footer d-flex">
                   <div className="my-2 ml-auto">
-                    <button className="btn btn-danger mr-2">Supprimer</button>
+                    <button
+                      className="btn btn-danger mr-2"
+                      onClick={this.handleDeleteCampaign}
+                    >
+                      Supprimer
+                    </button>
                     <button className="btn btn-secondary">Modifier</button>
                   </div>
                 </div>
@@ -209,6 +246,7 @@ class CampaignDetails extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    message: state.messageReducer.message,
     loading: state.campaignReducer.loading,
     campaign: state.campaignReducer.campaign,
     client: state.clientReducer.client,
@@ -218,6 +256,22 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    deleteAllCampignPhotos: (campaignId) => {
+      try {
+        dispatch(deleteAllCampaignsPhotosAction(campaignId));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
+    },
+    deleteCampaign: (id, campaignId) => {
+      try {
+        dispatch(deleteCampaignAction(id, campaignId));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
+    },
     findCampaign: (id) => {
       try {
         dispatch(findCampaignAction(id));
