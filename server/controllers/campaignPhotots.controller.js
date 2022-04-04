@@ -167,6 +167,42 @@ class CampaignPhotosController {
         })
       );
   };
+  //Edit campaign photos
+  edit = (request, response) => {
+    const campaignPhotoId = request.body.campaignPhotoId;
+    const image = request.file;
+    console.log(image);
+
+    CampaignPhoto.findOne({
+      where: {
+        id: campaignPhotoId,
+      },
+    }).then((campaignPhoto) => {
+      //remove the image form directory
+      fs.unlinkSync(campaignPhoto.link);
+      //Campaign Photo update
+      CampaignPhoto.update(
+        {
+          link: image.path,
+        },
+        {
+          where: {
+            id: campaignPhotoId,
+          },
+        }
+      )
+        .then((numCount) => {
+          return response.status(200).send({
+            message: `${numCount} campaign photo is updated`,
+          });
+        })
+        .catch((error) => {
+          return response.status(500).send({
+            message: error.message,
+          });
+        });
+    });
+  };
 }
 
 module.exports = new CampaignPhotosController();

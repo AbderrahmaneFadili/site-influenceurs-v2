@@ -43,5 +43,11 @@ module.exports = (app) => {
     [authJWT.verifyToken],
     campaignPhotosController.getByCampaignId
   );
+  //PUT /api/campaignPhotos/edit
+  router.put(
+    "/edit",
+    uploadHelper.upload.single("image"),
+    campaignPhotosController.edit
+  );
   app.use("/api/campaignPhotos", router);
 };
