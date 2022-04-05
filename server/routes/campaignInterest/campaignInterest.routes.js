@@ -38,6 +38,12 @@ module.exports = (app) => {
 
   //GET   /api/campaignInterest/all/
   router.get("/all", [authJWT.verifyToken], campaignInterestController.all);
+  //GET /api/campaignInterest/findByCampaign
+  router.get(
+    "/findByCampaign",
+    [authJWT.verifyToken],
+    campaignInterestController.findByCampaignId
+  );
 
   app.use("/api/campaigninterests", router);
 };

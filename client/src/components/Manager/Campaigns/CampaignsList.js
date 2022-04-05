@@ -94,7 +94,7 @@ class CampaignsList extends Component {
             </tbody>
           </table>
         ) : (
-          <p className="my-3">Aucun campagne exists</p>
+          <p className="my-3">Aucune campagne exists</p>
         )}
         <div className="row mt-4">
           <div className="col-sm-12 col-md-6">

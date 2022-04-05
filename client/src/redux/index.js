@@ -8,6 +8,7 @@ import interestReducer from "./reducers/interest.reducers";
 import clientReducer from "./reducers/client.reducer";
 import campaignReducer from "./reducers/campaigns.reducers";
 import campaignPhotosReducer from "./reducers/campaignPhotos.reducers";
+import campaignInterestsReducer from "./reducers/campaignInterests.reducers";
 
 const rootReducer = combineReducers({
   authReducer,
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
   clientReducer,
   campaignReducer,
   campaignPhotosReducer,
+  campaignInterestsReducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk));

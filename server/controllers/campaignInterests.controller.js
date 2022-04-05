@@ -4,6 +4,7 @@ const CampaignInterest = require("../models/campaigninterest")(
   db.sequelize,
   db.Sequelize
 );
+const Interest = require("../models/interest")(db.sequelize, db.Sequelize);
 const Operation = db.Sequelize.Op;
 const { getPagination, getPagingData } = require("../helpers/paginationHelper");
 
@@ -34,6 +35,29 @@ class CampaignInterestController {
       .catch((error) => {
         response.status(500).send({
           message: error.message,
+        });
+      });
+  };
+  /*
+   * GET find all campaigns by campaignId
+   */
+  findByCampaignId = (request, response) => {
+    const campaignId = request.query.campaignId;
+
+    db.sequelize
+      .query(
+        `SELECT ints.id,ints.title FROM site_influencers.CampaignInterests  campInterests 
+        INNER JOIN interests ints ON campInterests.interestId = ints.id WHERE campaignId = ${campaignId};`
+      )
+      .then((results) => {
+        const campaignInterests = results[0];
+        return response.send({
+          list: campaignInterests,
+        });
+      })
+      .catch((error) => {
+        return response.status(500).send({
+          error: error.message,
         });
       });
   };

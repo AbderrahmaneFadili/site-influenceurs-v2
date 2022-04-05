@@ -53,6 +53,11 @@ class CampaignDetails extends Component {
     }
   };
 
+  //go to edit campaign
+  goToEditPage = (id) => {
+    this.props.history.push(`/manager/dashboard/campaigns/edit/${id}`);
+  };
+
   render() {
     console.log(this.props);
     return (
@@ -233,7 +238,14 @@ class CampaignDetails extends Component {
                     >
                       Supprimer
                     </button>
-                    <button className="btn btn-secondary">Modifier</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={(event) =>
+                        this.goToEditPage(this.props.campaign.id)
+                      }
+                    >
+                      Modifier
+                    </button>
                   </div>
                 </div>
               </div>
