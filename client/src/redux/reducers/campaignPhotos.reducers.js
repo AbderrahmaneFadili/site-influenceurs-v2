@@ -8,6 +8,9 @@ import {
   DELETE_ALL_CMPS_PHOTOS_START,
   DELETE_ALL_CMPS_PHOTOS_SUCCESS,
   DELETE_ALL_CMPS_PHOTOS_FAILURE,
+  DELETE_CAMPAIGN_PHOTO_START,
+  DELETE_CAMPAIGN_PHOTO_SUCCESS,
+  DELETE_CAMPAIGN_PHOTO_FAILURE,
 } from "../constants/campaignPhotos.constants";
 
 const initialState = {
@@ -55,7 +58,7 @@ const campaignPhotosReducer = (state = initialState, { type, payload }) => {
         loading: false,
         campaignPhotos: null,
       };
-    //Delete
+    //Delete All
     case DELETE_ALL_CMPS_PHOTOS_START:
       return {
         ...state,
@@ -67,6 +70,22 @@ const campaignPhotosReducer = (state = initialState, { type, payload }) => {
         loading: false,
       };
     case DELETE_ALL_CMPS_PHOTOS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+      };
+    //Delete
+    case DELETE_CAMPAIGN_PHOTO_START:
+      return {
+        ...state,
+        loading: true,
+      };
+    case DELETE_CAMPAIGN_PHOTO_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
+    case DELETE_CAMPAIGN_PHOTO_FAILURE:
       return {
         ...state,
         loading: false,

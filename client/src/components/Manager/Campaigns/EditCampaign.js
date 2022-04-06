@@ -5,11 +5,14 @@ import { Link } from "react-router-dom";
 import Multiselect from "multiselect-react-dropdown";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
 import { findCampaignAction } from "../../../redux/actions/campaigns.actions";
-import { isEqual } from "lodash";
+import { isBoolean, isEqual, isNumber } from "lodash";
 import { findAllInterestAction } from "../../../redux/actions/interest.actions";
 import { findAllClientsAction } from "../../../redux/actions/client.actions";
 import { findCampaignInterestsByCampaignAction } from "../../../redux/actions/campaignInterests.actions";
-import { getCampaignsPhotosByCampaignIdAction } from "../../../redux/actions/campaignPhotos.actions";
+import {
+  deleteCampaignPhotoAction,
+  getCampaignsPhotosByCampaignIdAction,
+} from "../../../redux/actions/campaignPhotos.actions";
 import moment from "moment";
 
 class EditCampaign extends Component {
@@ -140,11 +143,11 @@ class EditCampaign extends Component {
     this.props.findCampaign(id);
     this.props.getInterestsList();
     this.props.getClientsList();
-    // this.props.getCampaignInterests(id);
+    this.props.getCampaignInterests(id);
     this.props.getCampaignPhotos(id);
   }
 
-  handleSubmit = (event) => {
+  handleSumbit = (event) => {
     event.preventDefault();
 
     // errors
@@ -153,7 +156,10 @@ class EditCampaign extends Component {
     let errorsMessages = {};
 
     //validate client
-    if (isEmpty(this.state.campaign.client)) {
+    if (
+      !isNumber(this.state.campaign.client) &&
+      isEmpty(this.state.campaign.client)
+    ) {
       errors.push("client");
       errorsMessages = {
         ...errorsMessages,
@@ -205,7 +211,10 @@ class EditCampaign extends Component {
       };
     }
     //validate presence
-    if (isEmpty(this.state.campaign.presence)) {
+    if (
+      !isBoolean(this.state.campaign.presence) &&
+      isEmpty(this.state.campaign.presence)
+    ) {
       errors.push("presence");
       errorsMessages = {
         ...errorsMessages,
@@ -218,7 +227,10 @@ class EditCampaign extends Component {
       };
     }
     //validate numberInfluencers
-    if (isEmpty(this.state.campaign.numberInfluencers)) {
+    if (
+      !isNumber(this.state.campaign.numberInfluencers) &&
+      isEmpty(this.state.campaign.numberInfluencers)
+    ) {
       errors.push("numberInfluencers");
       errorsMessages = {
         ...errorsMessages,
@@ -308,8 +320,25 @@ class EditCampaign extends Component {
     );
   };
 
+  //handle delete one image
+  handleDeleteImage = (id, imageUrl) => {
+    const { id: campaignId } = this.props.match.params;
+    if (window.confirm("Voulez vous supprimer cette photo?")) {
+      this.props.deleteCampaignPhoto(id, imageUrl).then(() => {
+        window.location.reload();
+      });
+    }
+  };
+
+  //handle edit one image
+  handleEditeImage = (event) => {};
+
+  //handle show file input
+  handleShowFileInput = (event) => {};
+
   render() {
     console.log(this.props);
+    console.log(this.state);
     return (
       <>
         {this.props.campaign &&
@@ -530,9 +559,7 @@ class EditCampaign extends Component {
                           <label
                             className="form-check-label"
                             style={{
-                              color: this.hasError("interests")
-                                ? "#dc3545"
-                                : "",
+                              color: this.hasError("presence") ? "#dc3545" : "",
                             }}
                           >
                             <input
@@ -722,30 +749,43 @@ class EditCampaign extends Component {
                 </div>
                 <div className="card-body">
                   <div className="row">
-                    {this.props.campaignPhotos.map((campaignPhoto, index) => {
-                      return (
-                        <div className="col-md-4" key={index.toString()}>
-                          <div className="card">
-                            <img
-                              className="card-img-top"
-                              src={`http://localhost:8080/${campaignPhoto.link}`}
-                              alt="campaign Photo"
-                              title="campaignPhoto"
-                            />
-                            <div className="card-body d-flex">
-                              <div className="ml-auto">
-                                <button className="btn btn-danger">
-                                  <i className="fas fa-trash-alt"></i>
-                                </button>
-                                <button className="ml-2  btn btn-secondary">
-                                  <i className="fas fa-pen"></i>
-                                </button>
+                    {this.props.campaignPhotos &&
+                    this.props.campaignPhotos.length > 0 ? (
+                      this.props.campaignPhotos.map((campaignPhoto, index) => {
+                        return (
+                          <div className="col-md-4" key={index.toString()}>
+                            <div className="card">
+                              <img
+                                className="card-img-top"
+                                src={`http://localhost:8080/${campaignPhoto.link}`}
+                                alt="campaign Photo"
+                                title="campaignPhoto"
+                              />
+                              <div className="card-body d-flex">
+                                <div className="ml-auto">
+                                  <button
+                                    className="btn btn-danger"
+                                    onClick={() =>
+                                      this.handleDeleteImage(
+                                        campaignPhoto.id,
+                                        campaignPhoto.link
+                                      )
+                                    }
+                                  >
+                                    <i className="fas fa-trash-alt"></i>
+                                  </button>
+                                  <button className="ml-2  btn btn-secondary">
+                                    <i className="fas fa-pen"></i>
+                                  </button>
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
+                        );
+                      })
+                    ) : (
+                      <p>Aucune photo exists</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -768,6 +808,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    deleteCampaignPhoto: (campaignPhotoId, imageUrl) => {
+      try {
+        dispatch(deleteCampaignPhotoAction(campaignPhotoId, imageUrl));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.resolve();
+      }
+    },
     findCampaign: (id) => {
       dispatch(findCampaignAction(id));
     },
