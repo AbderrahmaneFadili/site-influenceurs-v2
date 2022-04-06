@@ -8,7 +8,6 @@ import { findAllClientsAction } from "../../../redux/actions/client.actions";
 import { Multiselect } from "multiselect-react-dropdown";
 import { findAllInterestAction } from "../../../redux/actions/interest.actions";
 import { addCampaignAction } from "../../../redux/actions/campaigns.actions";
-import "./Campaign.css";
 import { addCampaignPhotosAction } from "../../../redux/actions/campaignPhotos.actions";
 
 class AddCampaign extends Component {

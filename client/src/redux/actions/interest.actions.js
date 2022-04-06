@@ -208,6 +208,7 @@ const findAllInterestAction = () => (dispatch) => {
       headers: authHeaders(),
     })
     .then((response) => {
+      console.log(response.data);
       dispatch(findAllInterestsSuccess(response.data));
     })
     .catch((error) => {

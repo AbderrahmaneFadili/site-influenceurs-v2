@@ -55,7 +55,7 @@ class CampaignDetails extends Component {
 
   //go to edit campaign
   goToEditPage = (id) => {
-    this.props.history.push(`/manager/dashboard/campaigns/edit/${id}`);
+    this.props.history.push(`/manager/dashboard/campaigns/${id}`);
   };
 
   render() {
