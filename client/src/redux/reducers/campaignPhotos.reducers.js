@@ -12,7 +12,7 @@ import {
 
 const initialState = {
   loading: false,
-  campaignsPhotos: null,
+  campaignPhotos: null,
   error: null,
   createdGallery: null,
 };
@@ -41,19 +41,19 @@ const campaignPhotosReducer = (state = initialState, { type, payload }) => {
       return {
         ...state,
         loading: true,
-        campaignsPhotos: null,
+        campaignPhotos: null,
       };
     case GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_SUCCESS:
       return {
         ...state,
         loading: false,
-        campaignsPhotos: payload,
+        campaignPhotos: payload,
       };
     case GET_CAMPAIGN_PHOTOS_BY_CAMPAIGN_ID_FAILURE:
       return {
         ...state,
         loading: false,
-        campaignsPhotos: null,
+        campaignPhotos: null,
       };
     //Delete
     case DELETE_ALL_CMPS_PHOTOS_START:

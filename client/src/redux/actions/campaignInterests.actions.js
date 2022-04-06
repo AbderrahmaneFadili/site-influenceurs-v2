@@ -28,6 +28,7 @@ const findCampaignInterestsByCampaignAction = (campaignId) => (dispatch) => {
       headers: authHeader(),
     })
     .then((response) => {
+      console.log(response.data);
       dispatch(findCampaignInterestsByCampaignSuccess(response.data));
     })
     .catch((error) => {
