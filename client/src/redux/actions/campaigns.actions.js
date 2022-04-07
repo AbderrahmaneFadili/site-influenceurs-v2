@@ -21,7 +21,6 @@ import { url } from "../../api/campaigns";
 import { url as campaignInterestsUrl } from "../../api/campaigninterests";
 import { max_size, page } from "../../helpers/paginationsParams";
 import { setMessage } from "./message.actions";
-import { deleteAllCampaignsPhotosAction } from "./campaignPhotos.actions";
 
 //get all campaigns actions
 const getAllCampaignsStart = () => ({
@@ -202,14 +201,30 @@ const editCampaignAction = (campaign, id) => (dispatch) => {
     .put(
       `${url}/edit/${id}`,
       {
-        ...campaign,
+        clientId: campaign.client,
+        title: campaign.title,
+        startDate: campaign.startDate,
+        endDate: campaign.endDate,
+        presence: campaign.presence,
+        numberInfluencers: campaign.numberInfluencers,
+        description: campaign.description,
+        hashtage: campaign.hashtage,
+        accounts: campaign.accounts,
       },
       {
         headers: authHeader(),
       }
     )
     .then((response) => {
-      dispatch(editCampaignSuccess(response.data));
+      const addCampaignInterests = [];
+      const deleteCampaignInterests = [];
+
+      Promise.all([...addCampaignInterests, ...deleteCampaignInterests]).then(
+        () => {
+          dispatch(editCampaignSuccess(response.data));
+          dispatch(getAllCampaignsAction(page, max_size));
+        }
+      );
     })
     .catch((error) => {
       dispatch(editCampaignFailure(error));

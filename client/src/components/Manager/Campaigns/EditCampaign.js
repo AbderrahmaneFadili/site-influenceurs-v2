@@ -4,7 +4,10 @@ import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import Multiselect from "multiselect-react-dropdown";
 import { isEmpty } from "../../../helpers/formValidation.helpers";
-import { findCampaignAction } from "../../../redux/actions/campaigns.actions";
+import {
+  editCampaignAction,
+  findCampaignAction,
+} from "../../../redux/actions/campaigns.actions";
 import { isBoolean, isEqual, isNumber } from "lodash";
 import { findAllInterestAction } from "../../../redux/actions/interest.actions";
 import { findAllClientsAction } from "../../../redux/actions/client.actions";
@@ -143,7 +146,6 @@ class EditCampaign extends Component {
     this.props.findCampaign(id);
     this.props.getInterestsList();
     this.props.getClientsList();
-    this.props.getCampaignInterests(id);
     this.props.getCampaignPhotos(id);
   }
 
@@ -314,6 +316,10 @@ class EditCampaign extends Component {
       }),
       () => {
         if (this.state.errors.length === 0) {
+          this.props.editCampaign(
+            this.state.campaign,
+            this.props.match.params.id
+          );
         } else {
         }
       }
@@ -509,8 +515,7 @@ class EditCampaign extends Component {
                         <Multiselect
                           selectedValues={this.props.campaignInterests.list}
                           options={
-                            this.props.interestsList !== null &&
-                            this.state.successful === null
+                            this.props.interestsList
                               ? this.props.interestsList.list
                               : []
                           }
@@ -725,17 +730,7 @@ class EditCampaign extends Component {
                       </div>
                     </div>
                     <div className="card-footer">
-                      <button
-                        className="btn btn-success"
-                        disabled={
-                          this.state.successful === true &&
-                          this.state.shawAddGalleryForm === true
-                            ? true
-                            : false
-                        }
-                      >
-                        Modifier
-                      </button>
+                      <button className="btn btn-success">Modifier</button>
                     </div>
                   </form>
                 </div>
@@ -808,6 +803,14 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    editCampaign: (campaign, id) => {
+      try {
+        dispatch(editCampaignAction(campaign, id));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
+    },
     deleteCampaignPhoto: (campaignPhotoId, imageUrl) => {
       try {
         dispatch(deleteCampaignPhotoAction(campaignPhotoId, imageUrl));
@@ -820,13 +823,23 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(findCampaignAction(id));
     },
     getInterestsList: () => {
-      dispatch(findAllInterestAction());
+      try {
+        dispatch(findAllInterestAction());
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
     },
     getClientsList: () => {
       dispatch(findAllClientsAction());
     },
     getCampaignInterests: (campaignId) => {
-      dispatch(findCampaignInterestsByCampaignAction(campaignId));
+      try {
+        dispatch(findCampaignInterestsByCampaignAction(campaignId));
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject();
+      }
     },
     getCampaignPhotos: (campaignId) => {
       dispatch(getCampaignsPhotosByCampaignIdAction(campaignId));

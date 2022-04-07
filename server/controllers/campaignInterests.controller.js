@@ -87,6 +87,27 @@ class CampaignInterestController {
       });
   };
   /*
+   * DELETE delete campaign interest by campaign interest id
+   */
+  deleteByCampaignId = (request, response) => {
+    const campaignId = request.query.campaignId;
+    CampaignInterest.destroy({
+      where: {
+        campaignId,
+      },
+    })
+      .then((number) => {
+        response.status(200).send({
+          message: `${number} centre(s) d'intérêt de la campagne supprimés avec succès`,
+        });
+      })
+      .catch((error) => {
+        response.status(500).send({
+          message: error.message,
+        });
+      });
+  };
+  /*
    * PUT update campaign interest by campaign interest id
    */
   edit = (request, response) => {
